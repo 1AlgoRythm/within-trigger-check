@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="1000" height="600" role="img" aria-label="How Within works: a customer asks a buying question in Claude, the AI calls get_vendor_answer inside the vendor's MCP server, Within returns the saved answer, an offer card, a rep after consent, and logs a revenue moment">
+<title>Within today: how one buying question flows</title>
+<defs><filter id="wobble" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G"/></filter>
+<marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#222" stroke-width="1.6" stroke-linecap="round"/></marker></defs>
+<style>
+:root{--ink:#222;--org:#f97316;--blu:#3b82f6;--grn:#10b981;--red:#ef4444}
+.ink{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.org{fill:none;stroke:var(--org);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.blu{fill:none;stroke:var(--blu);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.grn{fill:none;stroke:var(--grn);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.flow{fill:none;stroke:var(--org);stroke-width:3;stroke-dasharray:8 7;animation:dash 1.2s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-30}}
+@keyframes pulse{0%{r:16;opacity:.9}100%{r:34;opacity:0}}
+.ring{fill:none;stroke:var(--org);stroke-width:2;animation:pulse 1.8s ease-out infinite}
+text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cursive}
+.h{font-size:26px;font-weight:bold}.l{font-size:17px}.s{font-size:14.5px}.m{font-family:Menlo,monospace;font-size:13.5px}
+.o{fill:var(--org)}.b{fill:var(--blu)}.g{fill:var(--grn)}.r{fill:var(--red)}
+</style>
+<rect x="0" y="0" width="1000" height="600" rx="18" fill="#fffdf7"/>
+<text x="30" y="44" class="h">1 · What Within does today</text>
+<text x="30" y="70" class="s">One buying question, start to finish. Orange = the moment everything depends on.</text>
+
+<g filter="url(#wobble)">
+  <!-- customer -->
+  <rect x="30" y="110" width="210" height="190" rx="14" class="ink"/>
+  <circle cx="70" cy="150" r="16" class="ink"/><circle cx="64" cy="147" r="1.8" fill="#222"/><circle cx="76" cy="147" r="1.8" fill="#222"/>
+  <path d="M62 157 Q70 163 78 157" class="ink"/>
+  <path d="M48 190 h175 a8 8 0 0 1 8 8 v50 a8 8 0 0 1 -8 8 h-140 l-14 14 v-14 h-21 a8 8 0 0 1 -8 -8 v-50 a8 8 0 0 1 8 -8z" class="ink"/>
+  <!-- vendor server -->
+  <rect x="300" y="100" width="380" height="260" rx="16" class="blu"/>
+  <rect x="320" y="150" width="150" height="70" rx="10" class="ink"/>
+  <rect x="318" y="240" width="350" height="108" rx="12" class="org"/>
+  <!-- within cloud -->
+  <path d="M760 160 q-30 -50 30 -55 q20 -40 70 -15 q50 -20 60 30 q45 10 25 55 q10 40 -40 40 h-120 q-50 0 -25 -55z" class="ink"/>
+  <!-- arrows -->
+  <path d="M240 225 Q285 270 335 285" class="flow" marker-end="url(#ah)"/>
+  <path d="M660 290 Q730 250 770 210" class="flow" marker-end="url(#ah)"/>
+</g>
+<text x="96" y="155" class="l">Customer</text>
+<text x="96" y="176" class="s">in Claude / ChatGPT</text>
+<text x="58" y="215" class="s">"What does the Team</text>
+<text x="58" y="234" class="s">plan cost for 40 seats?"</text>
+
+<text x="315" y="130" class="l b">Vendor's MCP server ("Acme")</text>
+<text x="330" y="175" class="s">vendor's own tools</text>
+<text x="330" y="196" class="m">search_companies</text>
+<text x="330" y="212" class="m">get_company</text>
+<text x="485" y="175" class="s">+ instructions to the AI</text>
+<text x="485" y="196" class="m">SERVER_INSTRUCTIONS</text>
+<text x="485" y="212" class="s">(~2,000 characters)</text>
+<text x="335" y="265" class="l o">Within SDK adds 3 tools</text>
+<text x="335" y="292" class="m">get_vendor_answer  ← the key one</text>
+<text x="335" y="312" class="m">confirm_assistance (open live chat)</text>
+<text x="335" y="332" class="m">decline_assistance (note, no, msgs)</text>
+<circle cx="318" cy="287" r="16" class="ring"/>
+
+<text x="800" y="140" class="l">Within cloud</text>
+<text x="790" y="160" class="s">app.getwith.in</text>
+<text x="780" y="185" class="s">saved answers</text>
+
+<text x="245" y="395" class="s o">① the AI decides to call get_vendor_answer</text>
+<text x="245" y="413" class="s o">   (nothing forces it: only the instructions)</text>
+
+<!-- outcomes -->
+<g filter="url(#wobble)">
+  <rect x="30" y="440" width="225" height="130" rx="12" class="grn"/>
+  <rect x="270" y="440" width="225" height="130" rx="12" class="grn"/>
+  <rect x="510" y="440" width="225" height="130" rx="12" class="grn"/>
+  <rect x="750" y="440" width="225" height="130" rx="12" class="grn"/>
+</g>
+<text x="45" y="468" class="l g">② saved answer</text>
+<text x="45" y="492" class="s">the vendor's own words,</text>
+<text x="45" y="511" class="s">not the model's guess:</text>
+<text x="45" y="533" class="s">"$18 per seat a month"</text>
+<text x="285" y="468" class="l g">③ offer card</text>
+<text x="285" y="492" class="s">an MCP App (HTML in chat)</text>
+<text x="285" y="511" class="s">[Chat with Sarah]</text>
+<text x="285" y="530" class="s">[Ask the assistant] [Not now]</text>
+<text x="525" y="468" class="l g">④ a real rep joins</text>
+<text x="525" y="492" class="s">only after the customer</text>
+<text x="525" y="511" class="s">says yes. Nobody free?</text>
+<text x="525" y="530" class="s">→ leave a note (Inbox)</text>
+<text x="765" y="468" class="l g">⑤ revenue moment</text>
+<text x="765" y="492" class="s">every buying question is</text>
+<text x="765" y="511" class="s">logged in the console as</text>
+<text x="765" y="530" class="s">a lead, chat or not</text>
+<circle r="7" class="o"><animateMotion dur="4s" repeatCount="indefinite" path="M242 228 Q285 270 318 287 L318 352 L668 352 L668 290 Q730 250 830 170"/></circle>
+</svg>

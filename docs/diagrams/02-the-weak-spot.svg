@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="1000" height="600" role="img" aria-label="The weak spot: the AI decides from written instructions whether to call Within. Three outcomes: buying question captured, buying question missed, normal question sent as a false alarm. Within's console tests what it answers, nothing tested whether the AI calls.">
+<title>The weak spot: the AI decides, and it is probabilistic</title>
+<defs><filter id="wobble" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G"/></filter>
+<marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#222" stroke-width="1.6" stroke-linecap="round"/></marker></defs>
+<style>
+:root{--ink:#222;--org:#f97316;--blu:#3b82f6;--grn:#10b981;--red:#ef4444}
+.ink{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.org{fill:none;stroke:var(--org);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.grn{fill:none;stroke:var(--grn);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.red{fill:none;stroke:var(--red);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.flowg{fill:none;stroke:var(--grn);stroke-width:3;stroke-dasharray:8 7;animation:dash 1.2s linear infinite}
+.flowr{fill:none;stroke:var(--red);stroke-width:3;stroke-dasharray:8 7;animation:dash 1.2s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-30}}
+@keyframes wob{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+.die{transform-origin:470px 205px;animation:wob 1.6s ease-in-out infinite}
+text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cursive}
+.h{font-size:26px;font-weight:bold}.l{font-size:17px}.s{font-size:14.5px}.m{font-family:Menlo,monospace;font-size:13px}
+.o{fill:var(--org)}.g{fill:var(--grn)}.r{fill:var(--red)}
+</style>
+<rect x="0" y="0" width="1000" height="600" rx="18" fill="#fffdf7"/>
+<text x="30" y="44" class="h">2 · The weak spot</text>
+<text x="30" y="70" class="s">Nothing forces the call. The AI reads a long instruction note and decides, a bit differently each time.</text>
+
+<g filter="url(#wobble)">
+  <!-- instruction scroll -->
+  <path d="M40 100 h250 v300 h-250 z" class="ink"/>
+  <path d="M40 100 q-14 0 -14 14 q0 14 14 14" class="ink"/>
+  <!-- AI head -->
+  <circle cx="420" cy="225" r="62" class="org"/>
+  <path d="M295 225 L355 225" class="ink" marker-end="url(#ah)"/>
+  <!-- branches -->
+  <path d="M482 205 Q600 130 690 125" class="flowg" marker-end="url(#ah)"/>
+  <path d="M482 230 Q600 235 690 240" class="flowr" marker-end="url(#ah)"/>
+  <path d="M482 255 Q600 345 690 355" class="flowr" marker-end="url(#ah)"/>
+  <rect x="695" y="90" width="280" height="75" rx="12" class="grn"/>
+  <rect x="695" y="205" width="280" height="75" rx="12" class="red"/>
+  <rect x="695" y="320" width="280" height="75" rx="12" class="red"/>
+</g>
+<text x="52" y="127" class="l">SERVER_INSTRUCTIONS</text>
+<text x="52" y="152" class="m">"... Call get_vendor_answer</text>
+<text x="52" y="170" class="m"> for pricing or plans, an</text>
+<text x="52" y="188" class="m"> upgrade, limits, or seats,</text>
+<text x="52" y="206" class="m"> a demo, ... billing or</text>
+<text x="52" y="224" class="m"> refunds, cancellation or</text>
+<text x="52" y="242" class="m"> downgrades, a renewal,</text>
+<text x="52" y="260" class="m"> a competitive comparison,</text>
+<text x="52" y="278" class="m"> or budget and timing</text>
+<text x="52" y="296" class="m"> before answering from</text>
+<text x="52" y="314" class="m"> general knowledge. ..."</text>
+<text x="52" y="350" class="s">~2,000 characters in total,</text>
+<text x="52" y="370" class="s">with old versions stripped in code</text>
+
+<circle cx="402" cy="215" r="4" fill="#222"/><circle cx="438" cy="215" r="4" fill="#222"/>
+<path d="M402 245 Q420 235 438 245" class="ink"/>
+<text x="380" y="318" class="l o">the AI</text>
+<text x="350" y="338" class="s">probabilistic: same</text>
+<text x="350" y="356" class="s">question, varied answers</text>
+<g class="die"><rect x="452" y="178" width="34" height="34" rx="6" fill="#fff" stroke="#222" stroke-width="2"/><circle cx="462" cy="188" r="3" fill="#222"/><circle cx="476" cy="202" r="3" fill="#222"/><circle cx="469" cy="195" r="3" fill="#222"/></g>
+
+<text x="710" y="118" class="l g">✓ buying → calls Within</text>
+<text x="710" y="142" class="s">lead captured, answer is the vendor's</text>
+<text x="710" y="233" class="l r">✗ miss</text>
+<text x="710" y="257" class="s">buying question, no call → lost lead</text>
+<text x="710" y="348" class="l r">✗ false alarm</text>
+<text x="710" y="372" class="s">normal question, calls → a rep wasted</text>
+
+<g filter="url(#wobble)"><rect x="30" y="430" width="945" height="140" rx="14" class="org"/></g>
+<text x="52" y="462" class="l">What Within could already test, and what it couldn't:</text>
+<text x="52" y="492" class="s">✓  "Try a question" in the console tests WHAT Within answers (the saved sentence for a topic).</text>
+<text x="52" y="518" class="s">✗  Nothing tested WHETHER the AI calls Within at all: both red boxes above were invisible.</text>
+<text x="52" y="548" class="l o">→ the gap we filled: Trigger check</text>
+</svg>

@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 640" width="1000" height="640" role="img" aria-label="The comparison false alarm and the fixes, Claude Haiku 5.5: original wording 7 of 15 false alarms, fix v1 9 of 10, fix v2 0 of 10. Real competitor questions reached Within 15 of 15 in all three. Sonnet 5.5 made 0 of 10 false alarms on the original wording.">
+<title>The false alarm, the bad fix and the good fix</title>
+<defs><filter id="wobble" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G"/></filter></defs>
+<style>
+:root{--ink:#222;--org:#f97316;--blu:#3b82f6;--grn:#10b981;--red:#ef4444}
+.ink{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.org{fill:none;stroke:var(--org);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.bar{transform-box:fill-box;transform-origin:bottom;animation:grow 2.4s ease-out infinite alternate}
+@keyframes grow{0%{transform:scaleY(0)}40%,100%{transform:scaleY(1)}}
+.fr{fill:var(--red);opacity:.85}.fg{fill:var(--grn);opacity:.85}
+text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cursive}
+.h{font-size:26px;font-weight:bold}.l{font-size:17px}.s{font-size:14px}.m{font-family:Menlo,monospace;font-size:12px}.v{font-size:20px;font-weight:bold}
+.r{fill:var(--red)}.g{fill:var(--grn)}.o{fill:var(--org)}
+</style>
+<rect x="0" y="0" width="1000" height="640" rx="18" fill="#fffdf7"/>
+<text x="30" y="44" class="h">6 · The false alarm, a bad fix, and a good fix</text>
+<text x="30" y="70" class="s">Claude Haiku 5.5. <tspan class="r">Red = "Compare Ledgerly and Paywise" sent to Within (want 0%).</tspan> <tspan class="g">Green = competitor questions reaching Within (want 100%).</tspan></text>
+
+<g filter="url(#wobble)"><path d="M70 380 H950" class="ink"/><path d="M70 380 V110" class="ink"/></g>
+<text x="40" y="384" class="s">0%</text><text x="30" y="118" class="s">100%</text>
+<path d="M70 245 H950" stroke="#ccc" stroke-width="1.5" stroke-dasharray="4 6"/><text x="36" y="250" class="s">50%</text>
+
+<!-- original: red 47% (7/15), green 100% -->
+<rect x="120" y="253" width="90" height="127" class="bar fr"/>
+<rect x="220" y="110" width="90" height="270" class="bar fg"/>
+<text x="128" y="243" class="v r">7/15</text><text x="232" y="100" class="v g">15/15</text>
+<!-- v1: red 90%, green 100% -->
+<rect x="420" y="137" width="90" height="243" class="bar fr"/>
+<rect x="520" y="110" width="90" height="270" class="bar fg"/>
+<text x="428" y="127" class="v r">9/10</text><text x="532" y="100" class="v g">15/15</text>
+<!-- v2: red 0, green 100 -->
+<rect x="720" y="377" width="90" height="3" class="fr"/>
+<rect x="820" y="110" width="90" height="270" class="bar fg"/>
+<text x="732" y="368" class="v g">0/10</text><text x="832" y="100" class="v g">15/15</text>
+
+<text x="140" y="410" class="l">original wording</text>
+<text x="430" y="410" class="l r">fix v1: worse!</text>
+<text x="735" y="410" class="l g">fix v2: fixed ✓</text>
+
+<g filter="url(#wobble)">
+  <rect x="100" y="425" width="230" height="95" rx="10" class="ink"/>
+  <rect x="395" y="425" width="240" height="95" rx="10" class="ink"/>
+  <rect x="690" y="425" width="270" height="108" rx="10" class="org"/>
+</g>
+<text x="112" y="450" class="m">"... a renewal,</text>
+<text x="112" y="468" class="m"> a competitive comparison,</text>
+<text x="112" y="486" class="m"> or budget and timing"</text>
+<text x="112" y="508" class="s">small model: "any comparison"</text>
+<text x="407" y="450" class="m">"a comparison of this</text>
+<text x="407" y="468" class="m"> product with a competitor's"</text>
+<text x="407" y="490" class="s">sounded right; now the word</text>
+<text x="407" y="508" class="s">"comparison" leads (my guess)</text>
+<text x="702" y="450" class="m">"a competitive comparison</text>
+<text x="702" y="468" class="m"> (this product against a</text>
+<text x="702" y="486" class="m"> competitor, not a comparison</text>
+<text x="702" y="504" class="m"> of records in this product's</text>
+<text x="702" y="522" class="m"> own data)"</text>
+
+<text x="30" y="562" class="l">Why repeat 10 times? Run 1 caught it, run 2 didn't: one run is one coin flip (app/repeat.mjs).</text>
+<text x="30" y="586" class="s">Bigger model check: Claude Sonnet 5.5 sent it to Within 0 of 10 times on the original wording, so this is a small-model problem.</text>
+<text x="30" y="612" class="l o">Lesson: a change that sounds right can be wrong → run the test on every instruction edit.</text>
+</svg>

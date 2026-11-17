@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" width="1000" height="620" role="img" aria-label="The Zod bug: the SDK lists zod as its own dependency, so npm installs a private Zod 3 inside the SDK next to the project's Zod 4. The SDK's context field is built with Zod 3 and the tool with Zod 4, and the MCP SDK throws Mixed Zod versions detected. The fix moves zod to peerDependencies so there is one Zod.">
+<title>The Zod bug: two copies of the same ruler</title>
+<defs><filter id="wobble" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G"/></filter>
+<marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#222" stroke-width="1.6" stroke-linecap="round"/></marker></defs>
+<style>
+:root{--ink:#222;--org:#f97316;--blu:#3b82f6;--grn:#10b981;--red:#ef4444}
+.ink{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.blu{fill:none;stroke:var(--blu);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.grn{fill:none;stroke:var(--grn);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.red{fill:none;stroke:var(--red);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.org{fill:none;stroke:var(--org);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+.boom{animation:shake .35s linear infinite}
+text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cursive}
+.h{font-size:26px;font-weight:bold}.l{font-size:17px}.s{font-size:14px}.m{font-family:Menlo,monospace;font-size:12.5px}
+.r{fill:var(--red)}.g{fill:var(--grn)}.b{fill:var(--blu)}.o{fill:var(--org)}
+</style>
+<rect x="0" y="0" width="1000" height="620" rx="18" fill="#fffdf7"/>
+<text x="30" y="44" class="h">7 · The Zod bug: two copies of the same ruler</text>
+<text x="30" y="70" class="s">Zod is the library that describes a tool's inputs ("query must be text"). Mixing two copies is like measuring one drawing in inches and centimetres.</text>
+
+<text x="40" y="108" class="l r">BEFORE: their docs' quickstart, fresh install</text>
+<g filter="url(#wobble)"><rect x="30" y="120" width="455" height="330" rx="14" class="red"/></g>
+<text x="50" y="150" class="m">your-project/node_modules/</text>
+<text x="70" y="174" class="m">zod/  ← 4.6.7  (npm installs latest)</text>
+<text x="70" y="198" class="m">@getwithin/sdk/</text>
+<text x="90" y="222" class="m">package.json: "dependencies":</text>
+<text x="110" y="240" class="m">{ "zod": "^3.25.76" }</text>
+<text x="90" y="264" class="m">node_modules/zod/ ← 3.25.76 (private)</text>
+<g filter="url(#wobble)">
+ <rect x="60" y="290" width="180" height="30" rx="4" class="blu"/>
+ <path d="M70 290 v10 M85 290 v6 M100 290 v10 M115 290 v6 M130 290 v10 M145 290 v6 M160 290 v10 M175 290 v6 M190 290 v10 M205 290 v6 M220 290 v10" class="ink"/>
+ <rect x="260" y="290" width="180" height="30" rx="4" class="org"/>
+ <path d="M272 290 v12 M302 290 v12 M332 290 v12 M362 290 v12 M392 290 v12 M422 290 v12" class="ink"/>
+</g>
+<text x="70" y="340" class="s">tool: query → Zod 4</text>
+<text x="268" y="340" class="s">SDK adds context → Zod 3</text>
+<g class="boom"><text x="50" y="378" class="m r">registerTool() →</text>
+<text x="50" y="400" class="m r">Error: Mixed Zod versions</text>
+<text x="50" y="418" class="m r">detected in object shape.</text></g>
+<text x="300" y="400" class="l r">✗ server won't start</text>
+
+<text x="530" y="108" class="l g">AFTER: npm run fix</text>
+<g filter="url(#wobble)"><rect x="520" y="120" width="450" height="330" rx="14" class="grn"/></g>
+<text x="540" y="150" class="m">@getwithin/sdk/package.json:</text>
+<text x="560" y="174" class="m">"peerDependencies": {</text>
+<text x="580" y="192" class="m">"zod": "^3.25.76 || ^4.0.0" }</text>
+<text x="540" y="222" class="s">"peer" = use the project's copy,</text>
+<text x="540" y="242" class="s">don't bring your own. The private</text>
+<text x="540" y="262" class="s">copy is parked, so only one Zod is left.</text>
+<g filter="url(#wobble)">
+ <rect x="560" y="290" width="360" height="30" rx="4" class="blu"/>
+ <path d="M572 290 v10 M602 290 v10 M632 290 v10 M662 290 v10 M692 290 v10 M722 290 v10 M752 290 v10 M782 290 v10 M812 290 v10 M842 290 v10 M872 290 v10 M902 290 v10" class="ink"/>
+</g>
+<text x="560" y="340" class="s">tool and context field → the same Zod 4</text>
+<text x="560" y="390" class="l g">✓ quickstart runs</text>
+<text x="560" y="414" class="s">the SDK itself works unchanged on Zod 4</text>
+
+<g filter="url(#wobble)"><rect x="30" y="480" width="940" height="110" rx="14" class="org"/></g>
+<text x="50" y="510" class="l">Why it matters</text>
+<text x="50" y="536" class="s">Their docs already say Zod "is a peer dependency", but package.json disagrees. The first thing a new vendor runs crashes.</text>
+<text x="50" y="560" class="s">The real fix is one line in their repo. Ours patches the installed copy (fixes/apply.mjs) because their source is private.</text>
+<text x="50" y="582" class="s">Proof: npm run check-fixes → "crashes" before, "works" after.</text>
+</svg>
