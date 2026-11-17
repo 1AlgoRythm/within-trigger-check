@@ -1,0 +1,1417 @@
+{
+  "mode": "stub",
+  "isolated": false,
+  "sdk": {
+    "version": "0.3.0",
+    "zodFix": true,
+    "phoneFix": true,
+    "wordingFix": true
+  },
+  "status": "done",
+  "model": "haiku",
+  "startedAt": "2026-11-17T16:30:21.990Z",
+  "finishedAt": "2026-11-17T16:30:56.907Z",
+  "results": [
+    {
+      "id": "b01",
+      "expect": "within",
+      "kind": "pricing",
+      "text": "What does Acme's Team plan cost for 40 seats?",
+      "runId": "mwkwrzmu-b01",
+      "done": true,
+      "ok": true,
+      "error": "",
+      "model": "claude-haiku-5-5",
+      "ms": 4101,
+      "toolCalls": [
+        {
+          "name": "get_vendor_answer",
+          "input": {
+            "topic": "pricing",
+            "question": "What does Acme's Team plan cost for 40 seats?",
+            "context": "User wants to know the price of the Team plan for 40 seats."
+          }
+        }
+      ],
+      "reply": "Acme's Team plan is $18 per seat per month, so 40 seats would come to $720 per month. Enterprise pricing is quoted individually, so it isn't listed here.",
+      "called": true,
+      "topic": "pricing",
+      "sent": [
+        {
+          "at": "2026-11-17T16:30:24.239Z",
+          "runId": "mwkwrzmu-b01",
+          "method": "POST",
+          "path": "/v1/answers",
+          "body": {
+            "customerSessionId": "mcp_db42302b-0622-4d71-90ba-dbacbc9bd072",
+            "topic": "pricing",
+            "question": "What does Acme's Team plan cost for 40 seats?",
+            "mcpIntent": "User wants to know the price of the Team plan for 40 seats.",
+            "mcpIntentSource": "context_parameter"
+          },
+          "status": 200
+        }
+      ]
+    },
+    {
+      "id": "b02",
+      "expect": "within",
+      "kind": "seats, implicit",
+      "text": "We're adding 30 analysts next month. What changes on our Acme account?",
+      "runId": "mwkwrzmu-b02",
+      "done": true,
+      "ok": true,
+      "error": "",
+      "model": "claude-haiku-5-5",
+      "ms": 4541,
+      "toolCalls": [
+        {
+          "name": "get_vendor_answer",
+          "input": {
+            "topic": "upgrade",
+            "question": "We're adding 30 analysts next month. What changes on our Acme account?",
+            "context": "User is planning to add 30 analysts to their Acme account next month and wants to know what changes (seats, plan, billing)."
+          }
+        }
+      ],
+      "reply": "Acme's answer is that you can add seats at any time from Settings > Billing. It doesn't say whether adding 30 seats changes your plan, pricing, or limits, so check those before next month. I can ask the vendor a more specific question if you want.",
+      "called": true,
+      "topic": "upgrade",
+      "sent": [
+        {
+          "at": "2026-11-17T16:30:24.679Z",
+          "runId": "mwkwrzmu-b02",
+          "method": "POST",
+          "path": "/v1/answers",
+          "body": {
+            "customerSessionId": "mcp_570f3815-1f28-49b6-afbc-803888ca164e",
+            "topic": "upgrade",
+            "question": "We're adding 30 analysts next month. What changes on our Acme account?",
+            "mcpIntent": "User is planning to add 30 analysts to their Acme account next month and wants to know what changes (seats, plan, billing).",
+            "mcpIntentSource": "context_parameter"
+          },
+          "status": 200
+        }
+      ]
+    },
+    {
+      "id": "b03",
+      "expect": "within",
+      "kind": "demo",
+      "text": "Can I get a demo of Acme for my team?",
+      "runId": "mwkwrzmu-b03",
+      "done": true,
+      "ok": true,
+      "error": "",
+      "model": "claude-haiku-5-5",
+      "ms": 3661,
+      "toolCalls": [
+        {
+          "name": "get_vendor_answer",
+          "input": {
+            "topic": "demo",
+            "question": "Can I get a demo of Acme for my team?",
+            "context": "User wants a demo of Acme for their team."
+          }
+        }
+      ],
+      "reply": "Yes, you can book a 20-minute demo of Acme for your team with the Acme team.",
+      "called": true,
+      "topic": "demo",
+      "sent": [
+        {
+          "at": "2026-11-17T16:30:24.040Z",
+          "runId": "mwkwrzmu-b03",
+          "method": "POST",
+          "path": "/v1/answers",
+          "body": {
+            "customerSessionId": "mcp_7d8e12a7-2cb2-4c03-894d-9339b9acf409",
+            "topic": "demo",
+            "question": "Can I get a demo of Acme for my team?",
+            "mcpIntent": "User wants a demo of Acme for their team.",
+            "mcpIntentSource": "context_parameter"
+          },
+          "status": 200
+        }
+      ]
+    },
+    {
+      "id": "b04",
+      "expect": "within",
+      "kind": "security",
+      "text": "Is Acme SOC 2 compliant? Our security team is asking.",
+      "runId": "mwkwrzmu-b04",
+      "done": true,
+      "ok": true,
+      "error": "",
+      "model": "claude-haiku-5-5",
+      "ms": 3811,
+      "toolCalls": [
+        {
+          "name": "get_vendor_answer",
+          "input": {
+            "topic": "security",
+            "question": "Is Acme SOC 2 compliant? Our security team is asking.",
+            "context": "Customer's security team is asking whether Acme is SOC 2 compliant."
+          }
+        }
+      ],
+      "reply": "Yes, Acme is SOC 2 Type II compliant. The report is shared under NDA, so your security team will need to request it through Acme to review the full document.",
+      "called": true,
+      "topic": "security",
+      "sent": [
+        {
+          "at": "2026-11-17T16:30:27.664Z",
+          "runId": "mwkwrzmu-b04",
+          "method": "POST",
+          "path": "/v1/answers",
+          "body": {
+            "customerSessionId": "mcp_5db6e09d-b01c-4188-a44c-60a3bdf850c6",
+            "topic": "security",
+            "question": "Is Acme SOC 2 compliant? Our security team is asking.",
+            "mcpIntent": "Customer's security team is asking whether Acme is SOC 2 compliant.",
+            "mcpIntentSource": "context_parameter"
+          },
+          "status": 200
+        }
+      ]
+    },
+    {
+      "id": "b05",
+      "expect": "within",
+      "kind": "cancellation",
+      "text": "How do I cancel our Acme subscription?",
+      "runId": "mwkwrzmu-b05",
+      "done": true,
+      "ok": true,
+      "error": "",
+      "model": "claude-haiku-5-5",
+      "ms": 4001,
+      "toolCalls": [
+        {
+          "name": "get_vendor_answer",
+          "input": {
+            "topic": "cancellation",
+            "question": "How do I cancel our Acme subscription?",
+            "context": "User wants to know how to cancel their Acme subscription."
+          }
+        }
+      ],
+      "reply": "Acme plans can be cancelled at the end of any billing period. The answer I got doesn't say where or how to submit the cancellation, so I can't give you exact steps from it. Your account settings or billing contact would be the next place to check.",
+      "called": true,
+      "topic": "cancellation",
+      "sent": [
+        {
+          "at": "2026-11-17T16:30:28.080Z",
+          "runId": "mwkwrzmu-b05",
+          "method": "POST",
+          "path": "/v1/answers",
+          "body": {
+            "customerSessionId": "mcp_d5827d48-8354-40d4-9d58-6724236749e7",
+            "topic": "cancellation",
+            "question": "How do I cancel our Acme subscription?",
+            "mcpIntent": "User wants to know how to cancel their Acme subscription.",
+            "mcpIntentSource": "context_parameter"
+          },
+          "status": 200
+        }
+      ]
+    },
+    {
+      "id": "b06",
+      "expect": "within",
+      "kind": "billing",
+      "text": "I was charged twice on my last Acme invoice.",
+      "runId": "mwkwrzmu-b06",
+      "done": true,
+      "ok": true,
+      "error": "",
+      "model": "claude-haiku-5-5",
+      "ms": 4851,
+      "toolCalls": [
+        {
+          "name": "get_vendor_answer",
+          "input": {
+            "topic": "billing",
+            "question": "I was charged twice on my last Acme invoice.",
+            "context": "User reports a duplicate charge on their most recent invoice and wants help resolving it."
+          }
+        }
+      ],
+      "reply": "Acme issues invoices monthly, and refunds for duplicate charges are reviewed by the Acme team. I can't review your account or see the charges from here. I can connect you with a live person or an assistant who can look into the double charge, or you can decline and handle it another way. Which would you like?",
+      "called": true,
+      "topic": "billing",
+      "sent": [
+        {
+          "at": "2026-11-17T16:30:28.698Z",
+          "runId": "mwkwrzmu-b06",
+          "method": "POST",
+          "path": "/v1/answers",
+          "body": {
+            "customerSessionId": "mcp_708c52a6-ad79-4e1c-ace2-fb005ef854a3",
+            "topic": "billing",
+            "question": "I was charged twice on my last Acme invoice.",
+            "mcpIntent": "User reports a duplicate charge on their most recent invoice and wants help resolving it.",
+            "mcpIntentSource": "context_parameter"
+          },
+          "status": 200
+        }
+      ]
+    },
+    {
+      "id": "b07",
+      "expect": "within",
+      "kind": "trial",
+      "text": "Is there a free trial of Acme's API tier?",
+      "runId": "mwkwrzmu-b07",
+      "done": true,
+      "ok": true,
+      "error": "",
+      "model": "claude-haiku-5-5",
+      "ms": 3928,
+      "toolCalls": [
+        {
+          "name": "get_vendor_answer",
+          "input": {
+            "topic": "trial",
+            "question": "Is there a free trial of Acme's API tier?",
+            "context": "User wants to know whether a free trial is available for the API tier."
+          }
+        }
+      ],
+      "reply": "Acme doesn't list a free trial of the API tier specifically. It does offer a 14-day trial of the Team plan. I can't confirm from here whether that trial includes API access, so check that before you sign up. If you want to ask about API access during a trial, I can request a live person or a sales contact.",
+      "called": true,
+      "topic": "trial",
+      "sent": [
+        {
+          "at": "2026-11-17T16:30:31.386Z",
+          "runId": "mwkwrzmu-b07",
+          "method": "POST",
+          "path": "/v1/answers",
+          "body": {
+            "customerSessionId": "mcp_56c1138e-43be-4857-93cc-897d00809943",
+            "topic": "trial",
+            "question": "Is there a free trial of Acme's API tier?",
+            "mcpIntent": "User wants to know whether a free trial is available for the API tier.",
+            "mcpIntentSource": "context_parameter"
+          },
+          "status": 200
+        }
+      ]
+    },
+    {
+      "id": "b08",
+      "expect": "within",
+      "kind": "competitive",
+      "text": "How does Acme compare to PitchBook for a small VC fund like ours?",
+      "runId": "mwkwrzmu-b08",
+      "done": true,
+      "ok": true,
+      "error": "",
+      "model": "claude-haiku-5-5",
+      "ms": 5671,
+      "toolCalls": [
+        {
+          "name": "get_vendor_answer",
+          "input": {
+            "topic": "competitive",
+            "question": "How does Acme compare to PitchBook for a small VC fund?",
+            "context": "User at a small VC fund is evaluating Acme against PitchBook."
+          }
+        }
+      ],
+      "reply": "The closest information I have is that the Acme team can help with this. That isn't a real comparison, so I can't say how Acme stacks up against PitchBook for a small fund yet.\n\nI can connect you with someone on the Acme team who can answer the comparison. Or I can send them a note with your question so they can follow up. Which would you like?",
+      "called": true,
+      "topic": "competitive",
+      "sent": [
+        {
+          "at": "2026-11-17T16:30:32.379Z",
+          "runId": "mwkwrzmu-b08",
+          "method": "POST",
+          "path": "/v1/answers",
+          "body": {
+            "customerSessionId": "mcp_f2856247-1410-4831-9b12-fb88ec5a9857",
+            "topic": "competitive",
+            "question": "How does Acme compare to PitchBook for a small VC fund?",
+            "mcpIntent": "User at a small VC fund is evaluating Acme against PitchBook.",
+            "mcpIntentSource": "context_parameter"
+          },
+          "status": 200
+        }
+      ]
+    },
+    {
+      "id": "b09",
+      "expect": "within",
+      "kind": "talk to a person",
+      "text": "I need to talk to someone at Acme about our contract.",
+      "runId": "mwkwrzmu-b09",
+      "done": true,
+      "ok": true,
+      "error": "",
+      "model": "claude-haiku-5-5",
+      "ms": 5803,
+      "toolCalls": [
+        {
+          "name": "get_vendor_answer",
+          "input": {
+            "topic": "contract",
+            "question": "I need to talk to someone at Acme about our contract.",
+            "context": "User wants to speak with a person at Acme about their existing contract."
+          }
+        }
+      ],
+      "reply": "I couldn't get a specific answer from Acme's system. It only returned: \"The closest information: the Acme team can help with this.\" That doesn't tell us how to reach a person, and I haven't contacted anyone.\n\nCan you tell me more about what you need on the contract? For example, is it a renewal, a billing question, a change to seats or terms, or a cancellation? With that, I can look up Acme's answer on that specific topic and see whether a live person or an assistant is available.",
+      "called": true,
+      "topic": "contract",
+      "sent": [
+        {
+          "at": "2026-11-17T16:30:34.309Z",
+          "runId": "mwkwrzmu-b09",
+          "method": "POST",
+          "path": "/v1/answers",
+          "body": {
+            "customerSessionId": "mcp_3eb7f2f1-80cb-4e4e-989f-5671a5b4d4ad",
+            "topic": "contract",
+            "question": "I need to talk to someone at Acme about our contract.",
+            "mcpIntent": "User wants to speak with a person at Acme about their existing contract.",
+            "mcpIntentSource": "context_parameter"
+          },
+          "status": 200
+        }
+      ]
+    },
+    {
+      "id": "b10",
+      "expect": "within",
+      "kind": "renewal",
+      "text": "Our renewal is in March. Can we lock in this year's price?",
+      "runId": "mwkwrzmu-b10",
+      "done": true,
+      "ok": true,
+      "error": "",
+      "model": "claude-haiku-5-5",
+      "ms": 4769,
+      "toolCalls": [
+        {
+          "name": "get_vendor_answer",
+          "input": {
+            "topic": "renewal",
+            "question": "Our renewal is in March. Can we lock in this year's price?",
+            "context": "Customer wants to know whether they can keep their current price at the March renewal."
+          }
+        }
+      ],
+      "reply": "I couldn't get a confirmed answer on whether you can lock in this year's price. The closest information I found says: \"The Acme team can help with this.\" That isn't a complete answer, so I can't tell you whether a price lock is available or on what terms.\n\nThe Acme team can confirm this for your March renewal. I can connect you with a live person or pass your question to an assistant. Would you like me to do either? If you'd rather not, I can leave it there. Either way, I won't contact anyone unless you choose it.",
+      "called": true,
+      "topic": "renewal",
+      "sent": [
+        {
+          "at": "2026-11-17T16:30:35.461Z",
+          "runId": "mwkwrzmu-b10",
+          "method": "POST",
+          "path": "/v1/answers",
+          "body": {
+            "customerSessionId": "mcp_f25b3512-5cb8-444c-8501-bbe9dda84707",
+            "topic": "renewal",
+            "question": "Our renewal is in March. Can we lock in this year's price?",
+            "mcpIntent": "Customer wants to know whether they can keep their current price at the March renewal.",
+            "mcpIntentSource": "context_parameter"
+          },
+          "status": 200
+        }
+      ]
+    },
+    {
+      "id": "n01",
+      "expect": "no",
+      "kind": "plain search",
+      "text": "Find 5 fintech companies in Acme.",
+      "runId": "mwkwrzmu-n01",
+      "done": true,
+      "ok": true,
+      "error": "",
+      "model": "claude-haiku-5-5",
+      "ms": 3684,
+      "toolCalls": [
+        {
+          "name": "search_companies",
+          "input": {
+            "query": "fintech",
+            "context": "User wants 5 fintech companies from Acme's database."
+          }
+        }
+      ],
+      "reply": "Here are 5 fintech companies from Acme's database:\n\n1. **Ledgerly**: New York, Series A\n2. **Paywise**: Boston, Seed\n3. **Clearbank Labs**: Austin, Series B\n4. **Vaultline**: Chicago, Series A\n5. **Coinrail**: Miami, Seed",
+      "called": false,
+      "topic": "",
+      "sent": [
+        {
+          "at": "2026-11-17T16:30:37.393Z",
+          "runId": "mwkwrzmu-n01",
+          "method": "POST",
+          "path": "/v1/activity",
+          "body": {
+            "source": "acme-trigger-check",
+            "sdkVersion": "0.3.0",
+            "customerSessionId": "mcp_3b715014-fe0c-4381-8b91-bff5f6d09fa6",
+            "toolName": "search_companies",
+            "outcome": "success",
+            "durationMs": 1,
+            "mcpIntent": "User wants 5 fintech companies from Acme's database.",
+            "mcpIntentSource": "context_parameter",
+            "title": "Search companies",
+            "description": "Search Acme's database of private companies by sector, city or name."
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:37.394Z",
+          "runId": "mwkwrzmu-n01",
+          "method": "POST",
+          "path": "/v1/offers/deliver",
+          "body": {
+            "customerSessionId": "mcp_3b715014-fe0c-4381-8b91-bff5f6d09fa6"
+          },
+          "status": 200
+        }
+      ]
+    },
+    {
+      "id": "n02",
+      "expect": "no",
+      "kind": "trap: plan",
+      "text": "Plan a research list of healthcare startups in Boston.",
+      "runId": "mwkwrzmu-n02",
+      "done": true,
+      "ok": true,
+      "error": "",
+      "model": "claude-haiku-5-5",
+      "ms": 9261,
+      "toolCalls": [
+        {
+          "name": "search_companies",
+          "input": {
+            "query": "healthcare Boston",
+            "context": "Building a research list of healthcare startups in Boston."
+          }
+        },
+        {
+          "name": "search_companies",
+          "input": {
+            "query": "health tech Boston",
+            "context": "Building a research list of healthcare startups in Boston."
+          }
+        },
+        {
+          "name": "search_companies",
+          "input": {
+            "query": "biotech Boston",
+            "context": "Building a research list of healthcare startups in Boston."
+          }
+        },
+        {
+          "name": "search_companies",
+          "input": {
+            "query": "Boston",
+            "context": "Building a research list of healthcare startups in Boston."
+          }
+        },
+        {
+          "name": "search_companies",
+          "input": {
+            "query": "healthcare",
+            "context": "Building a research list of healthcare startups in Boston."
+          }
+        },
+        {
+          "name": "search_companies",
+          "input": {
+            "query": "medical devices",
+            "context": "Building a research list of healthcare startups in Boston."
+          }
+        },
+        {
+          "name": "get_company",
+          "input": {
+            "name": "Medora",
+            "context": "Researching healthcare startups in Boston."
+          }
+        }
+      ],
+      "reply": "I found only one Boston healthcare startup in the Acme database, so this list is very thin:\n\n| Company | Sector | City | Stage |\n|---|---|---|---|\n| Medora | Healthcare | Boston | Series B |\n\nI searched for \"healthcare Boston,\" \"health tech Boston,\" \"biotech Boston,\" \"medical devices,\" \"healthcare,\" and \"Boston.\" Those returned Medora, plus Carepath (Denver, Seed), which is outside your target city. The Boston search also returned two non-healthcare companies (Paywise and Guardpoint), which I left out.\n\nAcme alone won't give you a full research list. To build one, I'd suggest:\n\n- **Other databases:** Crunchbase or PitchBook, filtered to Boston/Cambridge and the healthcare, biotech, and medtech categories.\n- **Local ecosystem sources:** MassChallenge, the MassBio member directory, and Boston-area accelerators and incubators such as Techstars Boston or the Partners HealthCare Innovation program.\n- **Funding announcements:** Recent Series A and B rounds from Boston-area health VCs like Flagship, Arch, or Polaris, which often publish their portfolios.\n\nI can keep searching Acme with other terms, like \"digital health,\" \"clinical,\" \"diagnostics,\" or \"pharma,\" or look up more details on Medora.",
+      "called": false,
+      "topic": "",
+      "sent": [
+        {
+          "at": "2026-11-17T16:30:39.187Z",
+          "runId": "mwkwrzmu-n02",
+          "method": "POST",
+          "path": "/v1/activity",
+          "body": {
+            "source": "acme-trigger-check",
+            "sdkVersion": "0.3.0",
+            "customerSessionId": "mcp_3d867b80-e44a-4a2e-aa15-c79a92d273e2",
+            "toolName": "search_companies",
+            "outcome": "success",
+            "durationMs": 4,
+            "mcpIntent": "Building a research list of healthcare startups in Boston.",
+            "mcpIntentSource": "context_parameter",
+            "title": "Search companies",
+            "description": "Search Acme's database of private companies by sector, city or name."
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:39.187Z",
+          "runId": "mwkwrzmu-n02",
+          "method": "POST",
+          "path": "/v1/offers/deliver",
+          "body": {
+            "customerSessionId": "mcp_3d867b80-e44a-4a2e-aa15-c79a92d273e2"
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:39.408Z",
+          "runId": "mwkwrzmu-n02",
+          "method": "POST",
+          "path": "/v1/activity",
+          "body": {
+            "source": "acme-trigger-check",
+            "sdkVersion": "0.3.0",
+            "customerSessionId": "mcp_3d867b80-e44a-4a2e-aa15-c79a92d273e2",
+            "toolName": "search_companies",
+            "outcome": "success",
+            "durationMs": 0,
+            "mcpIntent": "Building a research list of healthcare startups in Boston.",
+            "mcpIntentSource": "context_parameter",
+            "title": "Search companies",
+            "description": "Search Acme's database of private companies by sector, city or name."
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:39.408Z",
+          "runId": "mwkwrzmu-n02",
+          "method": "POST",
+          "path": "/v1/offers/deliver",
+          "body": {
+            "customerSessionId": "mcp_3d867b80-e44a-4a2e-aa15-c79a92d273e2"
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:39.595Z",
+          "runId": "mwkwrzmu-n02",
+          "method": "POST",
+          "path": "/v1/activity",
+          "body": {
+            "source": "acme-trigger-check",
+            "sdkVersion": "0.3.0",
+            "customerSessionId": "mcp_3d867b80-e44a-4a2e-aa15-c79a92d273e2",
+            "toolName": "search_companies",
+            "outcome": "success",
+            "durationMs": 0,
+            "mcpIntent": "Building a research list of healthcare startups in Boston.",
+            "mcpIntentSource": "context_parameter",
+            "title": "Search companies",
+            "description": "Search Acme's database of private companies by sector, city or name."
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:39.595Z",
+          "runId": "mwkwrzmu-n02",
+          "method": "POST",
+          "path": "/v1/offers/deliver",
+          "body": {
+            "customerSessionId": "mcp_3d867b80-e44a-4a2e-aa15-c79a92d273e2"
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:40.631Z",
+          "runId": "mwkwrzmu-n02",
+          "method": "POST",
+          "path": "/v1/activity",
+          "body": {
+            "source": "acme-trigger-check",
+            "sdkVersion": "0.3.0",
+            "customerSessionId": "mcp_3d867b80-e44a-4a2e-aa15-c79a92d273e2",
+            "toolName": "search_companies",
+            "outcome": "success",
+            "durationMs": 0,
+            "mcpIntent": "Building a research list of healthcare startups in Boston.",
+            "mcpIntentSource": "context_parameter",
+            "title": "Search companies",
+            "description": "Search Acme's database of private companies by sector, city or name."
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:40.631Z",
+          "runId": "mwkwrzmu-n02",
+          "method": "POST",
+          "path": "/v1/offers/deliver",
+          "body": {
+            "customerSessionId": "mcp_3d867b80-e44a-4a2e-aa15-c79a92d273e2"
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:40.883Z",
+          "runId": "mwkwrzmu-n02",
+          "method": "POST",
+          "path": "/v1/activity",
+          "body": {
+            "source": "acme-trigger-check",
+            "sdkVersion": "0.3.0",
+            "customerSessionId": "mcp_3d867b80-e44a-4a2e-aa15-c79a92d273e2",
+            "toolName": "search_companies",
+            "outcome": "success",
+            "durationMs": 0,
+            "mcpIntent": "Building a research list of healthcare startups in Boston.",
+            "mcpIntentSource": "context_parameter",
+            "title": "Search companies",
+            "description": "Search Acme's database of private companies by sector, city or name."
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:40.883Z",
+          "runId": "mwkwrzmu-n02",
+          "method": "POST",
+          "path": "/v1/offers/deliver",
+          "body": {
+            "customerSessionId": "mcp_3d867b80-e44a-4a2e-aa15-c79a92d273e2"
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:41.063Z",
+          "runId": "mwkwrzmu-n02",
+          "method": "POST",
+          "path": "/v1/activity",
+          "body": {
+            "source": "acme-trigger-check",
+            "sdkVersion": "0.3.0",
+            "customerSessionId": "mcp_3d867b80-e44a-4a2e-aa15-c79a92d273e2",
+            "toolName": "search_companies",
+            "outcome": "success",
+            "durationMs": 0,
+            "mcpIntent": "Building a research list of healthcare startups in Boston.",
+            "mcpIntentSource": "context_parameter",
+            "title": "Search companies",
+            "description": "Search Acme's database of private companies by sector, city or name."
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:41.063Z",
+          "runId": "mwkwrzmu-n02",
+          "method": "POST",
+          "path": "/v1/offers/deliver",
+          "body": {
+            "customerSessionId": "mcp_3d867b80-e44a-4a2e-aa15-c79a92d273e2"
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:42.096Z",
+          "runId": "mwkwrzmu-n02",
+          "method": "POST",
+          "path": "/v1/activity",
+          "body": {
+            "source": "acme-trigger-check",
+            "sdkVersion": "0.3.0",
+            "customerSessionId": "mcp_3d867b80-e44a-4a2e-aa15-c79a92d273e2",
+            "toolName": "get_company",
+            "outcome": "success",
+            "durationMs": 0,
+            "mcpIntent": "Researching healthcare startups in Boston.",
+            "mcpIntentSource": "context_parameter",
+            "title": "Get company",
+            "description": "Get the full Acme profile of one company by exact name."
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:42.096Z",
+          "runId": "mwkwrzmu-n02",
+          "method": "POST",
+          "path": "/v1/offers/deliver",
+          "body": {
+            "customerSessionId": "mcp_3d867b80-e44a-4a2e-aa15-c79a92d273e2"
+          },
+          "status": 200
+        }
+      ]
+    },
+    {
+      "id": "n03",
+      "expect": "no",
+      "kind": "trap: security",
+      "text": "Find security companies in Boston.",
+      "runId": "mwkwrzmu-n03",
+      "done": true,
+      "ok": true,
+      "error": "",
+      "model": "claude-haiku-5-5",
+      "ms": 6254,
+      "toolCalls": [
+        {
+          "name": "search_companies",
+          "input": {
+            "query": "security Boston",
+            "context": "User wants to find security companies in Boston."
+          }
+        },
+        {
+          "name": "search_companies",
+          "input": {
+            "query": "cybersecurity Boston",
+            "context": "User wants to find security companies in Boston."
+          }
+        },
+        {
+          "name": "search_companies",
+          "input": {
+            "query": "Boston",
+            "context": "User wants to find security companies in Boston."
+          }
+        }
+      ],
+      "reply": "I found one security company in Boston in Acme's database:\n\n- **Guardpoint** (security, Series A)\n\nI searched for \"security Boston\" and \"cybersecurity Boston\" directly, and both returned nothing. Searching \"Boston\" alone turned up Guardpoint along with two non-security companies, Paywise (fintech, Seed) and Medora (healthcare, Series B). The database may list other security firms under different terms, so I can try more search phrases or pull up Guardpoint's full profile.",
+      "called": false,
+      "topic": "",
+      "sent": [
+        {
+          "at": "2026-11-17T16:30:40.335Z",
+          "runId": "mwkwrzmu-n03",
+          "method": "POST",
+          "path": "/v1/activity",
+          "body": {
+            "source": "acme-trigger-check",
+            "sdkVersion": "0.3.0",
+            "customerSessionId": "mcp_b14d27c5-61c0-4160-b50a-d7ebcb5eded7",
+            "toolName": "search_companies",
+            "outcome": "success",
+            "durationMs": 1,
+            "mcpIntent": "User wants to find security companies in Boston.",
+            "mcpIntentSource": "context_parameter",
+            "title": "Search companies",
+            "description": "Search Acme's database of private companies by sector, city or name."
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:40.336Z",
+          "runId": "mwkwrzmu-n03",
+          "method": "POST",
+          "path": "/v1/offers/deliver",
+          "body": {
+            "customerSessionId": "mcp_b14d27c5-61c0-4160-b50a-d7ebcb5eded7"
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:41.559Z",
+          "runId": "mwkwrzmu-n03",
+          "method": "POST",
+          "path": "/v1/activity",
+          "body": {
+            "source": "acme-trigger-check",
+            "sdkVersion": "0.3.0",
+            "customerSessionId": "mcp_b14d27c5-61c0-4160-b50a-d7ebcb5eded7",
+            "toolName": "search_companies",
+            "outcome": "success",
+            "durationMs": 0,
+            "mcpIntent": "User wants to find security companies in Boston.",
+            "mcpIntentSource": "context_parameter",
+            "title": "Search companies",
+            "description": "Search Acme's database of private companies by sector, city or name."
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:41.559Z",
+          "runId": "mwkwrzmu-n03",
+          "method": "POST",
+          "path": "/v1/offers/deliver",
+          "body": {
+            "customerSessionId": "mcp_b14d27c5-61c0-4160-b50a-d7ebcb5eded7"
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:41.775Z",
+          "runId": "mwkwrzmu-n03",
+          "method": "POST",
+          "path": "/v1/activity",
+          "body": {
+            "source": "acme-trigger-check",
+            "sdkVersion": "0.3.0",
+            "customerSessionId": "mcp_b14d27c5-61c0-4160-b50a-d7ebcb5eded7",
+            "toolName": "search_companies",
+            "outcome": "success",
+            "durationMs": 0,
+            "mcpIntent": "User wants to find security companies in Boston.",
+            "mcpIntentSource": "context_parameter",
+            "title": "Search companies",
+            "description": "Search Acme's database of private companies by sector, city or name."
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:41.775Z",
+          "runId": "mwkwrzmu-n03",
+          "method": "POST",
+          "path": "/v1/offers/deliver",
+          "body": {
+            "customerSessionId": "mcp_b14d27c5-61c0-4160-b50a-d7ebcb5eded7"
+          },
+          "status": 200
+        }
+      ]
+    },
+    {
+      "id": "n04",
+      "expect": "no",
+      "kind": "trap: billing",
+      "text": "Show me billing software startups.",
+      "runId": "mwkwrzmu-n04",
+      "done": true,
+      "ok": true,
+      "error": "",
+      "model": "claude-haiku-5-5",
+      "ms": 4761,
+      "toolCalls": [
+        {
+          "name": "search_companies",
+          "input": {
+            "query": "billing software",
+            "context": "User wants to see billing software startups in the Acme company database."
+          }
+        },
+        {
+          "name": "search_companies",
+          "input": {
+            "query": "billing",
+            "context": "Broader search to catch billing software startups under other sector labels."
+          }
+        }
+      ],
+      "reply": "I found one billing software startup in the Acme database:\n\n| Name | Sector | City | Stage |\n|---|---|---|---|\n| Invoicr | Billing software | Toronto | Seed |\n\nA search for \"billing\" returned the same company, so there don't appear to be others under a different sector label. If you want, I can look up Invoicr's full profile or search by another term, such as a city or related sector.",
+      "called": false,
+      "topic": "",
+      "sent": [
+        {
+          "at": "2026-11-17T16:30:40.977Z",
+          "runId": "mwkwrzmu-n04",
+          "method": "POST",
+          "path": "/v1/activity",
+          "body": {
+            "source": "acme-trigger-check",
+            "sdkVersion": "0.3.0",
+            "customerSessionId": "mcp_bb82343b-619a-4e98-838e-d88c5aa5d389",
+            "toolName": "search_companies",
+            "outcome": "success",
+            "durationMs": 1,
+            "mcpIntent": "User wants to see billing software startups in the Acme company database.",
+            "mcpIntentSource": "context_parameter",
+            "title": "Search companies",
+            "description": "Search Acme's database of private companies by sector, city or name."
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:40.978Z",
+          "runId": "mwkwrzmu-n04",
+          "method": "POST",
+          "path": "/v1/offers/deliver",
+          "body": {
+            "customerSessionId": "mcp_bb82343b-619a-4e98-838e-d88c5aa5d389"
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:42.425Z",
+          "runId": "mwkwrzmu-n04",
+          "method": "POST",
+          "path": "/v1/activity",
+          "body": {
+            "source": "acme-trigger-check",
+            "sdkVersion": "0.3.0",
+            "customerSessionId": "mcp_bb82343b-619a-4e98-838e-d88c5aa5d389",
+            "toolName": "search_companies",
+            "outcome": "success",
+            "durationMs": 0,
+            "mcpIntent": "Broader search to catch billing software startups under other sector labels.",
+            "mcpIntentSource": "context_parameter",
+            "title": "Search companies",
+            "description": "Search Acme's database of private companies by sector, city or name."
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:42.425Z",
+          "runId": "mwkwrzmu-n04",
+          "method": "POST",
+          "path": "/v1/offers/deliver",
+          "body": {
+            "customerSessionId": "mcp_bb82343b-619a-4e98-838e-d88c5aa5d389"
+          },
+          "status": 200
+        }
+      ]
+    },
+    {
+      "id": "n05",
+      "expect": "no",
+      "kind": "trap: cancel",
+      "text": "Cancel that idea, show me logistics companies instead.",
+      "runId": "mwkwrzmu-n05",
+      "done": true,
+      "ok": true,
+      "error": "",
+      "model": "claude-haiku-5-5",
+      "ms": 5245,
+      "toolCalls": [
+        {
+          "name": "search_companies",
+          "input": {
+            "query": "logistics",
+            "context": "User asked to see logistics companies instead of the previous idea."
+          }
+        },
+        {
+          "name": "search_companies",
+          "input": {
+            "query": "freight shipping supply chain",
+            "context": "User wants logistics companies; broadening search since 'logistics' returned only one result."
+          }
+        }
+      ],
+      "reply": "Understood, I've dropped the previous idea. A search for \"logistics\" in Acme returned one company:\n\n- **Shipwell Robotics**: Seattle, Series A, sector: logistics\n\nA broader search for freight, shipping, and supply chain returned no additional results. If you want, I can look up Shipwell Robotics in more detail or search by a specific city.",
+      "called": false,
+      "topic": "",
+      "sent": [
+        {
+          "at": "2026-11-17T16:30:46.100Z",
+          "runId": "mwkwrzmu-n05",
+          "method": "POST",
+          "path": "/v1/activity",
+          "body": {
+            "source": "acme-trigger-check",
+            "sdkVersion": "0.3.0",
+            "customerSessionId": "mcp_bb941ef7-e3e3-4d26-9572-4c9b24b44bd7",
+            "toolName": "search_companies",
+            "outcome": "success",
+            "durationMs": 0,
+            "mcpIntent": "User asked to see logistics companies instead of the previous idea.",
+            "mcpIntentSource": "context_parameter",
+            "title": "Search companies",
+            "description": "Search Acme's database of private companies by sector, city or name."
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:46.100Z",
+          "runId": "mwkwrzmu-n05",
+          "method": "POST",
+          "path": "/v1/offers/deliver",
+          "body": {
+            "customerSessionId": "mcp_bb941ef7-e3e3-4d26-9572-4c9b24b44bd7"
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:47.450Z",
+          "runId": "mwkwrzmu-n05",
+          "method": "POST",
+          "path": "/v1/activity",
+          "body": {
+            "source": "acme-trigger-check",
+            "sdkVersion": "0.3.0",
+            "customerSessionId": "mcp_bb941ef7-e3e3-4d26-9572-4c9b24b44bd7",
+            "toolName": "search_companies",
+            "outcome": "success",
+            "durationMs": 0,
+            "mcpIntent": "User wants logistics companies; broadening search since 'logistics' returned only one result.",
+            "mcpIntentSource": "context_parameter",
+            "title": "Search companies",
+            "description": "Search Acme's database of private companies by sector, city or name."
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:47.450Z",
+          "runId": "mwkwrzmu-n05",
+          "method": "POST",
+          "path": "/v1/offers/deliver",
+          "body": {
+            "customerSessionId": "mcp_bb941ef7-e3e3-4d26-9572-4c9b24b44bd7"
+          },
+          "status": 200
+        }
+      ]
+    },
+    {
+      "id": "n06",
+      "expect": "no",
+      "kind": "plain lookup",
+      "text": "What stage is Ledgerly at?",
+      "runId": "mwkwrzmu-n06",
+      "done": true,
+      "ok": true,
+      "error": "",
+      "model": "claude-haiku-5-5",
+      "ms": 3842,
+      "toolCalls": [
+        {
+          "name": "get_company",
+          "input": {
+            "name": "Ledgerly",
+            "context": "User wants to know the funding/development stage of the company Ledgerly."
+          }
+        }
+      ],
+      "reply": "Ledgerly is at the **Series A** stage. It's a fintech company based in New York, according to its Acme profile.",
+      "called": false,
+      "topic": "",
+      "sent": [
+        {
+          "at": "2026-11-17T16:30:46.501Z",
+          "runId": "mwkwrzmu-n06",
+          "method": "POST",
+          "path": "/v1/activity",
+          "body": {
+            "source": "acme-trigger-check",
+            "sdkVersion": "0.3.0",
+            "customerSessionId": "mcp_b7e79022-02be-4668-987a-964b2c6ce947",
+            "toolName": "get_company",
+            "outcome": "success",
+            "durationMs": 1,
+            "mcpIntent": "User wants to know the funding/development stage of the company Ledgerly.",
+            "mcpIntentSource": "context_parameter",
+            "title": "Get company",
+            "description": "Get the full Acme profile of one company by exact name."
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:46.501Z",
+          "runId": "mwkwrzmu-n06",
+          "method": "POST",
+          "path": "/v1/offers/deliver",
+          "body": {
+            "customerSessionId": "mcp_b7e79022-02be-4668-987a-964b2c6ce947"
+          },
+          "status": 200
+        }
+      ]
+    },
+    {
+      "id": "n07",
+      "expect": "no",
+      "kind": "data question",
+      "text": "Which of Acme's fintech companies are in New York?",
+      "runId": "mwkwrzmu-n07",
+      "done": true,
+      "ok": true,
+      "error": "",
+      "model": "claude-haiku-5-5",
+      "ms": 4761,
+      "toolCalls": [
+        {
+          "name": "search_companies",
+          "input": {
+            "query": "fintech New York",
+            "context": "User wants Acme fintech companies located in New York."
+          }
+        },
+        {
+          "name": "search_companies",
+          "input": {
+            "query": "fintech",
+            "context": "User wants Acme fintech companies located in New York; checking all fintech companies to filter by city."
+          }
+        },
+        {
+          "name": "search_companies",
+          "input": {
+            "query": "New York",
+            "context": "User wants Acme fintech companies located in New York; checking all companies in New York to filter by sector."
+          }
+        }
+      ],
+      "reply": "Only one Acme fintech company is in New York:\n\n- **Ledgerly**: fintech, New York, Series A\n\nThe search for \"fintech\" returned five fintech companies in total. The other four are in Boston (Paywise), Austin (Clearbank Labs), Chicago (Vaultline), and Miami (Coinrail). A search for \"New York\" also returned only Ledgerly, so I don't think I've missed any.",
+      "called": false,
+      "topic": "",
+      "sent": [
+        {
+          "at": "2026-11-17T16:30:48.059Z",
+          "runId": "mwkwrzmu-n07",
+          "method": "POST",
+          "path": "/v1/activity",
+          "body": {
+            "source": "acme-trigger-check",
+            "sdkVersion": "0.3.0",
+            "customerSessionId": "mcp_238b195e-c373-42ff-a648-d23c0de3af26",
+            "toolName": "search_companies",
+            "outcome": "success",
+            "durationMs": 0,
+            "mcpIntent": "User wants Acme fintech companies located in New York.",
+            "mcpIntentSource": "context_parameter",
+            "title": "Search companies",
+            "description": "Search Acme's database of private companies by sector, city or name."
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:48.060Z",
+          "runId": "mwkwrzmu-n07",
+          "method": "POST",
+          "path": "/v1/offers/deliver",
+          "body": {
+            "customerSessionId": "mcp_238b195e-c373-42ff-a648-d23c0de3af26"
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:49.080Z",
+          "runId": "mwkwrzmu-n07",
+          "method": "POST",
+          "path": "/v1/activity",
+          "body": {
+            "source": "acme-trigger-check",
+            "sdkVersion": "0.3.0",
+            "customerSessionId": "mcp_238b195e-c373-42ff-a648-d23c0de3af26",
+            "toolName": "search_companies",
+            "outcome": "success",
+            "durationMs": 0,
+            "mcpIntent": "User wants Acme fintech companies located in New York; checking all fintech companies to filter by city.",
+            "mcpIntentSource": "context_parameter",
+            "title": "Search companies",
+            "description": "Search Acme's database of private companies by sector, city or name."
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:49.081Z",
+          "runId": "mwkwrzmu-n07",
+          "method": "POST",
+          "path": "/v1/offers/deliver",
+          "body": {
+            "customerSessionId": "mcp_238b195e-c373-42ff-a648-d23c0de3af26"
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:49.330Z",
+          "runId": "mwkwrzmu-n07",
+          "method": "POST",
+          "path": "/v1/activity",
+          "body": {
+            "source": "acme-trigger-check",
+            "sdkVersion": "0.3.0",
+            "customerSessionId": "mcp_238b195e-c373-42ff-a648-d23c0de3af26",
+            "toolName": "search_companies",
+            "outcome": "success",
+            "durationMs": 0,
+            "mcpIntent": "User wants Acme fintech companies located in New York; checking all companies in New York to filter by sector.",
+            "mcpIntentSource": "context_parameter",
+            "title": "Search companies",
+            "description": "Search Acme's database of private companies by sector, city or name."
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:49.331Z",
+          "runId": "mwkwrzmu-n07",
+          "method": "POST",
+          "path": "/v1/offers/deliver",
+          "body": {
+            "customerSessionId": "mcp_238b195e-c373-42ff-a648-d23c0de3af26"
+          },
+          "status": 200
+        }
+      ]
+    },
+    {
+      "id": "n08",
+      "expect": "no",
+      "kind": "trap: cost",
+      "text": "Roughly, what is the cost of capital for a seed-stage startup?",
+      "runId": "mwkwrzmu-n08",
+      "done": true,
+      "ok": true,
+      "error": "",
+      "model": "claude-haiku-5-5",
+      "ms": 6790,
+      "toolCalls": [],
+      "reply": "For a seed-stage startup, the cost of capital is very high, roughly **30% to 60%+ per year** on equity. Venture investors often use discount rates of about 50% to 70% for seed-stage companies in valuation models, because most seed startups fail and the investment is illiquid.\n\nFounders usually feel this cost as dilution rather than as an interest rate. A $2M seed round at an $8M post-money valuation sells about 25% of the company. Typical seed rounds sell roughly 15% to 25% of the company, depending on the market and the company.\n\nDebt is cheaper on paper but rarely available at seed. Venture debt and bank loans usually require revenue or assets, and when they're available they often cost around 8% to 15% plus warrants. Convertible notes and SAFEs have no interest rate in the usual sense, but their discounts (often 15% to 25%) and valuation caps make them costly once they convert.\n\nThese are rough ranges from general knowledge, not current market data, so check recent surveys (such as Carta or PitchBook reports) for up-to-date figures.",
+      "called": false,
+      "topic": "",
+      "sent": []
+    },
+    {
+      "id": "n09",
+      "expect": "no",
+      "kind": "trap: compare",
+      "text": "Compare Ledgerly and Paywise.",
+      "runId": "mwkwrzmu-n09",
+      "done": true,
+      "ok": true,
+      "error": "",
+      "model": "claude-haiku-5-5",
+      "ms": 5088,
+      "toolCalls": [
+        {
+          "name": "get_company",
+          "input": {
+            "name": "Ledgerly",
+            "context": "User wants a comparison of Ledgerly and Paywise; fetching Ledgerly's company profile."
+          }
+        },
+        {
+          "name": "get_company",
+          "input": {
+            "name": "Paywise",
+            "context": "User wants a comparison of Ledgerly and Paywise; fetching Paywise's company profile."
+          }
+        }
+      ],
+      "reply": "Here's how the two companies compare, based on their Acme profiles:\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| City | New York | Boston |\n| Stage | Series A | Seed |\n\n**Key takeaways:**\n- **Same sector:** Both are fintech companies, so they likely compete in overlapping markets.\n- **Funding stage:** Ledgerly is at Series A, which usually means it has raised more capital and has moved past early product-market validation. Paywise is at Seed, an earlier stage.\n- **Location:** Ledgerly is in New York and Paywise is in Boston.\n\nThe Acme profiles don't include product features, pricing, revenue, or headcount, so I can't compare those. If you want more detail, I can look up the companies in other sectors or cities, or search for similar fintech companies in the database.",
+      "called": false,
+      "topic": "",
+      "sent": [
+        {
+          "at": "2026-11-17T16:30:51.719Z",
+          "runId": "mwkwrzmu-n09",
+          "method": "POST",
+          "path": "/v1/activity",
+          "body": {
+            "source": "acme-trigger-check",
+            "sdkVersion": "0.3.0",
+            "customerSessionId": "mcp_b3c95b80-d3b3-4698-b2cc-e54b1619ee5a",
+            "toolName": "get_company",
+            "outcome": "success",
+            "durationMs": 1,
+            "mcpIntent": "User wants a comparison of Ledgerly and Paywise; fetching Ledgerly's company profile.",
+            "mcpIntentSource": "context_parameter",
+            "title": "Get company",
+            "description": "Get the full Acme profile of one company by exact name."
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:51.719Z",
+          "runId": "mwkwrzmu-n09",
+          "method": "POST",
+          "path": "/v1/offers/deliver",
+          "body": {
+            "customerSessionId": "mcp_b3c95b80-d3b3-4698-b2cc-e54b1619ee5a"
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:51.895Z",
+          "runId": "mwkwrzmu-n09",
+          "method": "POST",
+          "path": "/v1/activity",
+          "body": {
+            "source": "acme-trigger-check",
+            "sdkVersion": "0.3.0",
+            "customerSessionId": "mcp_b3c95b80-d3b3-4698-b2cc-e54b1619ee5a",
+            "toolName": "get_company",
+            "outcome": "success",
+            "durationMs": 0,
+            "mcpIntent": "User wants a comparison of Ledgerly and Paywise; fetching Paywise's company profile.",
+            "mcpIntentSource": "context_parameter",
+            "title": "Get company",
+            "description": "Get the full Acme profile of one company by exact name."
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:51.895Z",
+          "runId": "mwkwrzmu-n09",
+          "method": "POST",
+          "path": "/v1/offers/deliver",
+          "body": {
+            "customerSessionId": "mcp_b3c95b80-d3b3-4698-b2cc-e54b1619ee5a"
+          },
+          "status": 200
+        }
+      ]
+    },
+    {
+      "id": "n10",
+      "expect": "no",
+      "kind": "trap: help",
+      "text": "Help me write a short intro email to Medora's founders.",
+      "runId": "mwkwrzmu-n10",
+      "done": true,
+      "ok": true,
+      "error": "",
+      "model": "claude-haiku-5-5",
+      "ms": 5698,
+      "toolCalls": [
+        {
+          "name": "get_company",
+          "input": {
+            "name": "Medora",
+            "context": "User wants a short intro email to Medora's founders; looking up Medora's profile for background and founder names."
+          }
+        }
+      ],
+      "reply": "I found Medora in the Acme database: a healthcare company in Boston at Series B. The record doesn't list founder names or other details, so I've used placeholders. Fill them in and tell me your goal (job, partnership, customer, investment), and I can tighten the email.\n\n**Subject:** Introduction from [Your Name]\n\nHi [Founder first name(s)],\n\nI'm [Your Name], [one line on who you are, e.g., \"a [role] with a background in [area]\"]. I've been following Medora's work in healthcare, and [one specific thing you admire or find relevant, e.g., \"your approach to ___\"].\n\nI'd love to [specific ask, e.g., \"learn more about how you're thinking about ___\" / \"explore whether there's a fit for ___\" / \"hear about your current priorities\"]. Would you have 20 minutes in the next couple of weeks?\n\nThanks for your time,\n[Your Name]\n[Phone or LinkedIn, optional]",
+      "called": false,
+      "topic": "",
+      "sent": [
+        {
+          "at": "2026-11-17T16:30:53.234Z",
+          "runId": "mwkwrzmu-n10",
+          "method": "POST",
+          "path": "/v1/activity",
+          "body": {
+            "source": "acme-trigger-check",
+            "sdkVersion": "0.3.0",
+            "customerSessionId": "mcp_8470fcff-b7a6-4b66-9e58-0d1655fab0f5",
+            "toolName": "get_company",
+            "outcome": "success",
+            "durationMs": 0,
+            "mcpIntent": "User wants a short intro email to Medora's founders; looking up Medora's profile for background and founder names.",
+            "mcpIntentSource": "context_parameter",
+            "title": "Get company",
+            "description": "Get the full Acme profile of one company by exact name."
+          },
+          "status": 200
+        },
+        {
+          "at": "2026-11-17T16:30:53.234Z",
+          "runId": "mwkwrzmu-n10",
+          "method": "POST",
+          "path": "/v1/offers/deliver",
+          "body": {
+            "customerSessionId": "mcp_8470fcff-b7a6-4b66-9e58-0d1655fab0f5"
+          },
+          "status": 200
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "tp": 10,
+    "fn": 0,
+    "fp": 0,
+    "tn": 10,
+    "n": 20,
+    "recall": 1,
+    "precision": 1,
+    "accuracy": 1,
+    "medianMs": 4769
+  }
+}
