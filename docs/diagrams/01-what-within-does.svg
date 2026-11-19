@@ -47,7 +47,7 @@ text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cu
 <text x="330" y="212" class="m">get_company</text>
 <text x="485" y="175" class="s">+ instructions to the AI</text>
 <text x="485" y="196" class="m">SERVER_INSTRUCTIONS</text>
-<text x="485" y="212" class="s">(~2,000 characters)</text>
+<text x="485" y="212" class="s">(about 2,600 characters)</text>
 <text x="335" y="265" class="l o">Within SDK adds 3 tools</text>
 <text x="335" y="292" class="m">get_vendor_answer  ← the key one</text>
 <text x="335" y="312" class="m">confirm_assistance (open live chat)</text>

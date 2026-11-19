@@ -29,18 +29,18 @@ text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cu
   <path d="M645 175 L675 175" class="flow" marker-end="url(#ah)"/>
 </g>
 <text x="45" y="122" class="l b">① SDK adds a field</text>
-<text x="45" y="146" class="s">to EVERY tool's inputs:</text>
+<text x="45" y="146" class="s">to every registerTool tool's inputs:</text>
 <text x="45" y="170" class="m">context: "Why are you calling</text>
 <text x="45" y="188" class="m"> this tool? Briefly describe</text>
 <text x="45" y="206" class="m"> the user's goal."  (≤300)</text>
-<text x="45" y="236" class="s">wrapped or not (we checked)</text>
+<text x="45" y="236" class="s">wrapped or not, not app-only (we checked)</text>
 <text x="370" y="122" class="l">② the AI fills it in</text>
 <text x="370" y="150" class="m">"User Priya Raman</text>
 <text x="370" y="168" class="m hot">(555-201-3344)</text>
 <text x="370" y="186" class="m">wants fintech leads for</text>
 <text x="370" y="204" class="m">her Boston fund"</text>
-<text x="370" y="236" class="s">our probe's test sentence</text>
-<text x="695" y="122" class="l o">③ sent on every call</text>
+<text x="370" y="236" class="s">an example sentence (like our probe's)</text>
+<text x="695" y="122" class="l o">③ sent when it is filled in</text>
 <text x="695" y="146" class="m">POST /v1/activity</text>
 <text x="695" y="166" class="m">  mcpIntent: "…"</text>
 <text x="695" y="194" class="s">even with</text>

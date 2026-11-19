@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="1000" height="600" role="img" aria-label="W-02: when Within is down, the SDK adds the line The service is unreachable but also overwrites the vendor's structuredContent.status with service_unreachable. A tool that declares an output schema fails with an Output validation error. Within up: status shipped, call works. Prototype fix P1 adds the note as text only and both checks pass.">
+<title>W-02: an outage changes the vendor's own answer</title>
+<defs><filter id="wobble" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G"/></filter>
+<marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#222" stroke-width="1.6" stroke-linecap="round"/></marker></defs>
+<style>
+:root{--ink:#222;--org:#f97316;--blu:#3b82f6;--grn:#10b981;--red:#ef4444}
+.ink{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.blu{fill:none;stroke:var(--blu);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.grn{fill:none;stroke:var(--grn);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.red{fill:none;stroke:var(--red);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.org{fill:none;stroke:var(--org);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.flow{fill:none;stroke:var(--org);stroke-width:3;stroke-dasharray:8 7;animation:dash 1.2s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-30}}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.25}}
+.hot{fill:var(--red);animation:blink 1s steps(1) infinite}
+@media (prefers-reduced-motion:reduce){.flow,.hot{animation:none}}
+text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cursive}
+.h{font-size:26px;font-weight:bold}.l{font-size:17px}.s{font-size:14px}.m{font-family:Menlo,monospace;font-size:12.5px}
+.r{fill:var(--red)}.g{fill:var(--grn)}.b{fill:var(--blu)}.o{fill:var(--org)}
+</style>
+<rect x="0" y="0" width="1000" height="600" rx="18" fill="#fffdf7"/>
+<text x="30" y="44" class="h">12 · W-02: when Within is down, the vendor's own answer changes</text>
+<text x="30" y="70" class="s">The docs promise the vendor's result still comes back with one extra line. The SDK also edits the vendor's structured data.</text>
+
+<text x="40" y="108" class="l g">Within is up</text>
+<g filter="url(#wobble)"><rect x="30" y="120" width="440" height="170" rx="14" class="grn"/></g>
+<text x="50" y="150" class="s">the vendor's tool returns:</text>
+<text x="50" y="176" class="m">text: "order shipped"</text>
+<text x="50" y="196" class="m">structuredContent: { status: "shipped" }</text>
+<text x="50" y="240" class="l g">✓ the customer gets exactly that</text>
+<text x="50" y="264" class="s">(check B1: result unchanged)</text>
+
+<g filter="url(#wobble)"><path d="M475 205 L525 205" class="flow" marker-end="url(#ah)"/></g>
+<text x="472" y="190" class="m o">outage</text>
+
+<text x="540" y="108" class="l r">Within is down (connection refused)</text>
+<g filter="url(#wobble)"><rect x="530" y="120" width="440" height="170" rx="14" class="red"/></g>
+<text x="550" y="150" class="s">the same tool, the same code:</text>
+<text x="550" y="176" class="m">text: "order shipped | The service is</text>
+<text x="550" y="194" class="m">      unreachable."</text>
+<text x="550" y="216" class="m hot">structuredContent: { status: "service_unreachable" }</text>
+<text x="550" y="256" class="l r">✗ the vendor's own value was overwritten</text>
+<text x="550" y="278" class="s">(checks A2, A3)</text>
+
+<g filter="url(#wobble)"><rect x="30" y="320" width="940" height="125" rx="14" class="red"/></g>
+<text x="50" y="350" class="l r">Worse: a tool that declares what its output looks like</text>
+<text x="50" y="376" class="s">AI apps check the result against the declared shape. status must be "shipped" or "pending".</text>
+<text x="50" y="400" class="m r">Output validation error: ... Expected 'shipped' | 'pending', received 'service_unreachable'</text>
+<text x="50" y="428" class="s">Within up: the call works. Within down: the call FAILS (check A3b).</text>
+
+<g filter="url(#wobble)"><rect x="30" y="475" width="940" height="105" rx="14" class="org"/></g>
+<text x="50" y="505" class="l">Why it matters, and the fix</text>
+<text x="50" y="531" class="s">For a tool whose output format restricts status, a Within outage becomes the vendor's own outage. The chat ends with "The service is unreachable."</text>
+<text x="50" y="555" class="s">Fix: add the note as text only (or in _meta) and never touch the vendor's structured data. Prototype P1: A3 and A3b pass.</text>
+</svg>

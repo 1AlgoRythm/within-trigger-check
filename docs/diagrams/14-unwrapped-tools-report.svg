@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 580" width="1000" height="580" role="img" aria-label="W-09: the vendor wraps the search tool and leaves internal_admin_lookup unwrapped to keep it private. When the AI fills in the goal field, the unwrapped tool still reports its name and the goal text to Within, and with argument capture on its arguments too. Fix: report only wrapped tools, or make it an opt-in. Prototype P6 makes the check pass.">
+<title>W-09: an unwrapped tool still reports to Within</title>
+<defs><filter id="wobble" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G"/></filter>
+<marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#222" stroke-width="1.6" stroke-linecap="round"/></marker></defs>
+<style>
+:root{--ink:#222;--org:#f97316;--blu:#3b82f6;--grn:#10b981;--red:#ef4444}
+.ink{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.blu{fill:none;stroke:var(--blu);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.grn{fill:none;stroke:var(--grn);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.red{fill:none;stroke:var(--red);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.org{fill:none;stroke:var(--org);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.flow{fill:none;stroke:var(--org);stroke-width:3;stroke-dasharray:8 7;animation:dash 1.2s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-30}}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.25}}
+.hot{fill:var(--red);animation:blink 1s steps(1) infinite}
+@media (prefers-reduced-motion:reduce){.flow,.hot{animation:none}}
+text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cursive}
+.h{font-size:26px;font-weight:bold}.l{font-size:17px}.s{font-size:14px}.m{font-family:Menlo,monospace;font-size:12.5px}
+.r{fill:var(--red)}.g{fill:var(--grn)}.b{fill:var(--blu)}.o{fill:var(--org)}
+</style>
+<rect x="0" y="0" width="1000" height="580" rx="18" fill="#fffdf7"/>
+<text x="30" y="44" class="h">14 · W-09: a tool the vendor did NOT wrap still reports</text>
+<text x="30" y="70" class="s">The docs say: wrap the tools you want Within to see. The SDK hooks every registerTool tool registered after install.</text>
+
+<text x="40" y="108" class="l b">What the vendor set up</text>
+<g filter="url(#wobble)"><rect x="30" y="120" width="440" height="150" rx="14" class="blu"/></g>
+<text x="50" y="150" class="m">search ................ wrapped   ✓</text>
+<text x="50" y="176" class="m">internal_admin_lookup .. NOT wrapped</text>
+<text x="50" y="212" class="s">the vendor's thinking: leave the</text>
+<text x="50" y="232" class="s">sensitive one out, to keep it private</text>
+
+<g filter="url(#wobble)"><path d="M475 195 L525 195" class="flow" marker-end="url(#ah)"/></g>
+<text x="466" y="180" class="m o">AI call</text>
+
+<text x="540" y="108" class="l r">What reached Within (stand-in server)</text>
+<g filter="url(#wobble)"><rect x="530" y="120" width="440" height="150" rx="14" class="red"/></g>
+<text x="550" y="148" class="s">no goal text from the AI: nothing sent.</text>
+<text x="550" y="170" class="s">AI adds a goal to the unwrapped tool:</text>
+<text x="550" y="194" class="m hot">toolName: "internal_admin_lookup"</text>
+<text x="550" y="212" class="m hot">mcpIntent: "HR wants Priya Raman's salary"</text>
+<text x="550" y="240" class="s">argument capture on: the arguments go too</text>
+<text x="550" y="258" class="m hot">"salary of Priya Raman (617) 555-0142"</text>
+
+<g filter="url(#wobble)"><rect x="30" y="300" width="940" height="105" rx="14" class="ink"/></g>
+<text x="50" y="330" class="l">What we saw (check C7)</text>
+<text x="50" y="356" class="s">The SDK reports any tool that is not already flagged as wrapped, as soon as the AI has filled in the goal field.</text>
+<text x="50" y="378" class="s">Without a goal text, the unwrapped tool sent nothing (0 reports). With one, it reported.</text>
+
+<g filter="url(#wobble)"><rect x="30" y="435" width="940" height="125" rx="14" class="org"/></g>
+<text x="50" y="465" class="l">Why it matters, and the fix</text>
+<text x="50" y="491" class="s">Leaving a tool unwrapped does not keep it private.</text>
+<text x="50" y="515" class="s">Fix: report only wrapped tools, or make reporting of other tools an explicit opt-in option, and say so in the docs.</text>
+<text x="50" y="539" class="s">Prototype P6 (reportUnwrappedTools: true to opt in): C7 passes. Details: FINDINGS.md, W-09.</text>
+</svg>

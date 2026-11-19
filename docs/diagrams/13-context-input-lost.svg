@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="1000" height="600" role="img" aria-label="W-04: the vendor's tool answer_from_docs has its own input named context. The SDK removes it before the vendor's code runs, so the handler receives only the question, and it sends the context text to Within as the goal. No error is raised. Fix: use an unusual field name and strip only a field the SDK added. Prototype P2 makes the check pass.">
+<title>W-04: the vendor's own context input disappears</title>
+<defs><filter id="wobble" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G"/></filter>
+<marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#222" stroke-width="1.6" stroke-linecap="round"/></marker></defs>
+<style>
+:root{--ink:#222;--org:#f97316;--blu:#3b82f6;--grn:#10b981;--red:#ef4444}
+.ink{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.blu{fill:none;stroke:var(--blu);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.grn{fill:none;stroke:var(--grn);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.red{fill:none;stroke:var(--red);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.org{fill:none;stroke:var(--org);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.flow{fill:none;stroke:var(--org);stroke-width:3;stroke-dasharray:8 7;animation:dash 1.2s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-30}}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.25}}
+.hot{fill:var(--red);animation:blink 1s steps(1) infinite}
+@media (prefers-reduced-motion:reduce){.flow,.hot{animation:none}}
+text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cursive}
+.h{font-size:26px;font-weight:bold}.l{font-size:17px}.s{font-size:14px}.m{font-family:Menlo,monospace;font-size:12.5px}
+.r{fill:var(--red)}.g{fill:var(--grn)}.b{fill:var(--blu)}.o{fill:var(--org)}
+</style>
+<rect x="0" y="0" width="1000" height="600" rx="18" fill="#fffdf7"/>
+<text x="30" y="44" class="h">13 · W-04: a tool's own input called "context" disappears</text>
+<text x="30" y="70" class="s">Within adds an optional "goal" input named context to every tool (except app-only tools). A vendor tool may already use that name.</text>
+
+<text x="40" y="108" class="l b">① The customer's AI calls the vendor's tool</text>
+<g filter="url(#wobble)"><rect x="30" y="120" width="440" height="170" rx="14" class="blu"/></g>
+<text x="50" y="150" class="m">answer_from_docs({</text>
+<text x="50" y="170" class="m">  question: "How do refunds work?",</text>
+<text x="50" y="190" class="m">  context:  "Customer Priya Raman,</text>
+<text x="50" y="208" class="m">             plan Team, 40 seats"</text>
+<text x="50" y="228" class="m">})</text>
+<text x="50" y="264" class="s">the vendor's tool needs BOTH inputs</text>
+
+<g filter="url(#wobble)"><path d="M475 205 L525 205" class="flow" marker-end="url(#ah)"/></g>
+<text x="468" y="190" class="m o">SDK</text>
+
+<text x="540" y="108" class="l r">② What happens inside the SDK</text>
+<g filter="url(#wobble)"><rect x="530" y="120" width="440" height="170" rx="14" class="red"/></g>
+<text x="550" y="150" class="s">it takes context out first:</text>
+<text x="550" y="176" class="m">vendor code receives:</text>
+<text x="550" y="196" class="m hot">{ question: "How do refunds work?" }</text>
+<text x="550" y="226" class="m">Within receives, as the "goal":</text>
+<text x="550" y="246" class="m hot">"Customer Priya Raman, plan Team, 40 seats"</text>
+<text x="550" y="274" class="l r">✗ no error, one input silently lost</text>
+
+<g filter="url(#wobble)"><rect x="30" y="320" width="940" height="105" rx="14" class="ink"/></g>
+<text x="50" y="350" class="l">What we saw (check B3)</text>
+<text x="50" y="376" class="s">The SDK notices the clash when it builds the schema and leaves the vendor's definition alone,</text>
+<text x="50" y="398" class="s">but the code that removes the field still runs on every tool it wraps. So the clash is detected and then ignored.</text>
+
+<g filter="url(#wobble)"><rect x="30" y="455" width="940" height="125" rx="14" class="org"/></g>
+<text x="50" y="485" class="l">Why it matters, and the fix</text>
+<text x="50" y="511" class="s">The vendor's tool misbehaves with no error, and up to 300 characters of the customer's input go to Within.</text>
+<text x="50" y="535" class="s">Fix: carry the goal under a name no vendor would use (for example _within_goal), or in _meta, and strip a field only if the SDK added it.</text>
+<text x="50" y="559" class="s">Prototype P2: B3 passes. Details: FINDINGS.md, W-04.</text>
+</svg>

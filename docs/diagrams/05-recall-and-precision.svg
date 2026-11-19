@@ -52,7 +52,7 @@ text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cu
 <text x="50" y="500" class="big g">100%</text><text x="160" y="497" class="s">no lost leads</text>
 <text x="530" y="425" class="l">Precision: of the rings, how many were fires?</text>
 <text x="530" y="455" class="s">real rings ÷ all rings = 10 ÷ (10 + 1)</text>
-<text x="530" y="500" class="big o">91%</text><text x="620" y="497" class="s">one salesperson pulled in for nothing</text>
+<text x="530" y="500" class="big o">91%</text><text x="620" y="497" class="s">one needless call to Within</text>
 
 <text x="30" y="565" class="l">Why recall alone isn't enough:</text>
 <text x="30" y="590" class="s">an alarm that rings all day catches every fire (100% recall), but nobody trusts it. You need both numbers.</text>

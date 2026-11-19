@@ -16,7 +16,7 @@ text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cu
 </style>
 <rect x="0" y="0" width="1000" height="620" rx="18" fill="#fffdf7"/>
 <text x="30" y="44" class="h">3 · What we built: Trigger check</text>
-<text x="30" y="70" class="s"><tspan class="o">Orange = what we built.</tspan> <tspan class="b">Blue = Within's real SDK</tspan>, patched only by our 3 fixes. One run = 20 questions.</text>
+<text x="30" y="70" class="s"><tspan class="o">Orange = what we built.</tspan> <tspan class="b">Blue = Within's real SDK</tspan>, patched only by this repo's fixes. One run = 20 questions.</text>
 
 <g filter="url(#wobble)">
   <rect x="30" y="105" width="175" height="150" rx="12" class="org"/>
@@ -36,8 +36,8 @@ text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cu
 <text x="45" y="154" class="m">prompts.json</text>
 <text x="45" y="180" class="s">10 buying</text>
 <text x="45" y="200" class="s">10 normal, with traps:</text>
-<text x="45" y="220" class="s">plan, billing, cancel,</text>
-<text x="45" y="240" class="s">cost, compare, help</text>
+<text x="45" y="220" class="s">plan, security, billing,</text>
+<text x="45" y="240" class="s">cancel, cost, compare, help</text>
 
 <text x="260" y="132" class="l o">robot customer</text>
 <text x="260" y="154" class="m">app/runner.mjs</text>
@@ -66,11 +66,11 @@ text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cu
 <text x="260" y="394" class="s">recall · precision · accuracy · median time</text>
 <text x="260" y="416" class="s">click a row: Claude's tool calls, its reply,</text>
 <text x="260" y="436" class="s">and every request the SDK sent toward Within</text>
-<text x="520" y="300" class="s">every request is recorded, shown on the page</text>
+<text x="520" y="300" class="s">each call is recorded (not the install ping)</text>
 
 <text x="45" y="348" class="l o">repeat</text>
 <text x="45" y="370" class="m">app/repeat.mjs</text>
-<text x="45" y="394" class="s">same question ×10,</text>
+<text x="45" y="394" class="s">same question ×N (5 default),</text>
 <text x="45" y="414" class="s">because one run is</text>
 <text x="45" y="434" class="s">one coin flip</text>
 

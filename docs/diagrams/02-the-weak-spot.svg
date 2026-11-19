@@ -47,7 +47,7 @@ text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cu
 <text x="52" y="278" class="m"> or budget and timing</text>
 <text x="52" y="296" class="m"> before answering from</text>
 <text x="52" y="314" class="m"> general knowledge. ..."</text>
-<text x="52" y="350" class="s">~2,000 characters in total,</text>
+<text x="52" y="350" class="s">about 2,600 characters in total,</text>
 <text x="52" y="370" class="s">with old versions stripped in code</text>
 
 <circle cx="402" cy="215" r="4" fill="#222"/><circle cx="438" cy="215" r="4" fill="#222"/>
@@ -62,11 +62,11 @@ text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cu
 <text x="710" y="233" class="l r">✗ miss</text>
 <text x="710" y="257" class="s">buying question, no call → lost lead</text>
 <text x="710" y="348" class="l r">✗ false alarm</text>
-<text x="710" y="372" class="s">normal question, calls → a rep wasted</text>
+<text x="710" y="372" class="s">normal question, calls → logged as a revenue moment</text>
 
 <g filter="url(#wobble)"><rect x="30" y="430" width="945" height="140" rx="14" class="org"/></g>
 <text x="52" y="462" class="l">What Within could already test, and what it couldn't:</text>
 <text x="52" y="492" class="s">✓  "Try a question" in the console tests WHAT Within answers (the saved sentence for a topic).</text>
-<text x="52" y="518" class="s">✗  Nothing tested WHETHER the AI calls Within at all: both red boxes above were invisible.</text>
+<text x="52" y="518" class="s">✗  Within's docs describe no test of WHETHER the AI calls.</text>
 <text x="52" y="548" class="l o">→ the gap we filled: Trigger check</text>
 </svg>

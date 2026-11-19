@@ -82,10 +82,40 @@ if (!revert && process.argv.includes("--wording") && src.includes(WORD_FROM)) {
   fs.writeFileSync(DIST, src.split(WORD_TO).join(WORD_FROM));
 }
 
+// ---- Fix 4 (opt-in, --question): redact the `question` field of get_vendor_answer.
+// The SDK cleans the model-written goal line (mcpIntent) but sends `question`, "the user's
+// question, in a sentence or two", to /v1/answers as it came. This applies the SDK's own email,
+// key and card rules plus a phone rule, with no length cut (the question can be 2,000 characters).
+// Names still pass: no pattern finds them reliably. Within's server needs the question to pick
+// an answer, so how much to cut is a design choice for Within, not only a bug.
+const QMARK = "/* within-trigger-check: question redaction */";
+const Q_ANCHOR = "function registerWithinTools(server, ctx) {";
+const Q_DEFS = String.raw`${QMARK}
+var Q_PHONE = /\+?(?:\(\d{1,4}\)[\s.-]?)?\d[\d\s.-]{5,}\d/g;
+function redactQuestionText(text) {
+  return String(text)
+    .replace(EMAIL, "[redacted]")
+    .replace(SECRET_VALUE, "[redacted]")
+    .replace(CARD, redactCard)
+    .replace(Q_PHONE, (m) => { const d = m.replace(/\D/g, "").length; return d >= 10 && d <= 15 ? "[redacted]" : m; });
+}
+`;
+const Q_FROM = "      topic,\n      question,\n";
+const Q_TO = "      topic,\n      question: redactQuestionText(question),\n";
+src = fs.readFileSync(DIST, "utf8");
+if (!revert && process.argv.includes("--question") && !src.includes(QMARK)) {
+  if (!src.includes(Q_ANCHOR)) throw new Error("anchor not found: " + Q_ANCHOR);
+  if (src.split(Q_FROM).length !== 2) throw new Error("expected exactly one match for the question fix");
+  fs.writeFileSync(DIST, src.replace(Q_ANCHOR, Q_DEFS + Q_ANCHOR).replace(Q_FROM, Q_TO));
+} else if (revert && src.includes(QMARK)) {
+  fs.writeFileSync(DIST, src.replace(Q_DEFS, "").replace(Q_TO, Q_FROM));
+}
+
 const now = JSON.parse(fs.readFileSync(PKG, "utf8"));
 const final = fs.readFileSync(DIST, "utf8");
 console.log(JSON.stringify({
   zod_fix: Boolean(now.peerDependencies?.zod) && !fs.existsSync(NESTED),
   phone_redaction_fix: final.includes(MARK),
   wording_fix: final.includes(WORD_TO),
+  question_fix: final.includes(QMARK),
 }));

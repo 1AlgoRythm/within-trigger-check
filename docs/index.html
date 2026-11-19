@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Within works, as a map you can click into</title>
+<style>
+  :root { --ink:#1f2328; --mute:#59636e; --line:#d8dee4; --bg:#fbfaf6; --org:#f97316; --blu:#3b82f6; --grn:#10b981; --red:#ef4444; }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body { display: flex; flex-direction: column; font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink); background: var(--bg); }
+  header { padding: 12px 20px 8px; border-bottom: 1px solid var(--line); }
+  h1 { margin: 0; font-size: 18px; }
+  .sub { margin: 2px 0 0; color: var(--mute); font-size: 13px; }
+  nav.crumbs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 8px 20px 0; font-size: 14px; }
+  nav.crumbs a { color: #0969da; text-decoration: none; }
+  nav.crumbs a:hover { text-decoration: underline; }
+  nav.crumbs .here { font-weight: 600; }
+  nav.crumbs .sep { color: var(--mute); }
+  .note { margin: 6px 20px 0; padding: 6px 10px; border-left: 4px solid var(--line); background: #fff; font-size: 13px; color: var(--mute); }
+  .note.measured { border-color: var(--red); }
+  .note.read { border-color: var(--blu); }
+  .note.judgment { border-color: var(--org); }
+  main { flex: 1; min-height: 0; padding: 8px 20px 0; display: flex; }
+  iframe { flex: 1; width: 100%; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+  .leaf { flex: 1; overflow: auto; text-align: center; }
+  .leaf img { width: 100%; max-width: 1000px; height: auto; border: 1px solid var(--line); border-radius: 18px; background: #fffdf7; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 20px 10px; font-size: 13px; }
+  .chips b { color: var(--mute); font-weight: 600; }
+  .chips a { padding: 4px 10px; border: 1px solid var(--org); border-radius: 999px; color: var(--ink); text-decoration: none; background: #fff; }
+  .chips a:hover { background: #fff3e8; }
+  .chips a.leaf-chip { border-color: var(--blu); }
+  .legend { margin-left: auto; color: var(--mute); }
+  .legend span { margin-left: 12px; }
+  .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 4px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>How Within works, as a map you can click into</h1>
+  <p class="sub">Built from Within's public docs, the published <code>@getwithin/sdk</code> 0.3.0 and probe runs on a local stub. Click the orange <b>⤢</b> on a box, or double-click it, to go one level deeper. Part of <a href="https://github.com/1AlgoRythm/within-trigger-check">Trigger check</a>. <b><a href="findings.html">Read all 20 findings in plain words →</a></b></p>
+</header>
+<nav class="crumbs" id="crumbs" aria-label="Where you are"></nav>
+<div class="note" id="note" hidden></div>
+<main id="stage"></main>
+<div class="chips" id="chips"></div>
+
+<script>
+// Each node is one screen. kind "arch" is an Archify diagram, "leaf" is a hand-drawn SVG.
+// drill maps a box's id in the diagram to the screen it opens.
+const S = {
+  l1: { title: "Within, end to end", file: "explorer/l1-within-end-to-end.html", kind: "arch",
+        note: ["read", "Read from Within's docs and the SDK source. W-numbers in the box text point to findings in the stress-test report."],
+        drill: { sdk: "l2-sdk", host: "l2-decision", api: "l2-within", card: "leaf-steer" } },
+  "l2-sdk": { title: "Inside the SDK", file: "explorer/l2-inside-the-sdk.html", kind: "arch",
+        note: ["read", "Read from the published SDK source. Each box with a W-number opens a hand-drawn diagram of that finding, or use the chips below."],
+        drill: { instr: "leaf-instr", zod: "leaf-zod", ctx: "leaf-pii", wrap: "leaf-wait", tools3: "leaf-flow", http: "leaf-outage", patch: "leaf-unwrapped" },
+        extra: ["leaf-ctxlost"] },
+  "l2-decision": { title: "One buying question", file: "explorer/l2-the-decision.html", kind: "arch",
+        note: ["measured", "Step 2 is the model's choice. The numbers on the cards are from saved runs against Claude (see stress/results)."],
+        drill: { model: "leaf-weak" },
+        extra: ["leaf-weak", "leaf-recall", "leaf-false", "leaf-steer"] },
+  "l2-within": { title: "Within's side", file: "explorer/l2-within-side.html", kind: "arch",
+        note: ["read", "The /v1 routes come from the SDK source. Within's server code is private, so what happens inside it is not visible."],
+        drill: { ans: "leaf-flow", act: "leaf-pii", off: "leaf-steer" } },
+  "leaf-flow":   { title: "What Within does today", file: "diagrams/01-what-within-does.svg", kind: "leaf", note: ["read", "Read from Within's docs and SDK source."] },
+  "leaf-weak":   { title: "The weak spot (W-20)", file: "diagrams/02-the-weak-spot.svg", kind: "leaf", note: ["measured", "The model decides from written instructions whether to call Within."] },
+  "leaf-recall": { title: "Recall and precision", file: "diagrams/05-recall-and-precision.svg", kind: "leaf", note: ["measured", "Run 1 of 5 full runs, Haiku 5.5 on a local stub."] },
+  "leaf-false":  { title: "W-20 · False alarm and fixes", file: "diagrams/06-false-alarm-and-fixes.svg", kind: "leaf", note: ["measured", "Re-run on 2026-11-18, 10 runs per cell on Haiku 5.5. Original 3 of 10, fix v1 6 of 10, fix v2 0 of 10."] },
+  "leaf-zod":    { title: "W-01 · The Zod crash", file: "diagrams/07-zod-bug.svg", kind: "leaf", note: ["measured", "Checks F1 and F2: the docs' install line crashes on a fresh install."] },
+  "leaf-pii":    { title: "W-10 · The goal text gap", file: "diagrams/08-pii-gap.svg", kind: "leaf", note: ["measured", "Checks C1 and C2. Within's server may redact more after the text arrives, and that is not visible."] },
+  "leaf-instr":  { title: "W-15 · Instructions replaced", file: "diagrams/10-instructions-deleted.svg", kind: "leaf", note: ["measured", "Checks D1 to D3 are measured. The proposal at the bottom is judgment."] },
+  "leaf-wait":   { title: "W-03 · Every call waits", file: "diagrams/11-every-call-waits.svg", kind: "leaf", note: ["measured", "Check A8b, against a laptop stub. The proposal at the bottom is judgment."] },
+  "leaf-outage": { title: "W-02 · An outage changes the vendor's answer", file: "diagrams/12-outage-alters-data.svg", kind: "leaf", note: ["measured", "Checks A2, A3 and A3b. The fix at the bottom is a tested prototype."] },
+  "leaf-ctxlost": { title: "W-04 · The vendor's own context input is lost", file: "diagrams/13-context-input-lost.svg", kind: "leaf", note: ["measured", "Check B3. The fix at the bottom is a tested prototype."] },
+  "leaf-unwrapped": { title: "W-09 · An unwrapped tool still reports", file: "diagrams/14-unwrapped-tools-report.svg", kind: "leaf", note: ["measured", "Check C7. The fix at the bottom is a tested prototype."] },
+  "leaf-steer":  { title: "Who should own each decision", file: "diagrams/09-architecture-steer.svg", kind: "leaf", note: ["judgment", "A design opinion from reading the SDK next to the MCP spec. It is not measured."] }
+};
+const NOTE_LABEL = { measured: "Measured", read: "Read from docs and source", judgment: "Judgment, not measured" };
+
+function route() {
+  const path = (location.hash.slice(1) || "l1").split("/").filter(id => S[id]);
+  return path.length ? path : ["l1"];
+}
+function go(path) { location.hash = path.join("/"); }
+
+function render() {
+  const path = route(), id = path[path.length - 1], s = S[id];
+  document.title = s.title + " · How Within works";
+  // breadcrumbs
+  const crumbs = document.getElementById("crumbs");
+  crumbs.innerHTML = "";
+  path.forEach((p, i) => {
+    if (i) crumbs.insertAdjacentHTML("beforeend", '<span class="sep">›</span>');
+    const el = i === path.length - 1 ? document.createElement("span") : document.createElement("a");
+    el.textContent = i === 0 ? "Map: " + S[p].title : S[p].title;
+    if (i === path.length - 1) el.className = "here"; else el.href = "#" + path.slice(0, i + 1).join("/");
+    crumbs.appendChild(el);
+  });
+  // note
+  const note = document.getElementById("note");
+  note.hidden = false; note.className = "note " + s.note[0];
+  note.innerHTML = "<b>" + NOTE_LABEL[s.note[0]] + ".</b> " + s.note[1];
+  // stage
+  const stage = document.getElementById("stage");
+  stage.innerHTML = "";
+  if (s.kind === "arch") {
+    const f = document.createElement("iframe");
+    f.title = s.title; f.src = s.file;
+    f.addEventListener("load", () => decorate(f, s, path));
+    stage.appendChild(f);
+  } else {
+    stage.innerHTML = '<div class="leaf"><img alt="' + s.title + '" src="' + s.file + '"></div>';
+  }
+  // chips
+  const chips = document.getElementById("chips");
+  const targets = [...new Set([...Object.values(s.drill || {}), ...(s.extra || [])])];
+  chips.innerHTML = targets.length ? "<b>Go deeper:</b>" : "";
+  targets.forEach(t => {
+    const a = document.createElement("a");
+    a.href = "#" + path.concat(t).join("/"); a.textContent = S[t].title;
+    if (S[t].kind === "leaf") a.className = "leaf-chip";
+    chips.appendChild(a);
+  });
+  if (path.length > 1) {
+    const back = document.createElement("a");
+    back.href = "#" + path.slice(0, -1).join("/"); back.textContent = "← Back up";
+    back.style.borderColor = "#d8dee4";
+    chips.prepend(back);
+  }
+  chips.insertAdjacentHTML("beforeend",
+    '<span class="legend"><span><i class="dot" style="background:var(--red)"></i>measured</span>' +
+    '<span><i class="dot" style="background:var(--blu)"></i>read from source</span>' +
+    '<span><i class="dot" style="background:var(--org)"></i>judgment</span></span>');
+}
+
+// Put an orange ⤢ badge on each box that opens a deeper screen, and open it on double-click.
+function decorate(frame, s, path) {
+  let doc; try { doc = frame.contentDocument; } catch (e) { return; }
+  if (!doc) return;
+  const NS = "http://www.w3.org/2000/svg";
+  Object.entries(s.drill || {}).forEach(([nodeId, target]) => {
+    const node = doc.querySelector('[data-node-id="' + nodeId + '"]');
+    if (!node) return;
+    const open = ev => { ev.stopPropagation(); ev.preventDefault(); go(path.concat(target)); };
+    node.addEventListener("dblclick", open);
+    let box; try { box = node.getBBox(); } catch (e) { return; }
+    const g = doc.createElementNS(NS, "g");
+    g.setAttribute("style", "cursor:pointer");
+    g.setAttribute("role", "link");
+    g.setAttribute("aria-label", "Go deeper: " + S[target].title);
+    const c = doc.createElementNS(NS, "circle");
+    c.setAttribute("cx", box.x + box.width - 4); c.setAttribute("cy", box.y + box.height - 4); c.setAttribute("r", 11);
+    c.setAttribute("fill", "#f97316"); c.setAttribute("stroke", "#fff"); c.setAttribute("stroke-width", 2);
+    const t = doc.createElementNS(NS, "text");
+    t.setAttribute("x", box.x + box.width - 4); t.setAttribute("y", box.y + box.height + 1);
+    t.setAttribute("text-anchor", "middle"); t.setAttribute("font-size", 14); t.setAttribute("fill", "#fff");
+    t.setAttribute("style", "font-family:system-ui,sans-serif;pointer-events:none");
+    t.textContent = "⤢";
+    const title = doc.createElementNS(NS, "title"); title.textContent = "Go deeper: " + S[target].title;
+    g.append(title, c, t);
+    g.addEventListener("click", open);
+    node.appendChild(g);
+  });
+}
+
+window.addEventListener("hashchange", render);
+render();
+</script>
+</body>
+</html>

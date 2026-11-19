@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" width="1000" height="700" role="img" aria-label="Architecture today versus steered, against MCP spec 2026-07-28: consent tool model-callable becomes app-only plus elicitation; the model-relayed chat moves into the card; session-keyed offers become user-bound handles; blocking model-written telemetry becomes async OpenTelemetry; deleted vendor instructions become append-only. Already right: saved answers, fail-open, handles, verified identity.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" width="1000" height="700" role="img" aria-label="Architecture today versus steered, against MCP spec 2026-07-28: consent tool model-callable becomes app-only plus elicitation; the model-relayed chat moves into the card; session-keyed offers become user-bound handles; blocking model-written telemetry becomes async OpenTelemetry; replaced vendor instructions become append-only. Already right: saved answers, fail-open, handles, verified identity.">
 <title>Architecture: where each decision should live</title>
 <defs><filter id="wobble" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G"/></filter>
 <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#222" stroke-width="1.6" stroke-linecap="round"/></marker></defs>
@@ -33,7 +33,7 @@ text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cu
 <text x="680" y="138" class="m">visibility: ["app"] → only the</text><text x="680" y="156" class="s">card's button can call it.</text><text x="680" y="176" class="s">Text-only hosts: elicitation, a</text><text x="680" y="193" class="s">prompt the host draws itself</text>
 
 <text x="45" y="238" class="l">② The live chat with a rep</text><text x="45" y="258" class="l">→ the CARD and the rep</text>
-<text x="335" y="236" class="s">the model relays every message:</text><text x="335" y="256" class="m">get_messages / send_message</text><text x="335" y="276" class="s">it can reword, drop or stop</text><text x="335" y="292" class="s">polling (and costs tokens)</text>
+<text x="335" y="236" class="s">each chat message passes via the model:</text><text x="335" y="256" class="m">get_messages / send_message</text><text x="335" y="276" class="s">it can reword, drop or stop</text><text x="335" y="292" class="s">polling (and costs tokens)</text>
 <text x="680" y="236" class="s">chat runs inside the card;</text><text x="680" y="256" class="m">ui/update-model-context</text><text x="680" y="276" class="s">tells the model "a person has</text><text x="680" y="292" class="s">joined"</text>
 
 <text x="45" y="336" class="l">③ Which session gets an</text><text x="45" y="356" class="l">offer → CODE (state)</text>
@@ -41,11 +41,11 @@ text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cu
 <text x="680" y="334" class="s">key on the verified user + a</text><text x="680" y="354" class="s">server-made handle bound to them</text><text x="680" y="374" class="s">("MUST NOT treat possession of a</text><text x="680" y="390" class="s">handle as authentication")</text>
 
 <text x="45" y="434" class="l">④ Telemetry → CODE,</text><text x="45" y="454" class="l">off the model's back</text>
-<text x="335" y="432" class="s">a model-written context field on</text><text x="335" y="452" class="s">every tool; each call waits on</text><text x="335" y="472" class="s">Within (probe: 300 ms delay →</text><text x="335" y="488" class="s">303 ms even when unwrapped)</text>
+<text x="335" y="432" class="s">a model-written context field on</text><text x="335" y="452" class="s">almost every tool; each call waits on</text><text x="335" y="472" class="s">Within (check A8b: ~300 ms</text><text x="335" y="488" class="s">added, even if unwrapped)</text>
 <text x="680" y="432" class="s">OpenTelemetry trace fields in</text><text x="680" y="452" class="m">_meta (traceparent)</text><text x="680" y="472" class="s">sent in the background; intent</text><text x="680" y="488" class="s">only inside get_vendor_answer</text>
 
 <text x="45" y="532" class="l">⑤ The vendor's own</text><text x="45" y="552" class="l">instructions → the VENDOR</text>
-<text x="335" y="530" class="s">a paragraph with "Do not mention"</text><text x="335" y="550" class="s">etc. is deleted. Probe: "Do not</text><text x="335" y="570" class="s">mention competitors." vanished</text>
+<text x="335" y="530" class="s">one banned phrase anywhere and ALL</text><text x="335" y="550" class="s">of the vendor's text is replaced</text><text x="335" y="570" class="s">(docs say: only that paragraph)</text>
 <text x="680" y="530" class="s">only ever append; keep Within's</text><text x="680" y="550" class="s">rules in its own tool</text><text x="680" y="570" class="s">descriptions</text>
 
 <g filter="url(#wobble)"><rect x="30" y="608" width="940" height="76" rx="14" class="grn"/></g>

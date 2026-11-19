@@ -1,0 +1,128 @@
+{
+  "meta": {
+    "sdkPatched": true,
+    "ranAt": "2026-11-19T01:39:46.163Z",
+    "model": "haiku",
+    "times": 10,
+    "scenariosRun": [
+      "X1",
+      "X2",
+      "X3"
+    ],
+    "claudeCode": "headless `claude -p`, flags as in the Claude Code CLI reference",
+    "note": "Local stand-in only. Nothing was sent to Within's service."
+  },
+  "results": [
+    {
+      "id": "X1",
+      "kind": "compare",
+      "note": "two companies in the vendor's own data (should NOT go to Within)",
+      "prompt": "Compare Ledgerly and Paywise.",
+      "model": "claude-haiku-5-5",
+      "runs": 10,
+      "completed": 10,
+      "calledGetVendorAnswer": 0,
+      "calledConfirmAssistance": 0,
+      "offerAcceptedAtStandIn": 0,
+      "toolSequences": [
+        "get_company > get_company",
+        "get_company > get_company",
+        "get_company > get_company",
+        "get_company > get_company",
+        "get_company > get_company",
+        "get_company > get_company",
+        "get_company > get_company",
+        "get_company > get_company",
+        "get_company > get_company",
+        "get_company > get_company"
+      ],
+      "replies": [
+        "Here's how the two companies compare, based on their Acme profiles:\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| City | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing tools | Payment links |\n\n**Key differences:**\n- **Produc",
+        "Both are fintech companies in Acme's database, but the profiles are thin, so the comparison is limited.\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| HQ | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing tools | Payment links ",
+        "Here's how the two companies compare, based on their Acme profiles:\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| City | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing tools | Payment links |\n\n**Key differences:**\n- **Produc",
+        "Both are fintech companies in Acme's database, but the records are thin, so the comparison is limited.\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| City | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing tools | Payment links",
+        "Here's how the two companies compare, based on their Acme profiles:\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| HQ | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing tools | Payment links |\n\n**Key differences:**\n- **Product:",
+        "Both are fintech companies in Acme's database, but the profiles are brief.\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| HQ | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing tools | Payment links |\n\nLedgerly is at a later fun",
+        "Here's how the two companies compare, based on their Acme profiles:\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| City | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing tools | Payment links |\n\n**Key differences:**\n- **Produc",
+        "Here's how the two companies compare, based on their Acme profiles:\n\n| | Ledgerly | Paywise |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| City | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing tools | Payment links |\n\n**Similarities:** Both are fintech comp",
+        "Both companies are in Acme's database, but the profiles are short, so the comparison is limited.\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| City | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing tools | Payment links |\n\n**",
+        "Both are fintech companies, but the Acme profiles are thin, so this comparison is limited to what they list.\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| HQ | New York | Boston |\n| Stage | Series A | Seed |\n| Product | Invoicing tools | Payment"
+      ],
+      "errors": []
+    },
+    {
+      "id": "X2",
+      "kind": "compare",
+      "note": "a real competitor question (should go to Within)",
+      "prompt": "Is Acme better than Crunchbase for tracking seed rounds?",
+      "model": "claude-haiku-5-5",
+      "runs": 10,
+      "completed": 10,
+      "calledGetVendorAnswer": 10,
+      "calledConfirmAssistance": 0,
+      "offerAcceptedAtStandIn": 0,
+      "toolSequences": [
+        "get_vendor_answer",
+        "get_vendor_answer",
+        "get_vendor_answer",
+        "get_vendor_answer",
+        "get_vendor_answer",
+        "get_vendor_answer",
+        "get_vendor_answer",
+        "get_vendor_answer",
+        "get_vendor_answer",
+        "get_vendor_answer"
+      ],
+      "replies": [
+        "The Acme answer I got doesn't address your question. It only says that the Acme Team plan is $18 per seat per month. It doesn't compare Acme with Crunchbase or say how Acme handles seed rounds, so I can't tell you from this whether Acme is better for your use.\n\nSome ways to get a",
+        "Acme's official answer didn't address the comparison. It only said that Acme Team is $18 per seat a month, so I can't tell you from this connector whether Acme is better than Crunchbase for seed rounds.\n\nI can try a different angle. I can search Acme's database of private compani",
+        "I couldn't get a real comparison from Acme's answer. The only response was that Acme Team is $18 per seat a month, which doesn't address how Acme handles seed rounds versus Crunchbase.\n\nAcme is a database of private companies, and you can search it by sector, city, or name. To ju",
+        "I couldn't get a real answer to the comparison. The Acme response I received only said that Acme Team costs $18 per seat a month, so it doesn't say whether Acme is better than Crunchbase for tracking seed rounds.\n\nI also don't have a reliable way to compare the two products from ",
+        "Acme's answer didn't address the comparison. It only said that Acme Team costs $18 per seat a month, so I can't tell you from this connector whether Acme is better than Crunchbase for tracking seed rounds.\n\nTo judge that yourself, you could check whether Acme's database covers th",
+        "I can't give you a real comparison from what I have. The Acme answer I got covers pricing only: the Team plan is $18 per seat a month. It doesn't say how Acme's seed-round tracking compares with Crunchbase's, so I won't guess.\n\nI can help in other ways:\n- **Check Acme's data dire",
+        "The Acme answer I got doesn't address your question. It only says that **Acme Team is $18 per seat a month**. It doesn't compare Acme with Crunchbase or say which is better for tracking seed rounds, and I don't have reliable information to make that call.\n\nI can help in other way",
+        "I couldn't get a real comparison. Acme's answer to your question was only its team price: $18 per seat a month. That doesn't say how Acme handles seed rounds compared with Crunchbase, so I can't say which is better from this.\n\nTo judge it yourself, check whether each tool covers ",
+        "I couldn't get a real comparison. Acme's answer only gave its price: Acme Team is $18 per seat a month. It didn't say how Acme handles seed rounds compared with Crunchbase, so I can't say which is better for your use.\n\nTo judge it yourself, check whether each tool covers the seed",
+        "Acme's answer didn't address the comparison. It only said that Acme Team costs $18 per seat a month. I can't tell you from this connector whether Acme beats Crunchbase for seed-round tracking, so I won't guess.\n\nTo judge it yourself, you could compare the two on the things that m"
+      ],
+      "errors": []
+    },
+    {
+      "id": "X3",
+      "kind": "compare",
+      "note": "a real competitor question (should go to Within)",
+      "prompt": "Why should we pick Acme over PitchBook?",
+      "model": "claude-haiku-5-5",
+      "runs": 10,
+      "completed": 10,
+      "calledGetVendorAnswer": 10,
+      "calledConfirmAssistance": 0,
+      "offerAcceptedAtStandIn": 0,
+      "toolSequences": [
+        "get_vendor_answer",
+        "get_vendor_answer",
+        "get_vendor_answer",
+        "get_vendor_answer",
+        "get_vendor_answer",
+        "get_vendor_answer",
+        "get_vendor_answer",
+        "get_vendor_answer",
+        "get_vendor_answer",
+        "get_vendor_answer"
+      ],
+      "replies": [
+        "Acme's current answer doesn't cover the comparison with PitchBook. It only says that Acme Team is $18 per seat a month. I don't have a sourced comparison, so I won't make up claims about PitchBook.\n\nTo get a useful answer, you could ask a narrower question, such as what data cove",
+        "I couldn't get a real comparison from Acme's answer system. The only information it returned was that Acme Team is $18 per seat a month, which doesn't address how Acme compares to PitchBook. I also don't want to make up competitive claims about PitchBook.\n\nTo build the case, you ",
+        "I couldn't get a real comparison from Acme. The answer I received only gave the price of its Team plan, $18 per seat a month, and didn't address PitchBook or why Acme might be the better fit. I don't want to make up reasons, so I'd suggest asking Acme's sales team directly or che",
+        "Acme's answer tool didn't give a comparison with PitchBook. It returned only one fact: the Acme Team plan is $18 per seat per month. I don't have a sourced comparison, so I won't guess at how Acme stacks up against PitchBook.\n\nTo get a real comparison, you could ask a more specif",
+        "The Acme knowledge base didn't give a direct answer to the comparison. The only information it returned is that Acme Team costs $18 per seat per month. It had nothing on how Acme compares with PitchBook, and I don't have reliable PitchBook details to fill the gap.\n\nTo build the c",
+        "I couldn't get a direct comparison against PitchBook. The only answer Acme returned was pricing: **Acme Team is $18 per seat a month.** I don't have Acme's position on how it compares to PitchBook, so I won't guess at one.\n\nTo get that comparison, you could ask an Acme representa",
+        "The Acme knowledge base doesn't have a comparison against PitchBook. The only answer it returned was pricing: Acme Team is $18 per seat a month. I don't have reliable information on how Acme compares to PitchBook, so I won't make up a list of advantages.\n\nTo build the case, you c",
+        "The Acme connector doesn't have a comparison against PitchBook. The only answer it returned was pricing: Acme Team is $18 per seat a month. I can't tell you from this tool why Acme is better than PitchBook, and I don't want to make up differentiators.\n\nTo build the case, you coul",
+        "I couldn't get a comparison from Acme's answer. The only information returned was pricing: **Acme Team is $18 per seat per month.** It doesn't address how Acme compares with PitchBook on features, data coverage, or fit, so I don't want to guess at reasons to choose it.\n\nTo build ",
+        "I couldn't get a real comparison from Acme. The only answer returned was a price: the Acme Team plan is $18 per seat per month. It doesn't say how Acme compares with PitchBook, so I can't give you reasons to choose one over the other from this source.\n\nI also don't have reliable "
+      ],
+      "errors": []
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" width="1000" height="620" role="img" aria-label="Every call waits: in the probe the SDK sends activity to Within and waits for the answer before the vendor's result returns, even for tools that were not wrapped. With Within's server delayed by 300 milliseconds, both the wrapped and the unwrapped call took about 300 ms (medians of 7, run to run values differ by a few ms). With no delay they took 3 ms or less. Each wait is capped at 5 seconds. Proposed: send activity in the background.">
+<title>Every tool call waits on Within</title>
+<defs><filter id="wobble" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G"/></filter>
+<marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#222" stroke-width="1.6" stroke-linecap="round"/></marker></defs>
+<style>
+:root{--ink:#222;--org:#f97316;--blu:#3b82f6;--grn:#10b981;--red:#ef4444}
+.ink{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.blu{fill:none;stroke:var(--blu);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.grn{fill:none;stroke:var(--grn);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.red{fill:none;stroke:var(--red);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.org{fill:none;stroke:var(--org);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.flow{fill:none;stroke:var(--org);stroke-width:3;stroke-dasharray:8 7;animation:dash 1.2s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-30}}
+@keyframes grow{0%{transform:scaleX(0)}70%,100%{transform:scaleX(1)}}
+.bar{transform-box:fill-box;transform-origin:left center;animation:grow 3.4s ease-out infinite}
+text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cursive}
+.h{font-size:26px;font-weight:bold}.l{font-size:17px}.s{font-size:14px}.m{font-family:Menlo,monospace;font-size:12.5px}
+.r{fill:var(--red)}.g{fill:var(--grn)}.b{fill:var(--blu)}.o{fill:var(--org)}
+@media (prefers-reduced-motion:reduce){.flow,.gone,.bar{animation:none}}
+</style>
+<rect x="0" y="0" width="1000" height="620" rx="18" fill="#fffdf7"/>
+<text x="30" y="44" class="h">11 · W-03: every successful wrapped call waits on Within</text>
+<text x="30" y="70" class="s">The vendor's tool answers in a few milliseconds. The SDK then reports to Within and waits for the reply before handing the result back.</text>
+
+<text x="40" y="108" class="l b">Within's server slowed to 300 ms (a local stub)</text>
+<text x="40" y="150" class="s">wrapped tool</text>
+<g filter="url(#wobble)"><rect x="170" y="130" width="25" height="28" rx="3" class="blu"/></g>
+<g filter="url(#wobble)" class="bar"><rect x="195" y="130" width="597" height="28" rx="3" class="org"/></g>
+<text x="850" y="150" class="m r">~300 ms</text>
+<text x="40" y="206" class="s">unwrapped tool</text>
+<g filter="url(#wobble)"><rect x="170" y="186" width="6" height="28" rx="3" class="blu"/></g>
+<g filter="url(#wobble)" class="bar"><rect x="176" y="186" width="595" height="28" rx="3" class="org"/></g>
+<text x="850" y="206" class="m r">~300 ms</text>
+<text x="170" y="240" class="s b">▮ the vendor's tool itself</text>
+<text x="400" y="240" class="s o">▮ waiting on Within</text>
+
+<text x="40" y="288" class="l g">Within's server instant (0 ms delay)</text>
+<text x="40" y="324" class="s">wrapped tool</text>
+<g filter="url(#wobble)"><rect x="170" y="306" width="8" height="24" rx="3" class="org"/></g>
+<text x="850" y="324" class="m">≤ 3 ms</text>
+<text x="40" y="360" class="s">unwrapped tool</text>
+<g filter="url(#wobble)"><rect x="170" y="342" width="2" height="24" rx="1" class="org"/></g>
+<text x="850" y="360" class="m">≤ 3 ms</text>
+
+<g filter="url(#wobble)"><rect x="30" y="392" width="940" height="85" rx="14" class="ink"/></g>
+<text x="50" y="420" class="l">Reading it</text>
+<text x="50" y="444" class="s">Stress check A8b. Even a tool the vendor never wrapped waits, once the AI fills in the goal text, because the SDK patches registerTool for every tool.</text>
+<text x="50" y="464" class="s">Each wait is capped at 5 seconds, and the result still returns if Within is down. Laptop stub, not production numbers.</text>
+
+<g filter="url(#wobble)"><rect x="30" y="505" width="940" height="90" rx="14" class="org"/></g>
+<text x="50" y="533" class="l">Proposal (judgment, not yet built)</text>
+<text x="50" y="557" class="s">Send the activity report in the background and never block the vendor's tool. Check for a rep's offer only when one may be pending.</text>
+<text x="50" y="579" class="s">Check to run once built: at a 300 ms delay both calls should drop from about 300 ms to a few milliseconds.</text>
+</svg>

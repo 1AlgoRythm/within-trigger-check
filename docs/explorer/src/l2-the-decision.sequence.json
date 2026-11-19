@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "One buying question, step by step",
+    "output": "l2-the-decision.html",
+    "viewBox": [
+      1000,
+      600
+    ],
+    "column_fit": "spread",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "decision",
+        "label": "The decision (W-20)",
+        "focus": [
+          "customer",
+          "model",
+          "sdk"
+        ],
+        "note": "Step 2 is the model's choice. Nothing forces it, only written instructions."
+      },
+      {
+        "id": "answer",
+        "label": "The answer",
+        "focus": [
+          "model",
+          "sdk",
+          "api"
+        ],
+        "note": "Within returns the vendor's saved answer, not the model's guess."
+      },
+      {
+        "id": "consent",
+        "label": "Consent",
+        "focus": [
+          "customer",
+          "model",
+          "sdk",
+          "api"
+        ],
+        "note": "Within's promise: a rep joins only after the customer says yes. See W-18 for what the SDK itself checks."
+      }
+    ]
+  },
+  "participants": [
+    {
+      "id": "customer",
+      "type": "external",
+      "label": "Customer",
+      "sublabel": "in the chat"
+    },
+    {
+      "id": "model",
+      "type": "external",
+      "label": "Claude / ChatGPT",
+      "sublabel": "the model"
+    },
+    {
+      "id": "sdk",
+      "type": "backend",
+      "label": "Within SDK",
+      "sublabel": "in the vendor's server"
+    },
+    {
+      "id": "api",
+      "type": "cloud",
+      "label": "Within API",
+      "sublabel": "app.getwith.in"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "from": "customer",
+      "to": "model",
+      "y": 166,
+      "label": "asks the price for 40 seats",
+      "variant": "default"
+    },
+    {
+      "id": "m2",
+      "from": "model",
+      "to": "sdk",
+      "y": 208,
+      "label": "get_vendor_answer (the model's choice)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m3",
+      "from": "sdk",
+      "to": "api",
+      "y": 250,
+      "label": "POST /v1/answers",
+      "variant": "default"
+    },
+    {
+      "id": "m4",
+      "from": "api",
+      "to": "sdk",
+      "y": 292,
+      "label": "saved answer",
+      "variant": "return"
+    },
+    {
+      "id": "m5",
+      "from": "sdk",
+      "to": "model",
+      "y": 334,
+      "label": "answer + offer card",
+      "variant": "return"
+    },
+    {
+      "id": "m6",
+      "from": "model",
+      "to": "customer",
+      "y": 376,
+      "label": "price, and a card offering a person",
+      "variant": "return"
+    },
+    {
+      "id": "m7",
+      "from": "customer",
+      "to": "model",
+      "y": 418,
+      "label": "says yes on the card",
+      "variant": "default"
+    },
+    {
+      "id": "m8",
+      "from": "model",
+      "to": "sdk",
+      "y": 460,
+      "label": "confirm_assistance",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m9",
+      "from": "sdk",
+      "to": "api",
+      "y": 502,
+      "label": "/v1/offers accept, a rep joins",
+      "variant": "default"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "The weak spot (W-20)",
+      "items": [
+        "Step 2 rests on about 2,600 characters of instructions",
+        "Haiku 5.5 sent 'Compare Ledgerly and Paywise' to Within 3 of 10 times",
+        "Sonnet 5.5: 0 of 10"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "What held up",
+      "items": [
+        "Recall was 10/10 in all five full runs",
+        "Spanish, German, rate-limit, relayed and renewal questions all reached Within (21 of 21)",
+        "The reworded trigger cut the false alarm to 0 of 10"
+      ]
+    }
+  ]
+}
