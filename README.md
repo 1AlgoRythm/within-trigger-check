@@ -6,6 +6,8 @@
 
 **Read the findings: [FINDINGS.md](FINDINGS.md)** (also as [a web page](https://1algorythm.github.io/within-trigger-check/findings.html)). A stress test of `@getwithin/sdk` 0.3.0 found 20 things to fix or decide, each explained in plain words first, then with the code location, a fix, and a one-line command to reproduce it. The tests are in `stress/`.
 
+**Update 2026-11-20: re-run on version 0.4.0.** Within published 0.4.0 after the tests above. The same 43 checks show two findings fixed (W-01, the install crash with Zod 4, and W-14, the missing `identity` option) and every other check unchanged, including W-02, W-04, W-09, W-10 and W-11. The 0.4.0 copy came from a mirror, because npm's own registry returned 404 for the package that day. Details, and what was not re-run: [the update in FINDINGS.md](FINDINGS.md#update-2026-11-20-version-040).
+
 **See how Within works: [an interactive map](https://1algorythm.github.io/within-trigger-check/).** Click a box to go one level deeper, from the whole system, to the inside of the SDK, to a hand-drawn diagram of each defect. Every screen says whether it is measured, read from Within's docs and source, or judgment. The files are in `docs/`.
 
 ## Why this exists
@@ -65,6 +67,8 @@ The stress test found more problems than these two (see [FINDINGS.md](FINDINGS.m
 - **Phone redaction.** One pattern next to the existing email, key and card rules. It redacts 10–15 digit runs, so a long ID such as "1234 5678 9012" goes too. Names still pass through. A safer default is to send `mcpIntent` only when the vendor opts in.
 
   ![The PII gap: the SDK adds a context field to every tool, the model writes the user's goal there, and phone numbers reached the API unredacted until the fix](docs/diagrams/08-pii-gap.svg)
+
+Version 0.4.0 (2026-11-20) fixes the Zod crash in the package itself. The fixes below were written for 0.3.0 and were not re-run on 0.4.0.
 
 The source repo is private, so the fixes patch `node_modules/@getwithin/sdk` 0.3.0 in place (`fixes/apply.mjs`). They refuse any other version, check every edit landed, and undo with `npm run unfix`. In the real repo, each fix is a few lines.
 

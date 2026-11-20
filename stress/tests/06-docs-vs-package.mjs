@@ -29,10 +29,10 @@ export const tests = [
     id: "F2", group: G, title: "Does the docs' install line plus the docs' quickstart run on a fresh project?",
     basis: 'Docs Install: "npm install @getwithin/sdk @modelcontextprotocol/sdk zod", then the Quickstart snippet.',
     async run() {
-      if (process.env.WITHIN_SDK_ENTRY) return { verdict: "info", expected: "n/a", observed: "not applicable to a patched copy: this test installs the published package from npm", evidence: {} };
+      if (process.env.WITHIN_SDK_ENTRY && !process.env.F2_SPEC) return { verdict: "info", expected: "n/a", observed: "not applicable to a patched copy: this test installs the published package from npm", evidence: {} };
       const dir = fs.mkdtempSync(path.join(os.tmpdir(), "within-fresh-"));
       fs.writeFileSync(path.join(dir, "package.json"), JSON.stringify({ name: "fresh", type: "module", private: true }));
-      const inst = spawnSync("npm", ["install", "@getwithin/sdk@0.3.0", "@modelcontextprotocol/sdk", "zod", "--no-audit", "--no-fund"], { cwd: dir, encoding: "utf8", timeout: 180000 });
+      const inst = spawnSync("npm", ["install", process.env.F2_SPEC ?? "@getwithin/sdk@0.3.0", "@modelcontextprotocol/sdk", "zod", "--no-audit", "--no-fund", "--ignore-scripts"], { cwd: dir, encoding: "utf8", timeout: 180000 });
       const ver = (n) => { try { return JSON.parse(fs.readFileSync(path.join(dir, "node_modules", n, "package.json"), "utf8")).version; } catch { return "n/a"; } };
       const nested = fs.existsSync(path.join(dir, "node_modules/@getwithin/sdk/node_modules/zod"));
       fs.writeFileSync(path.join(dir, "quickstart.mjs"), `

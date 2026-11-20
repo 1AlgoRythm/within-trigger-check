@@ -33,4 +33,22 @@ WORDING=v1 PATCH_OUT=../patched-sdk-v1 node patches/apply.mjs
 RESULT_TAG=X-v1 WITHIN_SDK_ENTRY=$PWD/patched-sdk-v1/dist/index.js node model/run-model.mjs --model haiku --only X1,X2,X3 --times 10
 ```
 
+## Run it on another version
+
+The default run tests the 0.3.0 package in `node_modules`. To test another published version without touching that, unpack it inside `stress/` (it needs to find this folder's `zod` and MCP SDK; git ignores `stress/sdk-*/`) and point the run at it. This is how `results/sdk-0.4.0.json` was made.
+
+Version 0.4.0 was not on `registry.npmjs.org` when we tested (the registry returned 404 for the whole package), so this fetches the copy held by npmmirror.com and checks it against the hash that mirror lists. We could not compare it with npm's own hash.
+
+```bash
+curl -sL -o /tmp/sdk-0.4.0.tgz https://registry.npmmirror.com/@getwithin/sdk/-/sdk-0.4.0.tgz
+want="sha512-Kle6l4ZAo0GRF136R4d/GfsNySc0By4nR+gKBHtSnb/MUMQaEOGoERRXfS1/Yk09mzwYLr/M9hn97E31rEJYYA=="
+got="sha512-$(openssl dgst -sha512 -binary /tmp/sdk-0.4.0.tgz | openssl base64 -A)"; [ "$want" = "$got" ] && echo MATCH || echo MISMATCH   # stop if MISMATCH
+mkdir sdk-0.4.0 && tar -xzf /tmp/sdk-0.4.0.tgz -C sdk-0.4.0 --strip-components=1     # run from this folder
+WITHIN_SDK_ENTRY="$PWD/sdk-0.4.0/dist/index.js" STOCK_COPY=1 RESULTS_FILE=results/sdk-0.4.0.json \
+  F2_SPEC=/tmp/sdk-0.4.0.tgz SDK_SOURCE="npmmirror.com copy of 0.4.0" node run.mjs
+npm run build:findings     # adds the "In 0.4.0" column and the update section to the report
+```
+
+`STOCK_COPY=1` marks the entry as an unmodified published package, not a patched copy. `F2_SPEC` lets check F2 install that tarball on a fresh project with the newest Zod, instead of skipping. Read the package before running it: it is third-party code. The prototype patches in `patches/apply.mjs` were written for 0.3.0 and were not re-run on 0.4.0.
+
 Timings in the results (milliseconds) depend on how busy the machine is, so compare orders of magnitude, not single numbers.

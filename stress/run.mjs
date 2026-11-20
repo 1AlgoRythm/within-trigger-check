@@ -1,6 +1,12 @@
 // Runs every stress test against the stock @getwithin/sdk in ./node_modules and a local stand-in for Within.
 //   node run.mjs                run everything, write results/latest.json
 //   node run.mjs A1 C8          run only these test ids
+// Another published version can be tested without touching ./node_modules (see README, "Run it on another version"):
+//   WITHIN_SDK_ENTRY=<dir>/dist/index.js  the package to test; the dir must sit inside stress/ so it finds zod and the MCP SDK
+//   STOCK_COPY=1                          say that entry is an unmodified published package, not a patched copy
+//   RESULTS_FILE=results/sdk-0.4.0.json   where to write (the default for an alternate entry is results/patched.json)
+//   SDK_SOURCE="where it came from"       recorded in the results
+//   F2_SPEC=<tarball or name@version>     lets F2 install that package on a fresh project instead of skipping
 // Nothing is sent to Within's real service: every request goes to 127.0.0.1.
 import fs from "node:fs";
 import os from "node:os";
@@ -13,12 +19,12 @@ const only = new Set(process.argv.slice(2));
 const files = fs.readdirSync(path.join(here, "tests")).filter((f) => /^\d\d-.*\.mjs$/.test(f)).sort();
 const readJson = (p) => JSON.parse(fs.readFileSync(p, "utf8"));
 const sdkDir = process.env.WITHIN_SDK_ENTRY ? path.dirname(path.dirname(process.env.WITHIN_SDK_ENTRY)) : path.join(here, "node_modules/@getwithin/sdk");
-const resultsFile = process.env.WITHIN_SDK_ENTRY ? "results/patched.json" : "results/latest.json";
+const resultsFile = process.env.RESULTS_FILE ?? (process.env.WITHIN_SDK_ENTRY ? "results/patched.json" : "results/latest.json");
 const meta = {
   ranAt: new Date().toISOString(),
   node: process.version,
   platform: `${os.platform()} ${os.release()}`,
-  sdk: { name: "@getwithin/sdk", patched: Boolean(process.env.WITHIN_SDK_ENTRY), version: readJson(path.join(sdkDir, "package.json")).version, distSha256: crypto.createHash("sha256").update(fs.readFileSync(path.join(sdkDir, "dist/index.js"))).digest("hex") },
+  sdk: { name: "@getwithin/sdk", patched: Boolean(process.env.WITHIN_SDK_ENTRY) && !process.env.STOCK_COPY, source: process.env.SDK_SOURCE ?? "npm registry (stress/node_modules)", version: readJson(path.join(sdkDir, "package.json")).version, distSha256: crypto.createHash("sha256").update(fs.readFileSync(path.join(sdkDir, "dist/index.js"))).digest("hex") },
   mcpSdk: readJson(path.join(here, "node_modules/@modelcontextprotocol/sdk/package.json")).version,
   zodInTestProject: readJson(path.join(here, "node_modules/zod/package.json")).version,
   note: "All requests go to a stand-in on 127.0.0.1. Nothing was sent to Within's service.",

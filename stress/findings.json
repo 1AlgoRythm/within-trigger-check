@@ -483,5 +483,16 @@
     "claude.ai, ChatGPT and other hosts. Model tests used Claude Code in headless mode, with a short system prompt. Real apps add their own hidden instructions.",
     "How the offer card and live chat look and behave in a real host.",
     "Behaviour under real production load, or across many Node and MCP SDK versions."
-  ]
+  ],
+  "update040": {
+    "title": "Update 2026-11-20: version 0.4.0",
+    "paragraphs": [
+      "Within published version {{U:version}} at 14:39 UTC on 2026-11-20, after the tests above were run on 0.3.0. We ran the same {{U:n}} checks on it on {{U:ranAt}}. Result: {{U:newPass}} pass, {{U:newGap}} gap, {{U:newFail}} fail and {{U:newInfo}} information only. On 0.3.0 it was {{U:oldPass}} pass, {{U:oldGap}} gap, {{U:oldFail}} fail and {{U:oldInfo}} information only.",
+      "{{U:nFlipped}} checks changed result: {{U:flippedList}}. They fix {{U:fixedList}}. Every other check gave the same verdict as on 0.3.0. Of the {{U:highCount}} High findings, fixed: {{U:highFixed}}. Unchanged: {{U:highOpen}}.",
+      "One measurement changed without changing a verdict: the text Within adds to every server's instructions grew from {{U:d5Old}} to {{U:d5New}} characters (check D5). Wherever this report quotes that length, it is the 0.3.0 length.",
+      "Line numbers and code quotes in the findings below are for the 0.3.0 file, `dist/index.js`. They were not updated for 0.4.0.",
+      "**Where the 0.4.0 copy came from.** {{U:source}}. We could not compare it with npm's own hash. Its file fingerprint is `{{U:fingerprint}}`; the 0.3.0 one is `{{U:oldFingerprint}}`.",
+      "**Not re-run on 0.4.0.** The real-Claude runs (W-20 and the comparison wording), the prototype-patch copy (its patches were written for 0.3.0 and may no longer apply), and the new `doctor` module and `getwithin-sdk` command in the package. New code is only tested where the {{U:n}} checks reach it. To reproduce the 0.4.0 run, see `stress/README.md`, \"Run it on another version\"."
+    ]
+  }
 }

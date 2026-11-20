@@ -16,6 +16,40 @@ const patched = read("results/patched.json");
 const byId = (r) => Object.fromEntries(r.results.map((x) => [x.id, x]));
 const S = byId(stock), P = byId(patched);
 
+// ---- version 0.4.0 (optional: only when results/sdk-0.4.0.json exists). Every figure and every per-finding status
+// is computed from the saved results, never typed in. A finding is "fixed" when every check that was a fail or a gap
+// on 0.3.0 passes on 0.4.0, "unchanged" when no check changed verdict, "not re-run" when no deterministic check covers it.
+const v040 = fs.existsSync(path.join(here, "results/sdk-0.4.0.json")) ? read("results/sdk-0.4.0.json") : null;
+const V = v040 ? byId(v040) : null;
+const status040 = (f) => {
+  if (!V) return null;
+  const pairs = f.tests.filter((id) => S[id] && V[id]).map((id) => [S[id].verdict, V[id].verdict]);
+  if (!pairs.length) return { key: "notrerun", short: "not re-run", label: "Not re-run on 0.4.0: no automated check covers it." };
+  if (pairs.every(([a, b]) => a === b)) return { key: "unchanged", short: "unchanged", label: "Unchanged in 0.4.0: its checks give the same verdicts." };
+  const wasBad = pairs.filter(([a]) => a === "fail" || a === "gap");
+  if (wasBad.length && wasBad.every(([, b]) => b === "pass")) return { key: "fixed", short: "fixed", label: "Fixed in 0.4.0: its checks now pass." };
+  return { key: "changed", short: "partly changed", label: "Partly changed in 0.4.0: some of its checks changed verdict." };
+};
+const U = (() => {
+  if (!V) return null;
+  const ids = Object.keys(S);
+  const flipped = ids.filter((id) => V[id] && S[id].verdict !== V[id].verdict);
+  const ofKey = (k, sev) => src.findings.filter((f) => status040(f).key === k && (!sev || f.severity === sev)).map((f) => f.id);
+  const list = (a) => (a.length ? a.join(", ") : "none");
+  const chars = (r) => Number(r.D5?.observed?.match(/\d+/)?.[0]).toLocaleString("en-US");
+  const t = (r) => r.tally;
+  return {
+    version: v040.meta.sdk.version, n: ids.length, ranAt: v040.meta.ranAt.replace("T", " ").slice(0, 16) + " UTC",
+    newPass: t(v040).pass ?? 0, newGap: t(v040).gap ?? 0, newFail: t(v040).fail ?? 0, newInfo: t(v040).info ?? 0,
+    oldPass: t(stock).pass ?? 0, oldGap: t(stock).gap ?? 0, oldFail: t(stock).fail ?? 0, oldInfo: t(stock).info ?? 0,
+    nFlipped: flipped.length, flippedList: list(flipped.map((id) => `${id} (${S[id].verdict} to ${V[id].verdict})`)),
+    fixedList: list(ofKey("fixed")),
+    highCount: src.findings.filter((f) => f.severity === "High").length, highFixed: list(ofKey("fixed", "High")), highOpen: list(ofKey("unchanged", "High").concat(ofKey("changed", "High"))),
+    d5Old: chars(S), d5New: chars(V),
+    source: v040.meta.sdk.source, fingerprint: v040.meta.sdk.distSha256.slice(0, 12), oldFingerprint: stock.meta.sdk.distSha256.slice(0, 12),
+  };
+})();
+
 // model-level results
 const modelFile = (f) => (fs.existsSync(path.join(here, "results", f)) ? read("results/" + f) : null);
 const hTS = modelFile("model-haiku-T-S.json"), son = modelFile("model-sonnet.json");
@@ -42,7 +76,7 @@ function dig(obj, p) {
 }
 function resolve(text) {
   return text.replace(/\{\{([A-Za-z0-9]+):([^}]+)\}\}/g, (m, id, p) => {
-    const v = id === "X" ? dig(X, p) : id === "M" ? dig(M, p) : dig(S[id], p);
+    const v = id === "X" ? dig(X, p) : id === "M" ? dig(M, p) : id === "U" ? dig(U, p) : dig(S[id], p);
     if (v === undefined || v === null) throw new Error(`Unresolved placeholder ${m}`);
     return String(v);
   });
@@ -81,16 +115,22 @@ L();
 for (const p of src.intro) L(resolve(p)), L();
 L(`Tested ${when(stock.meta.ranAt)} on \`@getwithin/sdk\` ${stock.meta.sdk.version} (file fingerprint \`${stock.meta.sdk.distSha256.slice(0, 12)}\`), Node ${stock.meta.node}, MCP SDK ${stock.meta.mcpSdk}. Line numbers below refer to that package's \`dist/index.js\`, because Within's source repository is not public (the address in the package's package.json returns 404).`);
 L();
+const fixedNote = (id) => (V && status040(src.findings.find((f) => f.id === id))?.key === "fixed" ? "; fixed in 0.4.0" : "");
+if (U) {
+  L(`## ${src.update040.title}`);
+  L();
+  for (const p of src.update040.paragraphs) L(resolve(p)), L();
+}
 L("## At a glance");
 L();
-L(`**${src.findings.length} findings: ${count("High")} High, ${count("Medium")} Medium, ${count("Low")} Low.** ${Object.keys(S).length} automated checks ran against the published package: ${tally(stock).pass} pass, ${tally(stock).fail} fail, ${tally(stock).gap} gap (documented or undocumented behaviour worth a decision), ${tally(stock).info} information only. A patched copy with ${nProto} small prototype fixes turns ${Object.keys(S).filter((id) => ["fail", "gap"].includes(S[id].verdict) && P[id]?.verdict === "pass").length} of those fails and gaps into passes.`);
+L(`**${src.findings.length} findings: ${count("High")} High, ${count("Medium")} Medium, ${count("Low")} Low.** ${Object.keys(S).length} automated checks ran against the published package (0.3.0): ${tally(stock).pass} pass, ${tally(stock).fail} fail, ${tally(stock).gap} gap (documented or undocumented behaviour worth a decision), ${tally(stock).info} information only. A patched copy with ${nProto} small prototype fixes turns ${Object.keys(S).filter((id) => ["fail", "gap"].includes(S[id].verdict) && P[id]?.verdict === "pass").length} of those fails and gaps into passes.`);
 L();
-L("| ID | Severity | What | Prototype fix |");
-L("|---|---|---|---|");
+L(`| ID | Severity | What | Prototype fix |${U ? " In 0.4.0 |" : ""}`);
+L(`|---|---|---|---|${U ? "---|" : ""}`);
 for (const f of [...src.findings].sort((a, b) => sevOrder[a.severity] - sevOrder[b.severity] || a.id.localeCompare(b.id)))
-  L(`| [${f.id}](#${f.id.toLowerCase()}) | ${f.severity} | ${f.title} | ${f.prototype ?? "none"} |`);
+  L(`| [${f.id}](#${f.id.toLowerCase()}) | ${f.severity} | ${f.title} | ${f.prototype ?? "none"} |${U ? ` ${status040(f).key === "fixed" ? "**fixed**" : status040(f).short} |` : ""}`);
 L();
-L("**If you only fix six things:** W-02 (an outage must not change or break the vendor's own answers), W-09, W-10 and W-11 (what leaves the vendor's server, and what the docs say about it), W-01 (the install steps must work on a new project), and W-04 (never swallow a vendor's own `context` input).");
+L("**If you only fix six things:** W-02 (an outage must not change or break the vendor's own answers), W-09, W-10 and W-11 (what leaves the vendor's server, and what the docs say about it), W-01 (the install steps must work on a new project" + fixedNote("W-01") + "), and W-04 (never swallow a vendor's own `context` input).");
 L();
 L("### What the severity words mean");
 L();
@@ -111,6 +151,7 @@ for (const g of groups) {
     L();
     L(`**${f.severity}: ${f.title}**`);
     L();
+    if (U) L(`**In 0.4.0.** ${status040(f).label}`), L();
     L(`**In plain words.** ${resolve(f.plain)}`);
     L();
     L(`**Why it matters.** ${resolve(f.why)}`);
@@ -188,16 +229,21 @@ table{border-collapse:collapse;width:100%;font-size:14px;margin:12px 0}th,td{bor
 .v{font-size:12px;font-weight:700;border-radius:4px;padding:0 5px;color:#fff}.v.pass{background:var(--grn)}.v.fail{background:var(--red)}.v.gap{background:var(--org)}.v.info{background:#6b7280}.v.error{background:#111}
 pre{background:#161b22;color:#e6edf3;padding:12px;border-radius:8px;overflow:auto;font-size:13px}
 .sum td:first-child{white-space:nowrap}
+.st{font-size:13px;font-weight:600;margin:6px 0}.st.fixed{color:var(--grn)}.st.unchanged,.st.notrerun{color:var(--mute)}.st.changed{color:var(--org)}
 </style></head><body><div class="wrap">
 <div class="top"><a href="index.html">← Back to the interactive map</a> · <a href="https://github.com/1AlgoRythm/within-trigger-check">Source and tests on GitHub</a></div>
 <h1>${esc(src.title)}</h1>`);
 for (const p of src.intro) H(`<p>${inline(resolve(p))}</p>`);
 H(`<p class="mute">Tested ${when(stock.meta.ranAt)} on <code>@getwithin/sdk</code> ${stock.meta.sdk.version} (file fingerprint <code>${stock.meta.sdk.distSha256.slice(0, 12)}</code>), Node ${stock.meta.node}, MCP SDK ${stock.meta.mcpSdk}. Line numbers refer to that package's <code>dist/index.js</code>, because Within's source repository is not public (the address in the package's package.json returns 404).</p>`);
-H(`<h2>At a glance</h2><p><strong>${src.findings.length} findings: ${count("High")} High, ${count("Medium")} Medium, ${count("Low")} Low.</strong> ${Object.keys(S).length} automated checks ran against the published package: ${tally(stock).pass} pass, ${tally(stock).fail} fail, ${tally(stock).gap} gap, ${tally(stock).info} information only. A patched copy with ${nProto} small prototype fixes turns ${Object.keys(S).filter((id) => ["fail", "gap"].includes(S[id].verdict) && P[id]?.verdict === "pass").length} of those fails and gaps into passes.</p>`);
-H(`<table class="sum"><tr><th>ID</th><th>Severity</th><th>What</th><th>Prototype fix</th></tr>`);
+if (U) {
+  H(`<h2 id="update-version-040">${esc(src.update040.title)}</h2>`);
+  for (const p of src.update040.paragraphs) H(`<p>${inline(resolve(p))}</p>`);
+}
+H(`<h2>At a glance</h2><p><strong>${src.findings.length} findings: ${count("High")} High, ${count("Medium")} Medium, ${count("Low")} Low.</strong> ${Object.keys(S).length} automated checks ran against the published package (0.3.0): ${tally(stock).pass} pass, ${tally(stock).fail} fail, ${tally(stock).gap} gap, ${tally(stock).info} information only. A patched copy with ${nProto} small prototype fixes turns ${Object.keys(S).filter((id) => ["fail", "gap"].includes(S[id].verdict) && P[id]?.verdict === "pass").length} of those fails and gaps into passes.</p>`);
+H(`<table class="sum"><tr><th>ID</th><th>Severity</th><th>What</th><th>Prototype fix</th>${U ? "<th>In 0.4.0</th>" : ""}</tr>`);
 for (const f of [...src.findings].sort((a, b) => sevOrder[a.severity] - sevOrder[b.severity] || a.id.localeCompare(b.id)))
-  H(`<tr><td><a href="#${f.id.toLowerCase()}">${f.id}</a></td><td><span class="badge ${f.severity}">${f.severity}</span></td><td>${inline(f.title)}</td><td>${f.prototype ?? "none"}</td></tr>`);
-H(`</table><p><strong>If you only fix six things:</strong> W-02 (an outage must not change or break the vendor's own answers), W-09, W-10 and W-11 (what leaves the vendor's server, and what the docs say about it), W-01 (the install steps must work on a new project), and W-04 (never swallow a vendor's own <code>context</code> input).</p>`);
+  H(`<tr><td><a href="#${f.id.toLowerCase()}">${f.id}</a></td><td><span class="badge ${f.severity}">${f.severity}</span></td><td>${inline(f.title)}</td><td>${f.prototype ?? "none"}</td>${U ? `<td><span class="st ${status040(f).key}">${status040(f).short}</span></td>` : ""}</tr>`);
+H(`</table><p><strong>If you only fix six things:</strong> W-02 (an outage must not change or break the vendor's own answers), W-09, W-10 and W-11 (what leaves the vendor's server, and what the docs say about it), W-01 (the install steps must work on a new project${fixedNote("W-01")}), and W-04 (never swallow a vendor's own <code>context</code> input).</p>`);
 H(`<h3 style="margin-top:20px">What the words mean</h3><ul>`);
 for (const s of src.severity) H(`<li><strong>${s.name}.</strong> ${inline(s.meaning)}</li>`);
 H(`<li><span class="v pass">pass</span> did what the docs, or a reasonable vendor, would expect.</li><li><span class="v fail">FAIL</span> contradicts the package's own docs, or breaks something a vendor would reasonably expect.</li><li><span class="v gap">gap</span> documented or deliberate behaviour that leaves a risk, or behaviour the docs do not mention. A decision for Within's team.</li><li><span class="v info">info</span> a measurement with no judgement attached.</li></ul>`);
@@ -205,6 +251,7 @@ for (const g of groups) {
   H(`<h2>${esc(g)}</h2>`);
   for (const f of src.findings.filter((x) => x.group === g)) {
     H(`<div class="card ${f.severity}" id="${f.id.toLowerCase()}"><h3><span class="badge ${f.severity}">${f.severity}</span>${f.id} · ${inline(f.title)}</h3>`);
+    if (U) H(`<p class="st ${status040(f).key}"><strong>In 0.4.0.</strong> ${esc(status040(f).label)}</p>`);
     H(`<div class="k">In plain words</div><p>${inline(resolve(f.plain))}</p><div class="k">Why it matters</div><p>${inline(resolve(f.why))}</p>`);
     if (f.tests.length) {
       H(`<div class="k">What we measured</div><ul>`);

@@ -8,3 +8,5 @@ docs/explorer/*.visual-check.*
 stress/patched-sdk/
 stress/node_modules/
 stress/patched-sdk-v1/
+# a published SDK version unpacked for testing (see stress/README.md, "Run it on another version"); not ours to redistribute
+stress/sdk-*/

@@ -8,34 +8,48 @@ Everything ran on our own machine, against the published package (version 0.3.0)
 
 Tested 2026-11-19 05:00 UTC on `@getwithin/sdk` 0.3.0 (file fingerprint `658d812c0ae1`), Node v26.13.0, MCP SDK 1.32.2. Line numbers below refer to that package's `dist/index.js`, because Within's source repository is not public (the address in the package's package.json returns 404).
 
+## Update 2026-11-20: version 0.4.0
+
+Within published version 0.4.0 at 14:39 UTC on 2026-11-20, after the tests above were run on 0.3.0. We ran the same 43 checks on it on 2026-11-20 21:23 UTC. Result: 11 pass, 14 gap, 8 fail and 10 information only. On 0.3.0 it was 8 pass, 14 gap, 11 fail and 10 information only.
+
+3 checks changed result: F1 (fail to pass), F2 (fail to pass), F3 (fail to pass). They fix W-01, W-14. Every other check gave the same verdict as on 0.3.0. Of the 6 High findings, fixed: W-01. Unchanged: W-02, W-04, W-09, W-10, W-11.
+
+One measurement changed without changing a verdict: the text Within adds to every server's instructions grew from 2,595 to 2,901 characters (check D5). Wherever this report quotes that length, it is the 0.3.0 length.
+
+Line numbers and code quotes in the findings below are for the 0.3.0 file, `dist/index.js`. They were not updated for 0.4.0.
+
+**Where the 0.4.0 copy came from.** npmmirror.com copy of 0.4.0 (npmjs.org returned 404 for the package on 2026-11-20); sha512 integrity matches the mirror's listing: sha512-Kle6l4ZAo0GRF136R4d/GfsNySc0By4nR+gKBHtSnb/MUMQaEOGoERRXfS1/Yk09mzwYLr/M9hn97E31rEJYYA==. We could not compare it with npm's own hash. Its file fingerprint is `56be6b34c9d7`; the 0.3.0 one is `658d812c0ae1`.
+
+**Not re-run on 0.4.0.** The real-Claude runs (W-20 and the comparison wording), the prototype-patch copy (its patches were written for 0.3.0 and may no longer apply), and the new `doctor` module and `getwithin-sdk` command in the package. New code is only tested where the 43 checks reach it. To reproduce the 0.4.0 run, see `stress/README.md`, "Run it on another version".
+
 ## At a glance
 
-**20 findings: 6 High, 10 Medium, 4 Low.** 43 automated checks ran against the published package: 8 pass, 11 fail, 14 gap (documented or undocumented behaviour worth a decision), 10 information only. A patched copy with 11 small prototype fixes turns 11 of those fails and gaps into passes.
+**20 findings: 6 High, 10 Medium, 4 Low.** 43 automated checks ran against the published package (0.3.0): 8 pass, 11 fail, 14 gap (documented or undocumented behaviour worth a decision), 10 information only. A patched copy with 11 small prototype fixes turns 11 of those fails and gaps into passes.
 
-| ID | Severity | What | Prototype fix |
-|---|---|---|---|
-| [W-01](#w-01) | High | The docs' own install steps crash on a new project | P10 |
-| [W-02](#w-02) | High | When Within is down, the vendor's own answers can be changed, or fail | P1 |
-| [W-04](#w-04) | High | A vendor tool that already has an input called `context` silently loses it | P2 |
-| [W-09](#w-09) | High | Tools the vendor chose NOT to wrap still report to Within | P6 |
-| [W-10](#w-10) | High | The AI's goal summary goes to Within with private details in it, and the docs table does not list it | none |
-| [W-11](#w-11) | High | The customer's full question goes to Within unredacted, and the docs do not say so | none |
-| [W-03](#w-03) | Medium | A hung Within adds 5 seconds to every successful wrapped tool call, every time | none |
-| [W-05](#w-05) | Medium | If the AI writes a goal longer than 300 characters, the whole tool call is rejected | P3 |
-| [W-08](#w-08) | Medium | With argument capture on, very long text without spaces can freeze the vendor's server for seconds | P5 |
-| [W-12](#w-12) | Medium | Error messages carry private details to Within even when argument capture is off | none |
-| [W-13](#w-13) | Medium | With argument capture on, tool results also leave, and several secrets slip through | none |
-| [W-14](#w-14) | Medium | The docs describe a login-provider option that is not in the published package | none |
-| [W-15](#w-15) | Medium | The docs say a banned phrase replaces one paragraph. The code replaces all of the vendor's instructions | P7 |
-| [W-18](#w-18) | Medium | On the SDK side, consent rests on the AI, because the SDK itself does not check that the customer chose | none |
-| [W-19](#w-19) | Medium | On servers that keep no sessions, a rep's offer cannot find the customer | none |
-| [W-20](#w-20) | Medium | A small AI model sometimes (3 of 10) treats "compare two companies" as a sales question | P11 |
-| [W-06](#w-06) | Low | When a rep's offer is attached, the vendor's own `_meta` data is removed | P4 |
-| [W-07](#w-07) | Low | If the vendor's customer-identity function throws, the customer's tool call fails | P8 |
-| [W-16](#w-16) | Low | A wrong key or a missing URL fails silently | P9 |
-| [W-17](#w-17) | Low | Two lists of private-network addresses are defined and never used | none |
+| ID | Severity | What | Prototype fix | In 0.4.0 |
+|---|---|---|---|---|
+| [W-01](#w-01) | High | The docs' own install steps crash on a new project | P10 | **fixed** |
+| [W-02](#w-02) | High | When Within is down, the vendor's own answers can be changed, or fail | P1 | unchanged |
+| [W-04](#w-04) | High | A vendor tool that already has an input called `context` silently loses it | P2 | unchanged |
+| [W-09](#w-09) | High | Tools the vendor chose NOT to wrap still report to Within | P6 | unchanged |
+| [W-10](#w-10) | High | The AI's goal summary goes to Within with private details in it, and the docs table does not list it | none | unchanged |
+| [W-11](#w-11) | High | The customer's full question goes to Within unredacted, and the docs do not say so | none | unchanged |
+| [W-03](#w-03) | Medium | A hung Within adds 5 seconds to every successful wrapped tool call, every time | none | unchanged |
+| [W-05](#w-05) | Medium | If the AI writes a goal longer than 300 characters, the whole tool call is rejected | P3 | unchanged |
+| [W-08](#w-08) | Medium | With argument capture on, very long text without spaces can freeze the vendor's server for seconds | P5 | unchanged |
+| [W-12](#w-12) | Medium | Error messages carry private details to Within even when argument capture is off | none | unchanged |
+| [W-13](#w-13) | Medium | With argument capture on, tool results also leave, and several secrets slip through | none | unchanged |
+| [W-14](#w-14) | Medium | The docs describe a login-provider option that is not in the published package | none | **fixed** |
+| [W-15](#w-15) | Medium | The docs say a banned phrase replaces one paragraph. The code replaces all of the vendor's instructions | P7 | unchanged |
+| [W-18](#w-18) | Medium | On the SDK side, consent rests on the AI, because the SDK itself does not check that the customer chose | none | unchanged |
+| [W-19](#w-19) | Medium | On servers that keep no sessions, a rep's offer cannot find the customer | none | unchanged |
+| [W-20](#w-20) | Medium | A small AI model sometimes (3 of 10) treats "compare two companies" as a sales question | P11 | not re-run |
+| [W-06](#w-06) | Low | When a rep's offer is attached, the vendor's own `_meta` data is removed | P4 | unchanged |
+| [W-07](#w-07) | Low | If the vendor's customer-identity function throws, the customer's tool call fails | P8 | unchanged |
+| [W-16](#w-16) | Low | A wrong key or a missing URL fails silently | P9 | unchanged |
+| [W-17](#w-17) | Low | Two lists of private-network addresses are defined and never used | none | unchanged |
 
-**If you only fix six things:** W-02 (an outage must not change or break the vendor's own answers), W-09, W-10 and W-11 (what leaves the vendor's server, and what the docs say about it), W-01 (the install steps must work on a new project), and W-04 (never swallow a vendor's own `context` input).
+**If you only fix six things:** W-02 (an outage must not change or break the vendor's own answers), W-09, W-10 and W-11 (what leaves the vendor's server, and what the docs say about it), W-01 (the install steps must work on a new project; fixed in 0.4.0), and W-04 (never swallow a vendor's own `context` input).
 
 ### What the severity words mean
 
@@ -55,6 +69,8 @@ Tested 2026-11-19 05:00 UTC on `@getwithin/sdk` 0.3.0 (file fingerprint `658d812
 ### W-01
 
 **High: The docs' own install steps crash on a new project**
+
+**In 0.4.0.** Fixed in 0.4.0: its checks now pass.
 
 **In plain words.** A developer follows the docs line by line on a new project, and their server refuses to start with the error "Mixed Zod versions detected". Zod is a small library that describes what a tool's inputs must look like. The docs say the package shares the developer's copy of Zod. It actually ships its own private copy, and npm installs the developer's newer copy next to it.
 
@@ -85,6 +101,8 @@ Tested 2026-11-19 05:00 UTC on `@getwithin/sdk` 0.3.0 (file fingerprint `658d812
 
 **High: When Within is down, the vendor's own answers can be changed, or fail**
 
+**In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
+
 **In plain words.** The docs promise that if Within cannot be reached, the vendor's result still comes back with one extra line. The extra line does arrive. But the SDK also writes `status: "service_unreachable"` into the vendor's structured data, overwriting any `status` the vendor already uses. A tool whose declared output format restricts a `status` field (for example to fixed values), or forbids extra fields, fails outright during the outage with an "Output validation error".
 
 **Why it matters.** A Within outage becomes the vendor's own outage for tools like that. The customer sees an error from the vendor's product. Even when it works, the chat ends with "The service is unreachable.", which (in our reading) looks as if the vendor's product is broken.
@@ -111,6 +129,8 @@ Tested 2026-11-19 05:00 UTC on `@getwithin/sdk` 0.3.0 (file fingerprint `658d812
 ### W-03
 
 **Medium: A hung Within adds 5 seconds to every successful wrapped tool call, every time**
+
+**In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
 
 **In plain words.** The docs say calls to Within stop after 5 seconds, and that is true. But the SDK has no memory: when Within hangs, call after call waits the full 5 seconds. It also makes two requests to Within for every successful wrapped tool call, even when no offer is waiting.
 
@@ -140,6 +160,8 @@ Tested 2026-11-19 05:00 UTC on `@getwithin/sdk` 0.3.0 (file fingerprint `658d812
 
 **High: A vendor tool that already has an input called `context` silently loses it**
 
+**In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
+
 **In plain words.** Within adds an optional "goal" input named `context` to every tool registered with `registerTool` after install (except tools marked app-only). If the vendor's tool already has an input with that name (an ordinary name for an input), Within takes the customer's value out before the vendor's code runs, and sends it to Within as the "goal".
 
 **Why it matters.** The vendor's tool behaves wrongly with no error message (the call returns normally), because an input it needs is missing. And whatever was in that input, up to 300 characters, goes to Within.
@@ -166,6 +188,8 @@ Tested 2026-11-19 05:00 UTC on `@getwithin/sdk` 0.3.0 (file fingerprint `658d812
 
 **Medium: If the AI writes a goal longer than 300 characters, the whole tool call is rejected**
 
+**In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
+
 **In plain words.** The extra goal input is limited to 300 characters. Models are often wordy. When one writes a longer goal, validation rejects the whole call instead of trimming the text.
 
 **Why it matters.** The vendor's tool fails whenever the model writes more than 300 characters. If the model retries, the retry costs time, and the customer may see a failed tool.
@@ -190,6 +214,8 @@ Tested 2026-11-19 05:00 UTC on `@getwithin/sdk` 0.3.0 (file fingerprint `658d812
 ### W-06
 
 **Low: When a rep's offer is attached, the vendor's own `_meta` data is removed**
+
+**In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
 
 **In plain words.** The docs say the vendor's tool result stays intact, and that an offer adds one line of text and one extra field. The SDK also deletes the result's `_meta`, a place where vendors keep hints and trace ids.
 
@@ -217,6 +243,8 @@ Tested 2026-11-19 05:00 UTC on `@getwithin/sdk` 0.3.0 (file fingerprint `658d812
 
 **Low: If the vendor's customer-identity function throws, the customer's tool call fails**
 
+**In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
+
 **In plain words.** A vendor can pass a function that works out who the customer is. If that function throws, for example because a session store is down, the vendor's tool call fails even though the tool itself worked.
 
 **Why it matters.** A helper meant for Within's records can take down the vendor's real feature.
@@ -240,6 +268,8 @@ Tested 2026-11-19 05:00 UTC on `@getwithin/sdk` 0.3.0 (file fingerprint `658d812
 ### W-08
 
 **Medium: With argument capture on, very long text without spaces can freeze the vendor's server for seconds**
+
+**In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
 
 **In plain words.** The privacy filter that hides email addresses uses a text pattern that gets much slower as the text gets longer, if the text has no spaces. With argument capture on, 20,000 letters took about 800 ms, 40,000 took about 3180 ms and 80,000 took about 9788 ms (the median of three runs on a quiet laptop; a busier machine is slower). During that time the whole server process cannot answer anyone. Error messages go through the same filter even with default settings: 40,000 characters took about 868 ms. Ordinary prose and spaced-out digits are fine.
 
@@ -269,6 +299,8 @@ Tested 2026-11-19 05:00 UTC on `@getwithin/sdk` 0.3.0 (file fingerprint `658d812
 
 **High: Tools the vendor chose NOT to wrap still report to Within**
 
+**In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
+
 **In plain words.** The docs say: wrap the tools you want Within to see. In practice the SDK hooks every tool registered with `registerTool` after install (the older `server.tool()` call is not hooked). If the AI fills in the goal input on an unwrapped tool, Within receives the tool's name, whether it worked, and the goal text. With argument capture on, it also receives the tool's arguments.
 
 **Why it matters.** A vendor who leaves a sensitive internal tool unwrapped to keep it private is not protected. In our test, with argument capture on, an HR lookup's arguments, including a name and a phone number, reached the stand-in.
@@ -292,6 +324,8 @@ Tested 2026-11-19 05:00 UTC on `@getwithin/sdk` 0.3.0 (file fingerprint `658d812
 ### W-10
 
 **High: The AI's goal summary goes to Within with private details in it, and the docs table does not list it**
+
+**In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
 
 **In plain words.** Whenever the AI fills in the optional goal note about what the customer wants (Claude did in our runs), the SDK sends it to Within. Within's home page says "PII redacted before storage". The docs narrow that to "when arguments are captured". The SDK hides emails, keys that start with `sk-` or `sb_`, bearer tokens and valid card numbers. It does not hide phone numbers, names, street addresses, social security numbers, the letters of a bank account number (IBAN: its digits look like a card number, so they are hidden), or keys in other formats such as Stripe, AWS, GitHub and JWT. The "What leaves your server" table does not mention this note at all, and it is sent even when argument capture is off.
 
@@ -321,6 +355,8 @@ Tested 2026-11-19 05:00 UTC on `@getwithin/sdk` 0.3.0 (file fingerprint `658d812
 
 **High: The customer's full question goes to Within unredacted, and the docs do not say so**
 
+**In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
+
 **In plain words.** The docs table says that for `get_vendor_answer`, Within gets the topic and sends back the saved answer. The SDK also sends the customer's whole question, up to 2,000 characters, exactly as the model wrote it.
 
 **Why it matters.** A question like "Hi, I'm Priya Raman, call me on 617 555 0142" reaches Within as written. Within presumably needs the question to choose an answer, so sending it is understandable. Not saying so is the problem.
@@ -346,6 +382,8 @@ Tested 2026-11-19 05:00 UTC on `@getwithin/sdk` 0.3.0 (file fingerprint `658d812
 
 **Medium: Error messages carry private details to Within even when argument capture is off**
 
+**In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
+
 **In plain words.** When a vendor's tool fails, the first 160 characters of the error message are sent to Within on every failed call to a wrapped tool. Error messages often contain what the customer typed. The SDK hides emails and cards in it but not phone numbers or names.
 
 **Why it matters.** A message like "No account for priya@acme.com, phone (617) 555-0142" leaves the vendor's server even though the vendor never switched capture on. The docs do not describe error text.
@@ -368,6 +406,8 @@ Tested 2026-11-19 05:00 UTC on `@getwithin/sdk` 0.3.0 (file fingerprint `658d812
 ### W-13
 
 **Medium: With argument capture on, tool results also leave, and several secrets slip through**
+
+**In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
 
 **In plain words.** The docs say capture stores the tool's arguments, after redaction. The SDK also sends the first 160 characters of the tool's result. And the filter misses several kinds of secret, both in values and in argument names: `pwd`, `passphrase`, `private_key`, `credentials`, `session`, `dob` and `iban` are not treated as secret names.
 
@@ -398,6 +438,8 @@ Tested 2026-11-19 05:00 UTC on `@getwithin/sdk` 0.3.0 (file fingerprint `658d812
 
 **Medium: The docs describe a login-provider option that is not in the published package**
 
+**In 0.4.0.** Fixed in 0.4.0: its checks now pass.
+
 **In plain words.** The docs list an `identity` option for Auth0, WorkOS and Clerk, so that a token with only a user id can be turned into a name and email. The published package has no code for it. Passing the option does nothing, and no lookup is made.
 
 **Why it matters.** A vendor who relies on the docs will likely see only bare user ids in Within's Live users list, and will not know why.
@@ -420,6 +462,8 @@ Tested 2026-11-19 05:00 UTC on `@getwithin/sdk` 0.3.0 (file fingerprint `658d812
 ### W-15
 
 **Medium: The docs say a banned phrase replaces one paragraph. The code replaces all of the vendor's instructions**
+
+**In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
 
 **In plain words.** The docs say that if the vendor's server instructions contain one of five phrases ("Do not mention" and similar), the paragraph holding it is replaced by Within's text. The code replaces the vendor's entire instructions with Within's text. It only happens when the vendor did not paste `SERVER_INSTRUCTIONS` into its own text, as the quickstart does. And the check is case-sensitive, so "do not mention" and "Never mention" are untouched.
 
@@ -447,6 +491,8 @@ Tested 2026-11-19 05:00 UTC on `@getwithin/sdk` 0.3.0 (file fingerprint `658d812
 ### W-16
 
 **Low: A wrong key or a missing URL fails silently**
+
+**In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
 
 **In plain words.** If Within answers a wrong API key with a 401 (the stand-in does, and the real API did once, per this repo's README), the SDK treats it as normal, so Within silently does nothing, and nothing is logged. If the URL is left out, which the homepage snippet allows, every call goes to a local address and every customer answer ends with "The service is unreachable.". A key made only of spaces is accepted.
 
@@ -476,6 +522,8 @@ Tested 2026-11-19 05:00 UTC on `@getwithin/sdk` 0.3.0 (file fingerprint `658d812
 
 **Low: Two lists of private-network addresses are defined and never used**
 
+**In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
+
 **In plain words.** The package builds two lists of private network addresses, the kind a safety check would use before contacting a web address. No code checks any address against them.
 
 **Why it matters.** Nothing is broken. It may be a safety check that was planned and not finished; the published file does not say. Our own earlier research note wrongly said this list guarded the identity lookups, which do not exist in this version.
@@ -499,6 +547,8 @@ Tested 2026-11-19 05:00 UTC on `@getwithin/sdk` 0.3.0 (file fingerprint `658d812
 ### W-18
 
 **Medium: On the SDK side, consent rests on the AI, because the SDK itself does not check that the customer chose**
+
+**In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
 
 **In plain words.** The tool that opens a live chat, `confirm_assistance`, is visible to the AI. Called with no arguments, it asks Within to accept the rep's pending offer. A click on the card adds a one-time code, but the docs say a text-only host may leave it out. In our local test the SDK sent the accept to the stand-in with no click and no code, and (because the stand-in accepted it) told the AI "You are connected with Sarah.". Whether Within's server refuses such an accept is not visible from outside.
 
@@ -530,6 +580,8 @@ Tested 2026-11-19 05:00 UTC on `@getwithin/sdk` 0.3.0 (file fingerprint `658d812
 
 **Medium: On servers that keep no sessions, a rep's offer cannot find the customer**
 
+**In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
+
 **In plain words.** The docs say a rep's offer is delivered on the customer's next tool call in that session, and that a new connection gets a new session id. In check C9, three connections got three ids. By the code at lines 3585 to 3599, a server that builds a new transport for every request gets a new id on every call (inferred from the code, not run over real HTTP).
 
 **Why it matters.** The offer is addressed to a session. If the id changes with every call, the offer may have nowhere to arrive, unless the vendor supplies a stable user id. Whether Within's server falls back to the user id is not visible.
@@ -554,6 +606,8 @@ Tested 2026-11-19 05:00 UTC on `@getwithin/sdk` 0.3.0 (file fingerprint `658d812
 ### W-20
 
 **Medium: A small AI model sometimes (3 of 10) treats "compare two companies" as a sales question**
+
+**In 0.4.0.** Not re-run on 0.4.0: no automated check covers it.
 
 **In plain words.** The trigger list tells the AI to call Within for "a competitive comparison". A small model reads that as any comparison. Asked "Compare Ledgerly and Paywise", two companies in the vendor's own data, Claude Haiku 5.5 sent the question to Within 3 of 10 times in the re-run. With one clarifying phrase added it was 0 of 10, and real competitor questions still went to Within (10 of 10 and 10 of 10).
 
