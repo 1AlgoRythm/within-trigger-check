@@ -13,7 +13,7 @@
     "views": [
       {
         "id": "decision",
-        "label": "The decision (W-20)",
+        "label": "Decision",
         "focus": [
           "customer",
           "model",
@@ -23,7 +23,7 @@
       },
       {
         "id": "answer",
-        "label": "The answer",
+        "label": "Answer",
         "focus": [
           "model",
           "sdk",
@@ -41,6 +41,16 @@
           "api"
         ],
         "note": "Within's promise: a rep joins only after the customer says yes. See W-18 for what the SDK itself checks."
+      },
+      {
+        "id": "new-in-040",
+        "label": "New in 0.4.0",
+        "focus": [
+          "model",
+          "sdk",
+          "api"
+        ],
+        "note": "New: Within's invitation line (hubs on; repeated in 40 of 40 runs) and report_void (topics only)."
       }
     ]
   },
@@ -83,7 +93,7 @@
       "id": "m2",
       "from": "model",
       "to": "sdk",
-      "y": 208,
+      "y": 194,
       "label": "get_vendor_answer (the model's choice)",
       "variant": "emphasis"
     },
@@ -91,7 +101,7 @@
       "id": "m3",
       "from": "sdk",
       "to": "api",
-      "y": 250,
+      "y": 222,
       "label": "POST /v1/answers",
       "variant": "default"
     },
@@ -99,8 +109,24 @@
       "id": "m4",
       "from": "api",
       "to": "sdk",
-      "y": 292,
+      "y": 250,
       "label": "saved answer",
+      "variant": "return"
+    },
+    {
+      "id": "m4b",
+      "from": "sdk",
+      "to": "api",
+      "y": 278,
+      "label": "/v1/hubs/invite (only if hubs is on)",
+      "variant": "default"
+    },
+    {
+      "id": "m4c",
+      "from": "api",
+      "to": "sdk",
+      "y": 306,
+      "label": "an invitation line, written by Within",
       "variant": "return"
     },
     {
@@ -115,7 +141,7 @@
       "id": "m6",
       "from": "model",
       "to": "customer",
-      "y": 376,
+      "y": 362,
       "label": "price, and a card offering a person",
       "variant": "return"
     },
@@ -123,7 +149,7 @@
       "id": "m7",
       "from": "customer",
       "to": "model",
-      "y": 418,
+      "y": 390,
       "label": "says yes on the card",
       "variant": "default"
     },
@@ -131,7 +157,7 @@
       "id": "m8",
       "from": "model",
       "to": "sdk",
-      "y": 460,
+      "y": 418,
       "label": "confirm_assistance",
       "variant": "emphasis"
     },
@@ -139,8 +165,24 @@
       "id": "m9",
       "from": "sdk",
       "to": "api",
-      "y": 502,
+      "y": 446,
       "label": "/v1/offers accept, a rep joins",
+      "variant": "default"
+    },
+    {
+      "id": "m10",
+      "from": "model",
+      "to": "sdk",
+      "y": 474,
+      "label": "report_void: what the customer asked",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m11",
+      "from": "sdk",
+      "to": "api",
+      "y": 502,
+      "label": "/v1/activity, the phrase as written",
       "variant": "default"
     }
   ],
@@ -149,18 +191,18 @@
       "dot": "rose",
       "title": "The weak spot (W-20)",
       "items": [
-        "Step 2 rests on about 2,600 characters of instructions",
-        "Haiku 5.5 sent 'Compare Ledgerly and Paywise' to Within 3 of 10 times",
-        "Sonnet 5.5: 0 of 10"
+        "Step 2 rests on about 2,900 characters of instructions",
+        "Haiku 5.5: 11 of 30 on 0.4.0 (23 of 30 on 0.3.0, same day)",
+        "Sonnet 5.5: 0 of 10 on both versions"
       ]
     },
     {
       "dot": "emerald",
       "title": "What held up",
       "items": [
-        "Recall was 10/10 in all five full runs",
-        "Spanish, German, rate-limit, relayed and renewal questions all reached Within (21 of 21)",
-        "The reworded trigger cut the false alarm to 0 of 10"
+        "Recall 10/10 on 0.3.0, 30 of 30 on 0.4.0",
+        "Spanish, German, rate-limit, relayed, renewal questions all reached Within (15 of 15 now)",
+        "Reworded trigger: false alarm 0 of 30 on 0.4.0"
       ]
     }
   ]

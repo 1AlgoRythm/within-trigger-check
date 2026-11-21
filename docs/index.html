@@ -38,8 +38,8 @@
 <body>
 <header>
   <h1>How Within works, as a map you can click into</h1>
-  <p class="sub">Built from Within's public docs, the published <code>@getwithin/sdk</code> 0.3.0 and probe runs on a local stub. Click the orange <b>⤢</b> on a box, or double-click it, to go one level deeper. Part of <a href="https://github.com/1AlgoRythm/within-trigger-check">Trigger check</a>. <b><a href="findings.html">Read all 26 findings in plain words →</a></b></p>
-  <p class="sub"><b>Updated 2026-11-20.</b> This map shows version 0.3.0. Within's new version 0.4.0 fixed two of the problems (W-01, W-14) and adds six new ones (W-21 to W-26); the details, and where the package can now be downloaded, are in <a href="findings.html#update-version-040">the update on the findings page</a>.</p>
+  <p class="sub">Built from Within's public docs, the published <code>@getwithin/sdk</code> 0.3.0 and 0.4.0 and probe runs on a local stub. Click the orange <b>⤢</b> on a box, or double-click it, to go one level deeper. Part of <a href="https://github.com/1AlgoRythm/within-trigger-check">Trigger check</a>. <b><a href="findings.html">Read all 26 findings in plain words →</a></b></p>
+  <p class="sub"><b>Updated 2026-11-21.</b> This map now shows version 0.4.0. What is new in it is on the <b>New in 0.4.0</b> screen, one level below the SDK box. Fixed findings are marked in the boxes. What changed, and where the package can now be downloaded, are in <a href="findings.html#update-version-040">the update on the findings page</a>.</p>
 </header>
 <nav class="crumbs" id="crumbs" aria-label="Where you are"></nav>
 <div class="note" id="note" hidden></div>
@@ -52,23 +52,34 @@
 const S = {
   l1: { title: "Within, end to end", file: "explorer/l1-within-end-to-end.html", kind: "arch",
         note: ["read", "Read from Within's docs and the SDK source. W-numbers in the box text point to findings in the stress-test report."],
-        drill: { sdk: "l2-sdk", host: "l2-decision", api: "l2-within", card: "leaf-steer" } },
+        drill: { sdk: "l2-sdk", host: "l2-decision", api: "l2-within", card: "leaf-steer", doctor: "l2-new" },
+        extra: ["l2-new"] },
   "l2-sdk": { title: "Inside the SDK", file: "explorer/l2-inside-the-sdk.html", kind: "arch",
         note: ["read", "Read from the published SDK source. Each box with a W-number opens a hand-drawn diagram of that finding, or use the chips below."],
         drill: { instr: "leaf-instr", zod: "leaf-zod", ctx: "leaf-pii", wrap: "leaf-wait", tools3: "leaf-flow", http: "leaf-outage", patch: "leaf-unwrapped" },
-        extra: ["leaf-ctxlost"] },
+        extra: ["leaf-ctxlost", "l2-new"] },
   "l2-decision": { title: "One buying question", file: "explorer/l2-the-decision.html", kind: "arch",
         note: ["measured", "Step 2 is the model's choice. The numbers on the cards are from saved runs against Claude (see stress/results)."],
         drill: { model: "leaf-weak" },
-        extra: ["leaf-weak", "leaf-recall", "leaf-false", "leaf-steer"] },
+        extra: ["leaf-weak", "leaf-recall", "leaf-false", "leaf-steer", "f-w22"] },
   "l2-within": { title: "Within's side", file: "explorer/l2-within-side.html", kind: "arch",
         note: ["read", "The /v1 routes come from the SDK source. Within's server code is private, so what happens inside it is not visible."],
-        drill: { ans: "leaf-flow", act: "leaf-pii", off: "leaf-steer" } },
+        drill: { ans: "leaf-flow", act: "leaf-pii", off: "leaf-steer", hubsr: "f-w24", checks: "f-w25", doctor: "f-w25" } },
+  "l2-new": { title: "New in 0.4.0", file: "explorer/l2-new-in-040.html", kind: "arch",
+        note: ["measured", "Read from the 0.4.0 file and tested with checks N1 to N9 and real Claude runs. A box with a W-number opens that finding on the findings page."],
+        drill: { fields: "f-w21", tools4: "f-w22", hubs: "f-w24", doctor: "f-w25", checks: "f-w25" },
+        extra: ["f-w23", "f-w26"] },
+  "f-w21": { title: "W-21 \u00b7 The login token is sent", file: "findings.html#w-21", kind: "arch", note: ["measured", "Check N1, on the findings page. Whether Within's server verifies the token is not visible from outside."] },
+  "f-w22": { title: "W-22 \u00b7 report_void sends the customer's words", file: "findings.html#w-22", kind: "arch", note: ["measured", "Check N5 and real Claude runs on Haiku and Sonnet: 37 calls, no personal detail copied."] },
+  "f-w23": { title: "W-23 \u00b7 The app name fallback", file: "findings.html#w-23", kind: "arch", note: ["measured", "Check N4, on the findings page."] },
+  "f-w24": { title: "W-24 \u00b7 Within's text inside the vendor's result", file: "findings.html#w-24", kind: "arch", note: ["measured", "Check N8 and 40 real Claude runs with hubs on. The sentence was our stand-in text."] },
+  "f-w25": { title: "W-25 \u00b7 The doctor command misses W-04", file: "findings.html#w-25", kind: "arch", note: ["measured", "Checks N6 and N7, on the findings page."] },
+  "f-w26": { title: "W-26 \u00b7 hub_card is app-only by label", file: "findings.html#w-26", kind: "arch", note: ["measured", "Check N9, on the findings page."] },
   "leaf-flow":   { title: "What Within does today", file: "diagrams/01-what-within-does.svg", kind: "leaf", note: ["read", "Read from Within's docs and SDK source."] },
   "leaf-weak":   { title: "The weak spot (W-20)", file: "diagrams/02-the-weak-spot.svg", kind: "leaf", note: ["measured", "The model decides from written instructions whether to call Within."] },
   "leaf-recall": { title: "Recall and precision", file: "diagrams/05-recall-and-precision.svg", kind: "leaf", note: ["measured", "Run 1 of 5 full runs, Haiku 5.5 on a local stub."] },
-  "leaf-false":  { title: "W-20 · False alarm and fixes", file: "diagrams/06-false-alarm-and-fixes.svg", kind: "leaf", note: ["measured", "Re-run on 2026-11-18, 10 runs per cell on Haiku 5.5. Original 3 of 10, fix v1 6 of 10, fix v2 0 of 10."] },
-  "leaf-zod":    { title: "W-01 · The Zod crash", file: "diagrams/07-zod-bug.svg", kind: "leaf", note: ["measured", "Checks F1 and F2: the docs' install line crashes on a fresh install."] },
+  "leaf-false":  { title: "W-20 · False alarm and fixes", file: "diagrams/06-false-alarm-and-fixes.svg", kind: "leaf", note: ["measured", "0.3.0, re-run on 2026-11-18, 10 runs per cell on Haiku 5.5: original 3 of 10, fix v1 6 of 10, fix v2 0 of 10. On 0.4.0 the original went to Within 11 of 30 times (23 of 30 on 0.3.0 the same day), and fix v2 0 of 30."] },
+  "leaf-zod":    { title: "W-01 · The Zod crash", file: "diagrams/07-zod-bug.svg", kind: "leaf", note: ["measured", "Checks F1 and F2 on 0.3.0: the docs' install line crashes on a fresh install. Fixed in 0.4.0, where both checks pass."] },
   "leaf-pii":    { title: "W-10 · The goal text gap", file: "diagrams/08-pii-gap.svg", kind: "leaf", note: ["measured", "Checks C1 and C2. Within's server may redact more after the text arrives, and that is not visible."] },
   "leaf-instr":  { title: "W-15 · Instructions replaced", file: "diagrams/10-instructions-deleted.svg", kind: "leaf", note: ["measured", "Checks D1 to D3 are measured. The proposal at the bottom is judgment."] },
   "leaf-wait":   { title: "W-03 · Every call waits", file: "diagrams/11-every-call-waits.svg", kind: "leaf", note: ["measured", "Check A8b, against a laptop stub. The proposal at the bottom is judgment."] },

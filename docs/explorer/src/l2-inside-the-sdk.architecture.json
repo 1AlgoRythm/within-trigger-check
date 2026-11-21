@@ -15,7 +15,7 @@
           "tools3",
           "patch"
         ],
-        "note": "One install call does the setup."
+        "note": "One install call does the setup. New in 0.4.0: report_void is registered by default."
       },
       {
         "id": "each-call",
@@ -39,9 +39,10 @@
           "ctx",
           "wrap",
           "patch",
-          "http"
+          "http",
+          "tools3"
         ],
-        "note": "Each tagged box has a hand-drawn diagram one click deeper, or a chip below."
+        "note": "Each tagged box has a hand-drawn diagram one click deeper. W-01 is fixed in 0.4.0. New parts: see New in 0.4.0."
       }
     ]
   },
@@ -64,7 +65,7 @@
       "id": "instr",
       "type": "backend",
       "label": "Server instructions",
-      "sublabel": "~2,600 chars \u00b7 W-15",
+      "sublabel": "~2,900 chars · W-15",
       "pos": [
         300,
         40
@@ -77,8 +78,8 @@
     {
       "id": "tools3",
       "type": "backend",
-      "label": "Within's 3 tools",
-      "sublabel": "plus 2 card pages",
+      "label": "Within's 4 tools",
+      "sublabel": "incl. report_void · W-22",
       "pos": [
         570,
         40
@@ -92,7 +93,7 @@
       "id": "patch",
       "type": "backend",
       "label": "registerTool patch",
-      "sublabel": "every tool \u00b7 W-09",
+      "sublabel": "every tool · W-09",
       "pos": [
         840,
         40
@@ -120,7 +121,7 @@
       "id": "wrap",
       "type": "backend",
       "label": "Call wrapper",
-      "sublabel": "reports each call \u00b7 W-03",
+      "sublabel": "reports each call · W-03",
       "pos": [
         570,
         175
@@ -134,7 +135,7 @@
       "id": "ctx",
       "type": "backend",
       "label": "Context field",
-      "sublabel": "goal text \u00b7 W-04/05/10",
+      "sublabel": "goal text · W-04/05/10",
       "pos": [
         840,
         175
@@ -148,7 +149,7 @@
       "id": "api",
       "type": "cloud",
       "label": "Within API",
-      "sublabel": "/v1/activity, /v1/offers",
+      "sublabel": "/v1/activity, offers, hubs",
       "pos": [
         30,
         310
@@ -162,7 +163,7 @@
       "id": "http",
       "type": "cloud",
       "label": "HTTP client",
-      "sublabel": "5 s cap \u00b7 W-02",
+      "sublabel": "5 s cap · W-02",
       "pos": [
         570,
         310
@@ -176,7 +177,7 @@
       "id": "zod",
       "type": "external",
       "label": "Zod schema",
-      "sublabel": "SDK's own copy \u00b7 W-01",
+      "sublabel": "vendor's own copy · W-01 fixed",
       "pos": [
         840,
         310
@@ -281,13 +282,13 @@
   "cards": [
     {
       "dot": "cyan",
-      "title": "install() does five things",
+      "title": "install() does these things",
       "items": [
-        "Appends its note to the server instructions",
+        "Appends its note (~2,900 chars) to the server instructions",
         "Replaces ALL vendor text if a banned phrase is in it",
-        "Registers 3 tools and 2 card pages",
+        "Registers 4 tools and 2 card pages (open_hub and hub_card too, if hubs is on)",
         "Patches registerTool",
-        "Pings /v1/install"
+        "Pings /v1/install, now with the hubs flag"
       ]
     },
     {
@@ -295,7 +296,7 @@
       "title": "Every successful wrapped call, two network calls",
       "items": [
         "Runs the vendor's handler, sends /v1/activity",
-        "Then waits on /v1/offers/deliver for a rep's offer",
+        "Then waits on /v1/offers/deliver for a rep's offer (a third call, /v1/hubs/invite, if hubs is on)",
         "Each wait is capped at 5 seconds"
       ]
     },
@@ -309,7 +310,8 @@
         "W-04, W-05 the goal input",
         "W-09 unwrapped tools report",
         "W-10 goal text unredacted",
-        "W-15 vendor instructions replaced"
+        "W-15 vendor instructions replaced",
+        "W-22 report_void is on by default (new)"
       ]
     }
   ]

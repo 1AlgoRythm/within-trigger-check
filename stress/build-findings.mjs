@@ -372,7 +372,7 @@ pre{background:#161b22;color:#e6edf3;padding:12px;border-radius:8px;overflow:aut
 .sum td:first-child{white-space:nowrap}
 .st{font-size:13px;font-weight:600;margin:6px 0}.st.fixed{color:var(--grn)}.st.unchanged,.st.notrerun{color:var(--mute)}.st.changed{color:var(--org)}
 </style></head><body><div class="wrap">
-<div class="top"><a href="index.html">← Back to the interactive map</a> · <a href="https://github.com/1AlgoRythm/within-trigger-check">Source and tests on GitHub</a></div>
+<div class="top"><a href="index.html" target="_top">← Back to the interactive map</a> · <a href="https://github.com/1AlgoRythm/within-trigger-check">Source and tests on GitHub</a></div>
 <h1>${esc(src.title)}</h1>`);
 if (U) {
   H(`<h2 style="margin-top:20px">The short version, for a founder</h2><ul>${src.founderSummary.map((b) => `<li>${inline(resolve(b))}</li>`).join("")}</ul>`);

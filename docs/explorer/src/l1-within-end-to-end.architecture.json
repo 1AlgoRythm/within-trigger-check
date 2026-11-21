@@ -8,7 +8,7 @@
     "views": [
       {
         "id": "buying-question",
-        "label": "A buying question",
+        "label": "A question",
         "focus": [
           "customer",
           "host",
@@ -20,7 +20,7 @@
       },
       {
         "id": "leaves-the-server",
-        "label": "What leaves the vendor's server",
+        "label": "What leaves",
         "focus": [
           "sdk",
           "api"
@@ -29,22 +29,24 @@
       },
       {
         "id": "defects",
-        "label": "Where the defects sit",
+        "label": "Defects",
         "focus": [
           "host",
           "sdk",
-          "api"
+          "api",
+          "doctor"
         ],
-        "note": "In 0.3.0, most of the 20 findings sit in the SDK (W-01 to W-17). Version 0.4.0 fixed W-01 and W-14 and added W-21 to W-26, which are on the findings page and not drawn on this map. W-18 and W-19 are design questions. W-20 is the model's decision."
+        "note": "Most findings sit in the SDK. W-18, W-19 are design questions, W-20 the model's choice. 0.4.0 fixed W-01, W-14 and added W-21 to W-26."
       },
       {
-        "id": "team-side",
-        "label": "The vendor's team",
+        "id": "new-in-040",
+        "label": "What's new",
         "focus": [
-          "console",
+          "sdk",
+          "doctor",
           "api"
         ],
-        "note": "Reps set the saved answers and join chats from Within's hosted console."
+        "note": "A doctor command, optional hubs and identity lookup, a default report_void tool and new report fields, drawn one level deeper."
       }
     ]
   },
@@ -67,7 +69,7 @@
       "id": "host",
       "type": "external",
       "label": "Claude / ChatGPT",
-      "sublabel": "model + MCP client \u00b7 W-20",
+      "sublabel": "model + MCP client · W-20",
       "pos": [
         250,
         175
@@ -95,7 +97,7 @@
       "id": "sdk",
       "type": "backend",
       "label": "Within SDK",
-      "sublabel": "@getwithin/sdk \u00b7 W-01 to W-17",
+      "sublabel": "@getwithin/sdk 0.4.0",
       "pos": [
         500,
         175
@@ -155,6 +157,20 @@
       "pos": [
         780,
         40
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "doctor",
+      "type": "external",
+      "label": "doctor command",
+      "sublabel": "getwithin-sdk · W-25",
+      "pos": [
+        780,
+        310
       ],
       "size": [
         170,
@@ -226,6 +242,22 @@
       "fromSide": "bottom",
       "toSide": "top",
       "labelDy": 40
+    },
+    {
+      "id": "doc1",
+      "from": "doctor",
+      "to": "tools",
+      "label": "calls a tool",
+      "variant": "dashed"
+    },
+    {
+      "id": "doc2",
+      "from": "doctor",
+      "to": "api",
+      "label": "asks what arrived",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "labelDy": -34
     }
   ],
   "cards": [
@@ -236,8 +268,8 @@
         "W-02 an outage changes or breaks the vendor's answers",
         "W-09 tools the vendor did not wrap still report",
         "W-10 the AI's goal summary leaves with private details",
-        "W-04 a vendor's own context input is lost",
-        "W-01 the docs' install steps crashed (fixed in 0.4.0)"
+        "W-21 the customer's login token is sent when the identity option is on (new)",
+        "W-04 a vendor's own context input is lost"
       ]
     },
     {
@@ -245,15 +277,16 @@
       "title": "Not visible from outside",
       "items": [
         "Within's backend repo is not public",
-        "Matching, answer writing, storage and redaction run there"
+        "Matching, answer writing, storage and redaction run there",
+        "Whether Within verifies the login token the SDK sends"
       ]
     },
     {
       "dot": "cyan",
       "title": "Where this comes from",
       "items": [
-        "20 findings, each with a reproduction command: FINDINGS.md",
-        "Tests ran on the published SDK and a local stand-in server"
+        "26 findings (20 in 0.3.0, 6 new in 0.4.0), each with a reproduction command: FINDINGS.md",
+        "Tests ran on the published SDK, 0.3.0 and 0.4.0, and a local stand-in server"
       ]
     }
   ]

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" width="1000" height="620" role="img" aria-label="The Zod bug: the SDK lists zod as its own dependency, so npm installs a private Zod 3 inside the SDK next to the project's Zod 4. The SDK's context field is built with Zod 3 and the tool with Zod 4, and the MCP SDK throws Mixed Zod versions detected. The fix moves zod to peerDependencies so there is one Zod.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" width="1000" height="620" role="img" aria-label="The Zod bug: the SDK lists zod as its own dependency, so npm installs a private Zod 3 inside the SDK next to the project's Zod 4. The SDK's context field is built with Zod 3 and the tool with Zod 4, and the MCP SDK throws Mixed Zod versions detected. The fix moves zod to peerDependencies so there is one Zod. Version 0.4.0 made that change, so the crash is fixed there.">
 <title>The Zod bug: two copies of the same ruler</title>
 <defs><filter id="wobble" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G"/></filter>
 <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#222" stroke-width="1.6" stroke-linecap="round"/></marker></defs>
@@ -61,4 +61,5 @@ text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cu
 <text x="50" y="536" class="s">Their docs already say Zod "is a peer dependency", but package.json disagrees. The first thing a new vendor runs crashes.</text>
 <text x="50" y="560" class="s">The real fix is one line in their repo. Ours patches the installed copy (fixes/apply.mjs) because their source is private.</text>
 <text x="50" y="582" class="s">Proof: npm run check-fixes → "crashes" before, "works" after.</text>
+<g transform="rotate(-4 805 66)"><rect x="640" y="34" width="330" height="62" rx="10" class="grn"/><text x="805" y="62" text-anchor="middle" class="l" style="fill:#10b981">FIXED in 0.4.0</text><text x="805" y="84" text-anchor="middle" class="s">zod is now a peer dependency</text></g>
 </svg>
