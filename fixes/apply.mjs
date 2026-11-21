@@ -1,10 +1,11 @@
-// Applies (or with --revert, removes) two small fixes to the installed @getwithin/sdk 0.3.0.
-//   Fix 1, Zod: zod moves from "dependencies" to "peerDependencies", as Within's docs already say
+// Applies (or with --revert, removes) small fixes to the installed @getwithin/sdk, version 0.3.0 or 0.4.0.
+//   Fix 1, Zod (0.3.0 only; 0.4.0 already does this): zod moves from "dependencies" to "peerDependencies", as Within's docs already say
 //          ("it is a peer dependency"). The SDK then shares the project's Zod, so the docs
 //          quickstart stops crashing with "Mixed Zod versions detected" on a fresh Zod 4 install.
 //   Fix 2, redaction: phone numbers are redacted in the model-written `context` text (mcpIntent)
 //          and in captured strings, next to the existing email / key / card rules.
 // It patches node_modules only, refuses any other SDK version, and checks every edit landed.
+// On 0.4.0 the Zod fix is skipped: the package already lists zod as a peer dependency, and --revert must not undo that.
 import fs from "node:fs";
 import path from "node:path";
 
@@ -16,10 +17,13 @@ const PARKED = path.join(SDK, ".zod-nested-parked");
 const revert = process.argv.includes("--revert");
 
 const pkg = JSON.parse(fs.readFileSync(PKG, "utf8"));
-if (pkg.version !== "0.3.0") throw new Error(`These fixes are written for @getwithin/sdk 0.3.0, found ${pkg.version}`);
+if (!["0.3.0", "0.4.0"].includes(pkg.version)) throw new Error(`These fixes are written for @getwithin/sdk 0.3.0 and 0.4.0, found ${pkg.version}`);
+const OLD_ZOD = pkg.version === "0.3.0"; // only 0.3.0 has the Zod bug
 
-// ---- Fix 1: zod as a peer dependency
-if (!revert) {
+// ---- Fix 1: zod as a peer dependency (0.3.0 only)
+if (!OLD_ZOD) {
+  // 0.4.0: nothing to do, and nothing to revert
+} else if (!revert) {
   if (pkg.dependencies?.zod) {
     pkg.peerDependencies = { ...pkg.peerDependencies, zod: "^3.25.76 || ^4.0.0" };
     delete pkg.dependencies.zod;

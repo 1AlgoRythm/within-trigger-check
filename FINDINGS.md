@@ -957,6 +957,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 
 ## Reproduce everything
 
+`stress/` is pinned to 0.3.0, the baseline. npm no longer serves that package, so `npm install` there needs the mirror address first: see the install note in `stress/README.md`.
+
 ```bash
 cd stress
 npm install

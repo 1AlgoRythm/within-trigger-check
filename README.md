@@ -18,7 +18,7 @@
 
 ![The weak spot: the AI decides from written instructions whether to call Within, so a buying question can be missed or a normal question can raise a false alarm](docs/diagrams/02-the-weak-spot.svg)
 
-Trigger check is that test. It runs labelled prompts through real Claude, one fresh session each, against a small vendor MCP server ("Acme") with `@getwithin/sdk` 0.3.0 installed. It scores recall (buying questions that reached Within) and precision (calls to Within that were buying questions). For every prompt, it also shows exactly what the SDK sent toward Within.
+Trigger check is that test. It runs labelled prompts through real Claude, one fresh session each, against a small vendor MCP server ("Acme") with `@getwithin/sdk` installed: version 0.3.0 when it was built, and 0.4.0 since 2026-11-21 (this repo now installs 0.4.0). It scores recall (buying questions that reached Within) and precision (calls to Within that were buying questions). For every prompt, it also shows exactly what the SDK sent toward Within.
 
 ![Trigger check](docs/screenshot.png)
 
@@ -70,24 +70,24 @@ The stress test found more problems than these two (see [FINDINGS.md](FINDINGS.m
 
   ![The PII gap: the SDK adds a context field to every tool, the model writes the user's goal there, and phone numbers reached the API unredacted until the fix](docs/diagrams/08-pii-gap.svg)
 
-Version 0.4.0 (2026-11-20) fixes the Zod crash in the package itself. The two scripted fixes below (`npm run fix`) were written for 0.3.0 and were not re-run on 0.4.0. The larger set of prototype patches in `stress/patches/` was re-tested on 0.4.0: every patch but P3 still applies, and 9 of the 11 checks they fixed on 0.3.0 still go from fail or gap to pass. The wording patch (P11) was also re-tested with real Claude: 0 of 30 false alarms against 11 of 30 for stock 0.4.0 (see the update in [FINDINGS.md](FINDINGS.md#update-2026-11-20-version-040)).
+Version 0.4.0 (2026-11-20) fixes the Zod crash in the package itself. The scripted fixes below (`npm run fix`) work on 0.4.0 too. The Zod one is skipped there, and applying, checking and reverting the others restores the files exactly (tested 2026-11-21). The larger set of prototype patches in `stress/patches/` was re-tested on 0.4.0: every patch but P3 still applies, and 9 of the 11 checks they fixed on 0.3.0 still go from fail or gap to pass. The wording patch (P11) was also re-tested with real Claude: 0 of 30 false alarms against 11 of 30 for stock 0.4.0 (see the update in [FINDINGS.md](FINDINGS.md#update-2026-11-20-version-040)).
 
-The source repo is private, so the fixes patch `node_modules/@getwithin/sdk` 0.3.0 in place (`fixes/apply.mjs`). They refuse any other version, check every edit landed, and undo with `npm run unfix`. In the real repo, each fix is a few lines.
+The source repo is private, so the fixes patch `node_modules/@getwithin/sdk` (0.3.0 or 0.4.0) in place (`fixes/apply.mjs`). They refuse any other version, check every edit landed, and undo with `npm run unfix`. In the real repo, each fix is a few lines.
 
 ## Run it
 
 Needs Node 20+ and [Claude Code](https://code.claude.com) signed in (the `claude` command).
 
 ```bash
-# npm no longer serves @getwithin/sdk (see the update above), so a plain `npm install` fails with a 404 on a machine without a cached
-# copy. This installs the 0.3.0 file from a public mirror (the same hash npm gave us) together with everything else:
-npm install https://registry.npmmirror.com/@getwithin/sdk/-/sdk-0.3.0.tgz
-npm run fix -- --wording       # zod + phone + wording (omit --wording to see the false alarm)
+# npm no longer serves @getwithin/sdk (see the update above), so package.json points at a public mirror's copy of 0.4.0
+# (the same file we tested, checked by hash). A plain install works; tested from an empty npm cache on 2026-11-21:
+npm install
+npm run fix -- --wording       # phone + wording (the Zod fix is only needed on 0.3.0; omit --wording to see the false alarm)
 npm run fix -- --question      # optional: also redact the customer's question text sent to /v1/answers (W-11)
 npm start                      # http://127.0.0.1:5180, then "Run 20 prompts"
 ```
 
-- **If `npm install` fails with a 404,** that is the missing package, not your setup. The first command above is the workaround: it points `@getwithin/sdk` in your local `package.json` at the mirror address. Tested on a fresh clone with an empty npm cache on 2026-11-20. The same applies inside `stress/`.
+- **If `npm install` fails with a 404 inside `stress/`,** that is the missing package, not your setup. That folder stays on 0.3.0 on purpose, because it is the baseline every finding was measured against, so it needs the workaround in `stress/README.md`. In this top folder the dependency already points at the mirror.
 - **Stub mode** (the default) fakes Within's API locally on `127.0.0.1:8787`, the SDK's own default. Nothing is sent to Within.
 - **Real Within API:** `WITHIN_MODE=proxy SUPPORTBRIDGE_API_KEY=sb_... npm start`. Each call is forwarded to `https://app.getwith.in` and recorded on the way, so the "what left the server" view still works. When this was first built it was tried only with an invalid key, which returned `401 {"error":"unauthorized"}`, and Claude then said it couldn't load the answer and did not guess a price. That was not re-run in the later audit, and no run of it is saved here.
 - **Repeat a prompt:** `npm run repeat -- --ids n09 --times 10 --model haiku`. Add `--extra experiments/comparison-prompts.json` for the comparison set.

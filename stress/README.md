@@ -6,6 +6,8 @@ The readable results are in [`../FINDINGS.md`](../FINDINGS.md). This folder hold
 
 **Install note (2026-11-20).** npm's catalogue returns "not found" for `@getwithin/sdk`, so `npm install` in this folder fails with a 404 on a machine without a cached copy (tested with an empty cache). Install the 0.3.0 file from the public mirror instead; its hash is identical to the one npm gave us. This installs everything else too, and rewrites the dependency in your local `package.json`:
 
+This folder stays pinned to 0.3.0 on purpose: it is the baseline the findings were measured on. The repo's top folder uses 0.4.0 and installs with a plain `npm install`.
+
 ```bash
 npm install https://registry.npmmirror.com/@getwithin/sdk/-/sdk-0.3.0.tgz
 ```

@@ -334,6 +334,8 @@ L("- **Model runs.** `stress/model/run-model.mjs` runs real Claude (headless Cla
 L();
 L("## Reproduce everything");
 L();
+L("`stress/` is pinned to 0.3.0, the baseline. npm no longer serves that package, so `npm install` there needs the mirror address first: see the install note in `stress/README.md`.");
+L();
 L("```bash");
 L("cd stress");
 L("npm install");
@@ -420,7 +422,7 @@ for (const g of groups) {
 }
 H(`<h2>What held up</h2><ul>${src.heldUp.filter((x) => !x.since || U).map((x) => `<li>${inline(x.text)} (<code>${x.test}</code>)</li>`).join("")}${modelParagraph().map((l) => `<li>${inline(l)}</li>`).join("")}</ul>`);
 H(`<h2>What we did not test</h2><ul>${src.notTested.map((n) => `<li>${inline(n)}</li>`).join("")}</ul>`);
-H(`<h2>Reproduce everything</h2><pre>cd stress
+H(`<h2>Reproduce everything</h2><p><code>stress/</code> is pinned to 0.3.0, the baseline. npm no longer serves that package, so <code>npm install</code> there needs the mirror address first: see the install note in <code>stress/README.md</code>.</p><pre>cd stress
 npm install
 npm test                 # ${Object.keys(S).length} checks against the stock package, about 70 seconds
 npm run test:patched     # builds the patched copy and runs the same checks
