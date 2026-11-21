@@ -33,6 +33,12 @@ export const tests = [
       const dir = fs.mkdtempSync(path.join(os.tmpdir(), "within-fresh-"));
       fs.writeFileSync(path.join(dir, "package.json"), JSON.stringify({ name: "fresh", type: "module", private: true }));
       const inst = spawnSync("npm", ["install", process.env.F2_SPEC ?? "@getwithin/sdk@0.3.0", "@modelcontextprotocol/sdk", "zod", "--no-audit", "--no-fund", "--ignore-scripts"], { cwd: dir, encoding: "utf8", timeout: 180000 });
+      if (inst.status !== 0) {
+        // npm could not install the package at all (as of 2026-11-20 npm's catalogue returns 404 for it). That is not a finding about the SDK.
+        const why = (String(inst.stderr).match(/npm error [^\n]+/) ?? [])[0] ?? `npm exit ${inst.status}`;
+        fs.rmSync(dir, { recursive: true, force: true });
+        return { verdict: "error", expected: "the install line runs", observed: `npm could not install the package, so this check did not run (${why}). Set F2_SPEC to a tarball or address, for example F2_SPEC=https://registry.npmmirror.com/@getwithin/sdk/-/sdk-0.3.0.tgz (see stress/README.md).`, evidence: { npmInstallExit: inst.status, npmError: why } };
+      }
       const ver = (n) => { try { return JSON.parse(fs.readFileSync(path.join(dir, "node_modules", n, "package.json"), "utf8")).version; } catch { return "n/a"; } };
       const nested = fs.existsSync(path.join(dir, "node_modules/@getwithin/sdk/node_modules/zod"));
       fs.writeFileSync(path.join(dir, "quickstart.mjs"), `

@@ -3,7 +3,7 @@
   "intro": [
     "Within puts a sales agent inside a company's MCP server. A company installs one npm package, `@getwithin/sdk`, and its customers can then ask buying questions inside Claude or ChatGPT.",
     "This report lists what we found when we tried to break that package. Every finding has a plain-words explanation first, then the technical detail an engineer needs to fix it, then a way to reproduce it in one command.",
-    "Everything ran on our own machine, against the published package (version 0.3.0) and a small stand-in for Within's server. We did not send load or attack traffic to Within's real service, and we did not look at anything behind its login."
+    "Everything ran on our own machine, against the published package (version 0.3.0, and 0.4.0 for the update below) and a small stand-in for Within's server. We did not send load or attack traffic to Within's real service, and we did not look at anything behind its login."
   ],
   "severity": [
     {
@@ -41,7 +41,8 @@
       ],
       "prototype": "P10",
       "repro": "node run.mjs F1 F2",
-      "extra": "The repo's `npm run fix` already applies this same change."
+      "extra": "The repo's `npm run fix` already applies this same change.",
+      "founder": "If a company follows Within's own setup instructions on a brand-new project, their server will not start until they find a workaround. It is the very first thing every new customer would hit. Fixed in the new version."
     },
     {
       "id": "W-02",
@@ -63,7 +64,8 @@
         "Consider not showing it to the customer at all; log it on the vendor's side instead."
       ],
       "prototype": "P1",
-      "repro": "node run.mjs A2 A3 A3b"
+      "repro": "node run.mjs A2 A3 A3b",
+      "founder": "Within is sold as a safe add-on. But when Within itself is down, the company's own product can show an error, or end every answer with a confusing \"service unreachable\" message. A problem at Within becomes the company's problem."
     },
     {
       "id": "W-03",
@@ -88,7 +90,8 @@
         "Check for an offer less often (cache it for a few seconds), and use a shorter timeout for everything except `get_vendor_answer`."
       ],
       "prototype": null,
-      "repro": "node run.mjs A1 A1b A8"
+      "repro": "node run.mjs A1 A1b A8",
+      "founder": "When Within is slow, every action in the company's product waits five extra seconds. An AI assistant takes many actions to answer one question, so the customer feels a very slow product and blames the company."
     },
     {
       "id": "W-04",
@@ -109,7 +112,8 @@
         "Strip the field only when the SDK is the one that added it."
       ],
       "prototype": "P2",
-      "repro": "node run.mjs B3"
+      "repro": "node run.mjs B3",
+      "founder": "If one of the company's own tools already has an input with a common name, Within quietly takes it away before the company's code sees it, and the feature misbehaves with no error message."
     },
     {
       "id": "W-05",
@@ -129,7 +133,8 @@
         "Remove `.max(300)` from the validator and keep the trim."
       ],
       "prototype": "P3",
-      "repro": "node run.mjs B4"
+      "repro": "node run.mjs B4",
+      "founder": "If the AI writes a slightly long note, the whole action fails instead of the note being trimmed. A customer can see a failure over something trivial."
     },
     {
       "id": "W-06",
@@ -149,7 +154,8 @@
       ],
       "prototype": "P4",
       "repro": "node run.mjs B2",
-      "extra": "We do not know why Within removes `_meta`. It may be to stop a second card from appearing, in which case only the card keys need to go."
+      "extra": "We do not know why Within removes `_meta`. It may be to stop a second card from appearing, in which case only the card keys need to go.",
+      "founder": "At exactly the moments a Within sales rep's offer appears, some of the company's own behind-the-scenes labels disappear. That is hard to notice and hard to debug."
     },
     {
       "id": "W-07",
@@ -168,7 +174,8 @@
         "Catch the error and carry on without an identity."
       ],
       "prototype": "P8",
-      "repro": "node run.mjs A7"
+      "repro": "node run.mjs A7",
+      "founder": "A helper that exists only to tell Within who the customer is can bring down the company's real feature when that helper has a problem."
     },
     {
       "id": "W-08",
@@ -189,7 +196,8 @@
         "Or replace the pattern with a linear scan. Add a test with a 100,000-character input."
       ],
       "prototype": "P5",
-      "repro": "node run.mjs C8"
+      "repro": "node run.mjs C8",
+      "founder": "One customer pasting a very long, unbroken piece of text can freeze the company's whole AI server for several seconds, for every other customer too. This only applies when the optional \"capture arguments\" setting is on."
     },
     {
       "id": "W-09",
@@ -208,7 +216,8 @@
         "Report only wrapped tools, or make reporting of other tools an explicit opt-in option, and document it."
       ],
       "prototype": "P6",
-      "repro": "node run.mjs C7"
+      "repro": "node run.mjs C7",
+      "founder": "A company that deliberately keeps a sensitive internal tool out of Within's sight is not actually protected. Within can still learn that the tool was used and, with one setting on, what was typed into it."
     },
     {
       "id": "W-10",
@@ -232,7 +241,8 @@
       ],
       "prototype": null,
       "repro": "node run.mjs C1 C2",
-      "extra": "The repo's `npm run fix` redacts phone numbers in this note. It does not cover the other kinds."
+      "extra": "The repo's `npm run fix` redacts phone numbers in this note. It does not cover the other kinds.",
+      "founder": "A short summary of what the customer wants, written by the AI, is sent to Within. Private details such as phone numbers and names can be in it, even though Within's homepage says personal data is hidden before storage. Companies are not told this happens."
     },
     {
       "id": "W-11",
@@ -253,7 +263,8 @@
       ],
       "prototype": null,
       "repro": "node run.mjs C10",
-      "extra": "The repo has an opt-in `--question` patch for this in `fixes/apply.mjs`."
+      "extra": "The repo has an opt-in `--question` patch for this in `fixes/apply.mjs`.",
+      "founder": "The customer's whole question goes to Within exactly as typed, including any name or phone number in it. Within probably needs the question to find the right answer, but companies are not told it is sent."
     },
     {
       "id": "W-12",
@@ -273,7 +284,8 @@
         "If the text is kept, document it and widen the filter."
       ],
       "prototype": null,
-      "repro": "node run.mjs C3"
+      "repro": "node run.mjs C3",
+      "founder": "When a company's tool fails, the start of the error message, which often contains what the customer typed, is sent to Within, even if the company never switched data capture on."
     },
     {
       "id": "W-13",
@@ -297,7 +309,8 @@
         "Extend the value patterns (see W-10)."
       ],
       "prototype": null,
-      "repro": "node run.mjs C4 C5 C6"
+      "repro": "node run.mjs C4 C5 C6",
+      "founder": "If a company switches on the optional capture setting for one tool, more leaves the server than the documents say, including parts of the answers, and the filter that hides secrets misses some common kinds."
     },
     {
       "id": "W-14",
@@ -317,7 +330,8 @@
         "Warn at start-up about options the SDK does not recognise."
       ],
       "prototype": null,
-      "repro": "node run.mjs F3"
+      "repro": "node run.mjs F3",
+      "founder": "Within's documents describe a way to show real names and emails for signed-in customers, but the feature was not actually in the package. Companies relying on the documents would only see anonymous ids. It is in the new version, and the new checks show it works as described."
     },
     {
       "id": "W-15",
@@ -339,7 +353,8 @@
         "Log what was removed."
       ],
       "prototype": "P7",
-      "repro": "node run.mjs D1 D2 D3"
+      "repro": "node run.mjs D1 D2 D3",
+      "founder": "The documents say a banned phrase removes one paragraph of the company's instructions to the AI. In fact all of the company's own instructions are replaced, silently, so the AI starts behaving differently with no warning."
     },
     {
       "id": "W-16",
@@ -362,7 +377,8 @@
         "Make the homepage snippet match the quickstart, which has a fallback URL."
       ],
       "prototype": "P9",
-      "repro": "node run.mjs A4 A9 A10"
+      "repro": "node run.mjs A4 A9 A10",
+      "founder": "A typo in the web address or the key makes Within silently do nothing, or look like an outage, and the company gets no message saying it is a setup mistake."
     },
     {
       "id": "W-17",
@@ -381,7 +397,8 @@
         "Use the lists where an outside address is contacted, or delete them."
       ],
       "prototype": null,
-      "repro": "node run.mjs F5"
+      "repro": "node run.mjs F5",
+      "founder": "The package builds a safety list that nothing ever uses. Nothing is broken today. It looks like an unfinished safety feature."
     },
     {
       "id": "W-18",
@@ -406,7 +423,8 @@
       ],
       "prototype": null,
       "repro": "node run.mjs E1 E2 E3",
-      "extra": "The model-level runs are `npm run test:model` and need Claude Code signed in."
+      "extra": "The model-level runs are `npm run test:model` and need Claude Code signed in.",
+      "founder": "Within promises a human sales rep only joins after the customer says yes. Today that promise rests on the AI behaving correctly, because the software itself does not check for the customer's click. What Within's own server checks cannot be seen from outside."
     },
     {
       "id": "W-19",
@@ -426,7 +444,8 @@
         "Let vendors pass their own session id, and document the stateless case."
       ],
       "prototype": null,
-      "repro": "node run.mjs C9"
+      "repro": "node run.mjs C9",
+      "founder": "For companies whose servers do not remember visitors between requests, a sales rep's offer may never reach the right customer. Whether Within covers this on its own side cannot be seen from outside."
     },
     {
       "id": "W-20",
@@ -445,7 +464,86 @@
         "Run this repo's repeat test on every wording change. The first rewording we tried did not help (6 of 10)."
       ],
       "prototype": "P11",
-      "repro": "npm run test:model -- --only X1,X2,X3 --times 10"
+      "repro": "npm run test:model -- --only X1,X2,X3 --times 10",
+      "founder": "When a customer asks a plain question about the company's own products, such as \"compare A and B\", a smaller AI model sometimes treats it as a sales question and sends it to Within.",
+      "modelTest": "X1"
+    },
+    {
+      "id": "W-21",
+      "severity": "High",
+      "group": "Found in 0.4.0",
+      "since": "0.4.0",
+      "title": "With the new identity option on, the customer's login token is sent to Within on every tool call",
+      "tests": [
+        "N1"
+      ],
+      "founder": "In the new version, switching on the new \"who is this customer\" option makes each customer's login pass travel to Within with every action. A login pass is a credential: whoever holds it can act as that customer until it expires. Within's documents say it stays on the company's server.",
+      "plain": "In 0.4.0, when the vendor sets the `identity` option, the SDK adds the customer's signed login token (the `authInfo.token` of the tool call, a three-part JWT) to the activity report it sends to Within, as the field `authToken`. In our test it arrived exactly as received. Without the option it is not sent. Within's docs list \"the raw bearer token\" under what is left on the vendor's server.",
+      "why": "A login token is a credential: whoever holds it can act as that customer until it expires. The vendor is not told it leaves their server. Within's published docs still describe 0.3.0, so they may simply be behind the code, which makes this a question for Within before a vendor turns the option on. What Within's server does with the token is not visible from outside.",
+      "where": [
+        "`signedLoginToken`, `dist/index.js` line 6353: returns `{ authToken: token }` when the token looks like a JWT.",
+        "`install`, line 6404: `loginToken: (extra) => options.identity ? signedLoginToken(extra) : {}`.",
+        "Added to the report in `instrumentTool` (line 1508), `patchRegisterTool` (line 1462) and the `report_void` handler (line 4392)."
+      ],
+      "fix": [
+        "Do not send the token. The report already carries the verified user id and, in 0.4.0, `authIssuer`.",
+        "If Within's server must verify the token itself, make that a separate, explicitly named option, and list it in the docs table with what is stored and for how long.",
+        "Never add it to reports for tools the vendor did not wrap (`patchRegisterTool` also adds it)."
+      ],
+      "prototype": null,
+      "repro": "",
+      "reproFull": "cd stress && WITHIN_SDK_ENTRY=$PWD/sdk-0.4.0/dist/index.js node run-new.mjs   # needs the 0.4.0 copy, see stress/README.md, \"Run it on another version\""
+    },
+    {
+      "id": "W-22",
+      "severity": "Medium",
+      "group": "Found in 0.4.0",
+      "since": "0.4.0",
+      "title": "A new tool, report_void, is on by default, and the customer's own words in it go to Within unredacted",
+      "tests": [
+        "N5"
+      ],
+      "founder": "The new version adds a tool that every company gets by default, and tells the AI to use it whenever it cannot give the customer what they asked for. What the AI writes there, in the customer's own words, goes to Within. A name, phone number or email would go through unchanged if the AI wrote one. In our real-AI runs it wrote only a short topic. The documents do not mention the tool.",
+      "plain": "0.4.0 registers a new tool, `report_void`, on every install, with no option needed. It also adds a sentence (306 characters) to every vendor's server instructions telling the AI to call it when a tool cannot return what the customer asked, with `asked` set to \"a short phrase in the customer's own words\". The phrase is sent to Within as `voidAsked`. In a direct check, calling the tool ourselves with \"find Priya Raman, call her on 617 555 0142 or email priya.raman@example.com\", the text arrived exactly as written. The SDK hides emails in other fields, but not in this one.",
+      "why": "Vendors now send customer wording to Within by default, without choosing to and without the docs saying so: the docs page does not mention `report_void`. The redaction used for the goal note is not applied to this field. With real Claude (Haiku) the tool is used a lot: it was called in {{U:voidRuns}} of {{U:totalRuns}} ordinary runs, often right after the vendor's own answer, and in {{U:vVoidCalls}} of {{U:vRuns}} runs where the question contained a name, phone number and email. Every one of those {{U:vVoidCalls}} phrases was a short topic. The name appeared in {{U:vNames}} of them, the phone number in {{U:vPhones}} and the email in {{U:vEmails}}. So the unredacted path is real (check N5), but this model did not use it for personal details. One model and two prompts is a small sample, and another model or prompt may copy them, which is why this is Medium and not High. Within's server may redact more after the text arrives; that part is not visible from outside.",
+      "where": [
+        "`registerWithinTools`, `dist/index.js` line 4279, registers `report_void`; the handler builds the report at lines 4392 to 4400.",
+        "`VOID_CALL_SENTENCE`, line 592, appended to `SERVER_INSTRUCTIONS`. It accounts for the 306 extra characters seen in check D5.",
+        "`voidAsked` and `voidTool` are fields of the report; the text arrived unchanged in the test."
+      ],
+      "fix": [
+        "Run `asked` through the same redaction as the goal note, widened to phone numbers, and cap its length.",
+        "Make `report_void` opt-in and list it in the docs table, with what is stored.",
+        "Change the instruction so the AI describes the kind of request (\"seat limits\"), not the customer's wording."
+      ],
+      "prototype": null,
+      "repro": "",
+      "reproFull": "cd stress && WITHIN_SDK_ENTRY=$PWD/sdk-0.4.0/dist/index.js node run-new.mjs   # needs the 0.4.0 copy, see stress/README.md, \"Run it on another version\""
+    },
+    {
+      "id": "W-23",
+      "severity": "Low",
+      "group": "Found in 0.4.0",
+      "since": "0.4.0",
+      "title": "When the AI app does not report its name, the first 80 characters of its user-agent text are sent as the app name",
+      "tests": [
+        "N4"
+      ],
+      "founder": "The new version records which AI app the customer is using. Usually that is just the app's name. When the app does not say, it falls back to the first 80 characters of its technical identification text and sends that instead.",
+      "plain": "0.4.0 adds host fields to every activity report. When the app reports itself (`clientInfo`), only its name and version are sent, as the docs say. When it does not, `hostFieldsFromExtra` falls back to the connection's `user-agent` header. If that text contains `claude`, `chatgpt`, `openai` or `cursor`, the first 80 characters are sent as the app name.",
+      "why": "Small, and not personal by itself, but more than the docs line \"the client's name and version\", and user-agent text often includes operating-system and build details.",
+      "where": [
+        "`hostFieldsFromExtra`, `dist/index.js` line 1711.",
+        "`KNOWN_HOST`, line 1669: `/chatgpt|openai|claude|cursor/i`.",
+        "Added to every report through `ctx.hostFields(extra)` in `instrumentTool` and `patchRegisterTool`."
+      ],
+      "fix": [
+        "Send only the name and version the app reports.",
+        "For the fallback, send just the matched product token (for example `Claude/1.0.0`), not the first 80 characters."
+      ],
+      "prototype": null,
+      "repro": "",
+      "reproFull": "cd stress && WITHIN_SDK_ENTRY=$PWD/sdk-0.4.0/dist/index.js node run-new.mjs   # needs the 0.4.0 copy, see stress/README.md, \"Run it on another version\""
     }
   ],
   "heldUp": [
@@ -476,6 +574,11 @@
     {
       "test": "F4",
       "text": "`get_vendor_answer` retries once after an error, and a hang is stopped at 5 seconds as documented."
+    },
+    {
+      "test": "N2",
+      "since": "0.4.0",
+      "text": "In 0.4.0, the login-provider lookup goes only to the named provider, once per person, with the person's own login token, as the docs say."
     }
   ],
   "notTested": [
@@ -486,13 +589,106 @@
   ],
   "update040": {
     "title": "Update 2026-11-20: version 0.4.0",
-    "paragraphs": [
-      "Within published version {{U:version}} at 14:39 UTC on 2026-11-20, after the tests above were run on 0.3.0. We ran the same {{U:n}} checks on it on {{U:ranAt}}. Result: {{U:newPass}} pass, {{U:newGap}} gap, {{U:newFail}} fail and {{U:newInfo}} information only. On 0.3.0 it was {{U:oldPass}} pass, {{U:oldGap}} gap, {{U:oldFail}} fail and {{U:oldInfo}} information only.",
-      "{{U:nFlipped}} checks changed result: {{U:flippedList}}. They fix {{U:fixedList}}. Every other check gave the same verdict as on 0.3.0. Of the {{U:highCount}} High findings, fixed: {{U:highFixed}}. Unchanged: {{U:highOpen}}.",
-      "One measurement changed without changing a verdict: the text Within adds to every server's instructions grew from {{U:d5Old}} to {{U:d5New}} characters (check D5). Wherever this report quotes that length, it is the 0.3.0 length.",
-      "Line numbers and code quotes in the findings below are for the 0.3.0 file, `dist/index.js`. They were not updated for 0.4.0.",
-      "**Where the 0.4.0 copy came from.** {{U:source}}. We could not compare it with npm's own hash. Its file fingerprint is `{{U:fingerprint}}`; the 0.3.0 one is `{{U:oldFingerprint}}`.",
-      "**Not re-run on 0.4.0.** The real-Claude runs (W-20 and the comparison wording), the prototype-patch copy (its patches were written for 0.3.0 and may no longer apply), and the new `doctor` module and `getwithin-sdk` command in the package. New code is only tested where the {{U:n}} checks reach it. To reproduce the 0.4.0 run, see `stress/README.md`, \"Run it on another version\"."
-    ]
+    "expectFixed": "W-01, W-14",
+    "summary": [
+      "**In short.** Version {{U:version}} fixed {{U:fixedCount}} of the {{U:oldCount}} problems in this report ({{U:fixedList}}). {{U:unchangedCount}} are still there unchanged, and {{U:reducedCount}} ({{U:reducedList}}) still happens but less often. We also read the new code and found {{U:newCount}} new problems, {{U:newHighCount}} of them High severity. Version {{U:version}} was published at 14:39 UTC on 2026-11-20, after the tests in this report were run on 0.3.0.",
+      "We re-ran the same {{U:n}} checks on {{U:ranAt}}, added {{U:nNew}} checks for code that only exists in {{U:version}}, and ran real Claude (Haiku) on it. For every function a finding points at, we also compared the exact code in both versions. All {{U:totalFindings}} findings were checked on {{U:version}}: {{U:byChecks}} by automated checks, {{U:byModel}} by real-Claude runs, and the {{U:newCount}} new ones by their own checks."
+    ],
+    "changed": [
+      "**In plain words.** Within made {{U:fixedCount}} real fixes. {{U:unchangedCount}} of the problems we found are still there and {{U:reducedCount}} happens less often. The new version also brings {{U:newCount}} new problems. The most serious is a login pass leaving the company's server.",
+      "**Fixed: the setup crash (W-01).** The package now uses the company's own copy of the Zod library, as the docs said it would.",
+      "**Fixed: the missing login-provider option (W-14).** The `identity` option for Auth0, WorkOS and Clerk is now in the package. Check N2 shows its lookup goes only to the named provider, once per person, as the docs say.",
+      "**Not fixed: the other {{U:unchangedCount}} problems.** Their checks give the same verdicts, and the code each finding points at is the same apart from variable renames and the additions described on each finding's \"In 0.4.0\" line.",
+      "**Reduced, not fixed (W-20).** With real Claude (Haiku), the comparison question was sent to Within in {{U:x1New}} runs on 0.4.0, against {{U:x1Ctl}} on 0.3.0 the same day (Fisher exact p = {{U:x1P}}). The words that tell the AI when to call Within are the same apart from one new sentence, so we do not know why it is lower. The wording patch P11 brought it to {{U:x1Patched}} runs, while real competitor questions still went to Within ({{U:x2Patched}}).",
+      "**Real Claude on 0.4.0 (Haiku).** The five trigger scenarios sent {{U:trig4Called}} of {{U:trig4Runs}} buying questions to Within. In the four consent scenarios the AI called the accept tool in {{U:cons4Confirm}} of {{U:cons4Runs}} runs, and the accept reached the stand-in in {{U:cons4Accepted}}. The 20 labelled Trigger check prompts, run on a scratch copy with 0.4.0 on Zod 4, gave recall {{U:recallCalled}} of {{U:recallOf}} and false alarms {{U:falseCalled}} of {{U:falseOf}}. The new tool `report_void` was called in {{U:voidRuns}} of {{U:totalRuns}} ordinary runs, often right after `get_vendor_answer`.",
+      "**New: a login token now travels to Within when the identity option is on (W-21).** The new tool `report_void` is on by default and sends the customer's own words unredacted (W-22). A fallback sends up to 80 characters of the app's identification text (W-23).",
+      "**New, off by default: a \"hubs\" feature.** Switched on, it adds a tool, `open_hub`, and one extra request to Within after each tool call, carrying the session id and tool name. Within's docs page does not describe it (check N3).",
+      "**New files and size.** A `doctor` module and a `getwithin-sdk` command-line tool were added, and the main file grew from 144,109 to 246,888 bytes. We did not run the new tool.",
+      "**Longer instructions.** The text Within adds to every server's instructions grew from {{U:d5Old}} to {{U:d5New}} characters, {{U:d5Diff}} more. That is exactly the new sentence about `report_void`."
+    ],
+    "available": [
+      "**In plain words.** Software like this is normally downloaded from a large public catalogue. That catalogue now says it has no such package, even though Within's own instructions tell companies to download it from there. A copy still exists on a mirror site, and that is the copy we tested.",
+      "**Official npm registry: not found.** At 22:39 UTC on 2026-11-20, `registry.npmjs.org` returned \"not found\" for `@getwithin/sdk` as a whole, including 0.4.0 and 0.3.0. We do not know why. Within's own install line from its docs, run in an empty project, failed with that same error and installed nothing.",
+      "**A public copy still exists.** `registry.npmmirror.com`, a public copy of npm run by Alibaba Cloud, holds all 8 versions up to 0.4.0, with 0.4.0 marked latest. Its record shows GitHub Actions published 0.4.0 at 14:39:04 UTC and the mirror copied it 13 seconds later. This report tested that copy.",
+      "**Within's documentation has not caught up.** The page at `getwith.in/docs`, checked at the same time, still says the package is \"on npm\" and that the \"current release in this repository is 0.3.0\".",
+      "**The source code is still private.** The repository address inside the package (`github.com/supportbridge-within/supportbridge-sdk-fork`) returns \"not found\", so line numbers refer to the published file.",
+      "**What this means.** A company following Within's docs today cannot install the package from npm. The mirror is the only public copy we found. Ask Within where to get a supported copy."
+    ],
+    "technical": [
+      "Tested {{U:ranAt}}. File fingerprint of 0.4.0's `dist/index.js`: `{{U:fingerprint}}` (0.3.0: `{{U:oldFingerprint}}`). Source of the copy: {{U:source}}. We could not compare it with npm's own hash.",
+      "Of the {{U:unitsTotal}} named functions and constants the findings point at, {{U:unitsIdentical}} have exactly the same text in both versions and {{U:unitsChanged}} differ. Each difference was read: variable renames only (`redactMcpIntent`, `splitMcpContext`), new fields and hubs code (`instrumentTool`, `patchRegisterTool`, `install`), the Zod flavour switch (`withMcpContext`), the profile lookup (`identityOf`) and one new sentence (`SERVER_INSTRUCTIONS`). Method: `stress/code-locations.mjs`.",
+      "Line numbers and code quotes in the findings below are for the 0.3.0 file. Each finding has an extra \"In 0.4.0\" line with the new line number.",
+      "**Prototype patches on 0.4.0.** The patch builder was pointed at the 0.4.0 file (`PATCH_SRC`). Every patch matches except P3 (W-05, the 300-character limit), because the code around it changed, and P10 (W-01) is not needed any more. On the patched copy {{U:patchFlipNew}} checks go from fail or gap to pass ({{U:patchFlipNewList}}), against {{U:patchFlipOld}} on 0.3.0. The ones that no longer flip are {{U:patchNotFlipped}}: B4 because P3 does not match, and F1 because Zod is already a peer dependency. Results: `stress/results/patched-0.4.0.json`. The wording patch P11 was also tested with real Claude: {{U:x1Patched}} runs sent the comparison to Within, against {{U:x1New}} for stock 0.4.0 (Fisher exact p = {{U:x1PatchedP}}).",
+      "**Real-Claude method.** Haiku 5.5, one fresh headless session per run, against the demo vendor server with the stand-in on `127.0.0.1`. The W-20 comparison used three same-day batches of 10 runs on each version, taken in turn. A first batch of {{U:x1First}} on stock 0.4.0 is saved too and is not in those 30; pooled with it, 0.4.0 gives {{U:x1All}}. The 20 prompts ran on a scratch clone with 0.4.0 installed from the tarball. Files: `stress/results/model-haiku-*-040*.json`, `model-haiku-X1-*.json` and `app-prompts-040.json`.",
+      "**Not re-run on 0.4.0.** The Sonnet versions of the real-Claude runs, the `doctor` module and `getwithin-sdk` command, and the hubs feature beyond what check N3 measures. All real-Claude numbers here are Haiku only, run through headless Claude Code with the tester's own global Claude Code setup active, as in the 0.3.0 runs. To reproduce what was run, see `stress/README.md`, \"Run it on another version\"."
+    ],
+    "expectNewHigh": "W-21"
+  },
+  "founderSummary": [
+    "**What Within does.** Companies now let customers talk to them through AI assistants such as Claude or ChatGPT. Within sells a small add-on that a company installs once, so that a Within sales representative can join those conversations at the right moment.",
+    "**What we did.** We tested that add-on on a laptop, against a pretend copy of Within's service, so nothing touched Within's real systems. We ran 43 checks on version 0.3.0, then re-ran them on the new version 0.4.0 and added {{U:nNew}} more checks for code that is new in it. We also put real AI assistants (Claude) through the add-on on both versions.",
+    "**What we found, in three kinds.** The add-on can break the company's own product. It can send customer details to Within that the documents never mention. And the documents and the software sometimes disagree.",
+    "**Since the new version.** Within fixed {{U:fixedCount}} things ({{U:fixedList}}). {{U:unchangedCount}} problems are still there unchanged, {{U:reducedCount}} still happens but less often, and the new version adds {{U:newCount}} new ones ({{U:newList}}), {{U:newHighCount}} of them High severity.",
+    "**If a company fixes only a few things.** Make sure an outage at Within can never break the company's own answers, stop customer details leaving without being listed in the documents, and keep login passes on the company's own server."
+  ],
+  "glossary": [
+    {
+      "term": "SDK",
+      "means": "A software kit: ready-made code that a company installs inside its own server. Within's kit is called @getwithin/sdk."
+    },
+    {
+      "term": "MCP server",
+      "means": "The program a company runs so that AI assistants can use its tools and data. MCP is the common standard for this."
+    },
+    {
+      "term": "Tool, and wrapping a tool",
+      "means": "A tool is one action the AI can ask a company's server to do, such as \"search companies\". Wrapping a tool tells the SDK to watch it and report on it to Within."
+    },
+    {
+      "term": "Report (activity report)",
+      "means": "A small message the SDK sends to Within after a wrapped tool is used: which tool, whether it worked, and some details about who and what."
+    },
+    {
+      "term": "Argument capture",
+      "means": "An optional setting that also sends what was typed into the tool (its \"arguments\") to Within, after hiding some secrets."
+    },
+    {
+      "term": "Redaction",
+      "means": "Blanking out sensitive text, such as an email address or card number, before it is sent. It works by pattern, so it cannot recognise names."
+    },
+    {
+      "term": "PII",
+      "means": "Personal details about a real person: name, phone number, email, address."
+    },
+    {
+      "term": "Zod",
+      "means": "A small library that describes what a tool's inputs must look like. Two different copies of it in one program cause the crash behind W-01."
+    },
+    {
+      "term": "Login token (bearer token, JWT)",
+      "means": "A digital pass issued when a customer signs in. Whoever holds it can act as that customer until it expires."
+    },
+    {
+      "term": "User-agent text",
+      "means": "A line of technical text that a program sends to identify itself, often including the operating system."
+    },
+    {
+      "term": "Stand-in server",
+      "means": "A pretend copy of Within's service that runs on the tester's own laptop, so no test touches the real one."
+    },
+    {
+      "term": "Fail, gap, pass, info",
+      "means": "Our verdict words: fail contradicts the documents or breaks something reasonable; gap is a risk or an undocumented behaviour; pass is as expected; info is a measurement."
+    }
+  ],
+  "codeNotes": {
+    "redactMcpIntent": "a variable was renamed; the redaction rules are the same",
+    "splitMcpContext": "a variable was renamed; the rule that removes the vendor's own `context` input is the same",
+    "withMcpContext": "now picks the Zod flavour (3 or 4); the rule for a vendor input already called `context` is unchanged",
+    "patchRegisterTool": "adds the login token, check id and host fields to reports for every tool, and keeps a list of vendor tools; reporting of unwrapped tools is unchanged",
+    "instrumentTool": "adds the login token, check id and host fields to every report, and the hubs invite when switched on; outage handling and error text are unchanged",
+    "identityOf": "adds the login-provider profile lookup; the call to the vendor's own identity function is still not guarded against errors",
+    "install": "adds the `identity` and `hubs` options and the hubs tool; the key and URL handling is unchanged",
+    "SERVER_INSTRUCTIONS": "one sentence added, about `report_void`; the list of phrases the AI is told to send to Within is unchanged"
   }
 }

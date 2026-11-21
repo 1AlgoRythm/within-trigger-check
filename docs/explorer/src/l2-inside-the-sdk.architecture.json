@@ -303,7 +303,7 @@
       "dot": "rose",
       "title": "Findings in this view",
       "items": [
-        "W-01 install crashes on Zod 4",
+        "W-01 install crashed on Zod 4 (fixed in 0.4.0)",
         "W-02 outage alters the vendor's data",
         "W-03 a hung Within slows every successful wrapped call",
         "W-04, W-05 the goal input",

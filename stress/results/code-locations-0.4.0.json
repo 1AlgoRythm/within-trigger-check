@@ -1,0 +1,478 @@
+{
+  "oldFile": "sdk",
+  "newFile": "sdk-0.4.0",
+  "comparedAt": "2026-11-20T22:49:44.640Z",
+  "findings": [
+    {
+      "id": "W-01",
+      "units": []
+    },
+    {
+      "id": "W-02",
+      "units": [
+        {
+          "name": "unreachableVendorResult",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 1285,
+          "lineNew": 1343,
+          "lengthOld": 510,
+          "lengthNew": 510,
+          "verdict": "identical"
+        },
+        {
+          "name": "instrumentTool",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 1419,
+          "lineNew": 1482,
+          "lengthOld": 1661,
+          "lengthNew": 2264,
+          "verdict": "changed"
+        }
+      ]
+    },
+    {
+      "id": "W-03",
+      "units": [
+        {
+          "name": "serviceFetch",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 602,
+          "lineNew": 621,
+          "lengthOld": 608,
+          "lengthNew": 608,
+          "verdict": "identical"
+        },
+        {
+          "name": "instrumentTool",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 1419,
+          "lineNew": 1482,
+          "lengthOld": 1661,
+          "lengthNew": 2264,
+          "verdict": "changed"
+        }
+      ]
+    },
+    {
+      "id": "W-04",
+      "units": [
+        {
+          "name": "splitMcpContext",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 1339,
+          "lineNew": 1398,
+          "lengthOld": 385,
+          "lengthNew": 388,
+          "verdict": "changed"
+        },
+        {
+          "name": "patchRegisterTool",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 1356,
+          "lineNew": 1415,
+          "lengthOld": 2463,
+          "lengthNew": 2637,
+          "verdict": "changed"
+        },
+        {
+          "name": "withMcpContext",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 1318,
+          "lineNew": 1376,
+          "lengthOld": 886,
+          "lengthNew": 972,
+          "verdict": "changed"
+        }
+      ]
+    },
+    {
+      "id": "W-05",
+      "units": [
+        {
+          "name": "redactMcpIntent",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 417,
+          "lineNew": 419,
+          "lengthOld": 359,
+          "lengthNew": 362,
+          "verdict": "changed"
+        }
+      ]
+    },
+    {
+      "id": "W-06",
+      "units": [
+        {
+          "name": "attachInvitation",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 1265,
+          "lineNew": 1323,
+          "lengthOld": 522,
+          "lengthNew": 522,
+          "verdict": "identical"
+        }
+      ]
+    },
+    {
+      "id": "W-07",
+      "units": [
+        {
+          "name": "identityOf",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 1619,
+          "lineNew": 1741,
+          "lengthOld": 1089,
+          "lengthNew": 1698,
+          "verdict": "changed"
+        }
+      ]
+    },
+    {
+      "id": "W-08",
+      "units": [
+        {
+          "name": "EMAIL",
+          "kind": "constant",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 396,
+          "lineNew": 398,
+          "lengthOld": 54,
+          "lengthNew": 54,
+          "verdict": "identical"
+        },
+        {
+          "name": "redact",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 425,
+          "lineNew": 427,
+          "lengthOld": 648,
+          "lengthNew": 648,
+          "verdict": "identical"
+        },
+        {
+          "name": "sanitizeError",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 555,
+          "lineNew": 557,
+          "lengthOld": 165,
+          "lengthNew": 165,
+          "verdict": "identical"
+        },
+        {
+          "name": "argumentPreview",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 524,
+          "lineNew": 526,
+          "lengthOld": 448,
+          "lengthNew": 448,
+          "verdict": "identical"
+        },
+        {
+          "name": "resultText",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 544,
+          "lineNew": 546,
+          "lengthOld": 297,
+          "lengthNew": 297,
+          "verdict": "identical"
+        }
+      ]
+    },
+    {
+      "id": "W-09",
+      "units": [
+        {
+          "name": "patchRegisterTool",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 1356,
+          "lineNew": 1415,
+          "lengthOld": 2463,
+          "lengthNew": 2637,
+          "verdict": "changed"
+        }
+      ]
+    },
+    {
+      "id": "W-10",
+      "units": [
+        {
+          "name": "redactMcpIntent",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 417,
+          "lineNew": 419,
+          "lengthOld": 359,
+          "lengthNew": 362,
+          "verdict": "changed"
+        },
+        {
+          "name": "instrumentTool",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 1419,
+          "lineNew": 1482,
+          "lengthOld": 1661,
+          "lengthNew": 2264,
+          "verdict": "changed"
+        },
+        {
+          "name": "registerTool",
+          "kind": "constant",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 1358,
+          "lineNew": 1417,
+          "lengthOld": 54,
+          "lengthNew": 54,
+          "verdict": "identical"
+        }
+      ]
+    },
+    {
+      "id": "W-11",
+      "units": []
+    },
+    {
+      "id": "W-12",
+      "units": [
+        {
+          "name": "firstErrorText",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 1349,
+          "lineNew": 1408,
+          "lengthOld": 206,
+          "lengthNew": 206,
+          "verdict": "identical"
+        },
+        {
+          "name": "sanitizeError",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 555,
+          "lineNew": 557,
+          "lengthOld": 165,
+          "lengthNew": 165,
+          "verdict": "identical"
+        },
+        {
+          "name": "instrumentTool",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 1419,
+          "lineNew": 1482,
+          "lengthOld": 1661,
+          "lengthNew": 2264,
+          "verdict": "changed"
+        }
+      ]
+    },
+    {
+      "id": "W-13",
+      "units": [
+        {
+          "name": "makeCapturedFields",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 637,
+          "lineNew": 668,
+          "lengthOld": 460,
+          "lengthNew": 460,
+          "verdict": "identical"
+        },
+        {
+          "name": "resultText",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 544,
+          "lineNew": 546,
+          "lengthOld": 297,
+          "lengthNew": 297,
+          "verdict": "identical"
+        },
+        {
+          "name": "SECRET_SEGMENTS",
+          "kind": "constant",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 360,
+          "lineNew": 362,
+          "lengthOld": 265,
+          "lengthNew": 265,
+          "verdict": "identical"
+        }
+      ]
+    },
+    {
+      "id": "W-14",
+      "units": []
+    },
+    {
+      "id": "W-15",
+      "units": [
+        {
+          "name": "publishServerInstructions",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 3560,
+          "lineNew": 6279,
+          "lengthOld": 824,
+          "lengthNew": 824,
+          "verdict": "identical"
+        }
+      ]
+    },
+    {
+      "id": "W-16",
+      "units": [
+        {
+          "name": "serviceFetch",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 602,
+          "lineNew": 621,
+          "lengthOld": 608,
+          "lengthNew": 608,
+          "verdict": "identical"
+        },
+        {
+          "name": "install",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 3622,
+          "lineNew": 6371,
+          "lengthOld": 1822,
+          "lengthNew": 2820,
+          "verdict": "changed"
+        }
+      ]
+    },
+    {
+      "id": "W-17",
+      "units": [
+        {
+          "name": "blocked",
+          "kind": "constant",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 331,
+          "lineNew": 333,
+          "lengthOld": 30,
+          "lengthNew": 30,
+          "verdict": "identical"
+        },
+        {
+          "name": "globalV6",
+          "kind": "constant",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 356,
+          "lineNew": 358,
+          "lengthOld": 31,
+          "lengthNew": 31,
+          "verdict": "identical"
+        }
+      ]
+    },
+    {
+      "id": "W-18",
+      "units": [
+        {
+          "name": "confirmAssistance",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 1838,
+          "lineNew": 4526,
+          "lengthOld": 737,
+          "lengthNew": 737,
+          "verdict": "identical"
+        },
+        {
+          "name": "acceptOffer",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 1781,
+          "lineNew": 4469,
+          "lengthOld": 2147,
+          "lengthNew": 2147,
+          "verdict": "identical"
+        }
+      ]
+    },
+    {
+      "id": "W-19",
+      "units": [
+        {
+          "name": "connectionSessionMinter",
+          "kind": "function",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 3585,
+          "lineNew": 6304,
+          "lengthOld": 451,
+          "lengthNew": 451,
+          "verdict": "identical"
+        }
+      ]
+    },
+    {
+      "id": "W-20",
+      "units": [
+        {
+          "name": "SERVER_INSTRUCTIONS",
+          "kind": "constant",
+          "definitionsOld": 1,
+          "definitionsNew": 1,
+          "lineOld": 587,
+          "lineNew": 593,
+          "lengthOld": 2537,
+          "lengthNew": 2559,
+          "verdict": "changed"
+        }
+      ]
+    }
+  ]
+}

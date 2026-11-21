@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "sdkPatched": false,
+    "sdkEntry": "stress/node_modules (0.3.0)",
+    "ranAt": "2026-11-21T06:59:54.770Z",
+    "model": "haiku",
+    "times": 10,
+    "scenariosRun": [
+      "X1"
+    ],
+    "claudeCode": "headless `claude -p`, flags as in the Claude Code CLI reference",
+    "note": "Local stand-in only. Nothing was sent to Within's service."
+  },
+  "results": [
+    {
+      "id": "X1",
+      "kind": "compare",
+      "note": "two companies in the vendor's own data (should NOT go to Within)",
+      "prompt": "Compare Ledgerly and Paywise.",
+      "model": "claude-haiku-5-5",
+      "runs": 10,
+      "completed": 10,
+      "calledGetVendorAnswer": 9,
+      "calledConfirmAssistance": 0,
+      "offerAcceptedAtStandIn": 0,
+      "toolSequences": [
+        "get_vendor_answer > get_company > get_company",
+        "get_vendor_answer > get_company > get_company",
+        "get_vendor_answer > get_company > get_company",
+        "get_vendor_answer > get_company > get_company",
+        "get_company > get_company > get_vendor_answer",
+        "get_vendor_answer > get_company > get_company",
+        "get_vendor_answer > get_company > get_company",
+        "get_vendor_answer > get_company > get_company",
+        "get_company > get_company",
+        "get_vendor_answer > get_company > get_company"
+      ],
+      "voidInputs": [],
+      "replies": [
+        "I can't give a real head-to-head comparison from what's available here. The company records are short, and Acme's comparison answer didn't address Ledgerly or Paywise.\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| Location | New York | Boston |\n",
+        "I can compare the two companies from their Acme profiles, but the data is thin. Acme has no competitive comparison between them.\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| Location | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | I",
+        "Here's what Acme has on file for the two companies. It's a short profile comparison, not a product comparison.\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| Location | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing tools | P",
+        "Here's what the Acme database has on each company. It doesn't include a head-to-head comparison of their products.\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| Location | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing tools",
+        "Here's how Ledgerly and Paywise compare based on their Acme profiles:\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| Location | New York | Boston |\n| Stage | Series A | Seed |\n| What they do | Builds invoicing tools | Builds payment links |\n\nBoth",
+        "Here's what I could find. The Acme database has only short profiles for each company, so this isn't a full product comparison.\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| HQ | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing",
+        "Here's what the Acme database shows for each company. It doesn't cover features, pricing, or customer reviews.\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| HQ | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing tools | Payment",
+        "Here's how the two companies compare, based on their Acme profiles:\n\n| | Ledgerly | Paywise |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| Location | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing tools | Payment links |\n\nBoth are fintech companies, but the",
+        "Here's how Ledgerly and Paywise compare based on their Acme profiles:\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| Location | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing tools | Payment links |\n\n**Key differences:**\n- **",
+        "I couldn't get a real head-to-head comparison. Acme's competitive answer was about Acme Team pricing ($18 per seat a month), which doesn't address Ledgerly or Paywise, so I've left it out.\n\nHere's how the two companies compare on their Acme profiles:\n\n| | Ledgerly | Paywise |\n|--"
+      ],
+      "errors": []
+    }
+  ]
+}

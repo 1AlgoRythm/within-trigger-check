@@ -237,7 +237,7 @@
         "W-09 tools the vendor did not wrap still report",
         "W-10 the AI's goal summary leaves with private details",
         "W-04 a vendor's own context input is lost",
-        "W-01 the docs' install steps crash"
+        "W-01 the docs' install steps crashed (fixed in 0.4.0)"
       ]
     },
     {

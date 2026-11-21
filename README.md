@@ -2,11 +2,13 @@
 
 **Does the agent actually ask Within when a customer asks a buying question?**
 
+**In plain words.** Companies now let customers talk to them through AI assistants such as Claude or ChatGPT. Within sells an add-on that lets one of its sales representatives join those conversations. This repo tests that add-on: does the AI hand over to Within when it should, and does the add-on break the company's own product or send out customer details? If you are not technical, start with "The short version, for a founder" at the top of [the findings page](https://1algorythm.github.io/within-trigger-check/findings.html) (also in [FINDINGS.md](FINDINGS.md)).
+
 [Within](https://www.getwith.in) puts a sales agent inside a vendor's MCP server. The whole product depends on one moment: the model in Claude or ChatGPT choosing to call `get_vendor_answer`. Within's console can test *what* Within answers ("Try a question"). Within's docs describe no test of *whether* the agent asks at all.
 
-**Read the findings: [FINDINGS.md](FINDINGS.md)** (also as [a web page](https://1algorythm.github.io/within-trigger-check/findings.html)). A stress test of `@getwithin/sdk` 0.3.0 found 20 things to fix or decide, each explained in plain words first, then with the code location, a fix, and a one-line command to reproduce it. The tests are in `stress/`.
+**Read the findings: [FINDINGS.md](FINDINGS.md)** (also as [a web page](https://1algorythm.github.io/within-trigger-check/findings.html)). A stress test of `@getwithin/sdk` 0.3.0 found 20 things to fix or decide (23 counting the three found in 0.4.0), each explained in plain words first, then with the code location, a fix, and a one-line command to reproduce it. The tests are in `stress/`.
 
-**Update 2026-11-20: re-run on version 0.4.0.** Within published 0.4.0 after the tests above. The same 43 checks show two findings fixed (W-01, the install crash with Zod 4, and W-14, the missing `identity` option) and every other check unchanged, including W-02, W-04, W-09, W-10 and W-11. The 0.4.0 copy came from a mirror, because npm's own registry returned 404 for the package that day. Details, and what was not re-run: [the update in FINDINGS.md](FINDINGS.md#update-2026-11-20-version-040).
+**Update 2026-11-20: Within's new version, 0.4.0.** In plain words: it fixed 2 of the 20 problems, 17 are still there unchanged, 1 (a plain comparison question being sent to Within) happens less often, and it adds 3 new ones. The most serious new one is a login pass leaving the company's server. Every finding was re-checked on 0.4.0, including with real Claude. Details, and what was not re-run: [the update in FINDINGS.md](FINDINGS.md#update-2026-11-20-version-040). **Where the package is available:** npm's own catalogue says "not found" for it, including 0.3.0 and 0.4.0 (checked 2026-11-20 at 22:39 UTC), so `npm install` in this repo now fails on any machine without a cached copy. A public mirror still holds every version, and the steps in [Run it](#run-it) work with it. Within's own docs still say "on npm" and "release 0.3.0".
 
 **See how Within works: [an interactive map](https://1algorythm.github.io/within-trigger-check/).** Click a box to go one level deeper, from the whole system, to the inside of the SDK, to a hand-drawn diagram of each defect. Every screen says whether it is measured, read from Within's docs and source, or judgment. The files are in `docs/`.
 
@@ -60,7 +62,7 @@ The stress test found more problems than these two (see [FINDINGS.md](FINDINGS.m
 | **Docs quickstart on a fresh install** (`npm install @getwithin/sdk @modelcontextprotocol/sdk zod`, which now gets Zod 4) | crashes: `Mixed Zod versions detected in object shape.` | works |
 | **Phone numbers in the model-written `context` text**, sent as `mcpIntent` on every call where the model fills it in, even with `captureArguments` off | sent as written | `[redacted]`; "40 seats" and "2026-12" kept |
 
-- **Zod.** The docs say Zod "is a peer dependency". `package.json` lists it under `dependencies`, so npm gives the SDK its own Zod 3 next to the project's Zod 4. The SDK then adds its `context` field with the other copy. The fix moves `zod` to `peerDependencies` (`^3.25.76 || ^4.0.0`). The SDK runs unchanged on Zod 4.
+- **Zod (0.3.0; fixed in 0.4.0).** The docs say Zod "is a peer dependency". `package.json` lists it under `dependencies`, so npm gives the SDK its own Zod 3 next to the project's Zod 4. The SDK then adds its `context` field with the other copy. The fix moves `zod` to `peerDependencies` (`^3.25.76 || ^4.0.0`). The SDK runs unchanged on Zod 4.
 
   ![The Zod bug: the SDK's private Zod 3 and the project's Zod 4 are mixed in one tool schema and the server crashes; one shared Zod fixes it](docs/diagrams/07-zod-bug.svg)
 
@@ -68,7 +70,7 @@ The stress test found more problems than these two (see [FINDINGS.md](FINDINGS.m
 
   ![The PII gap: the SDK adds a context field to every tool, the model writes the user's goal there, and phone numbers reached the API unredacted until the fix](docs/diagrams/08-pii-gap.svg)
 
-Version 0.4.0 (2026-11-20) fixes the Zod crash in the package itself. The fixes below were written for 0.3.0 and were not re-run on 0.4.0.
+Version 0.4.0 (2026-11-20) fixes the Zod crash in the package itself. The two scripted fixes below (`npm run fix`) were written for 0.3.0 and were not re-run on 0.4.0. The larger set of prototype patches in `stress/patches/` was re-tested on 0.4.0: every patch but P3 still applies, and 9 of the 11 checks they fixed on 0.3.0 still go from fail or gap to pass. The wording patch (P11) was also re-tested with real Claude: 0 of 30 false alarms against 11 of 30 for stock 0.4.0 (see the update in [FINDINGS.md](FINDINGS.md#update-2026-11-20-version-040)).
 
 The source repo is private, so the fixes patch `node_modules/@getwithin/sdk` 0.3.0 in place (`fixes/apply.mjs`). They refuse any other version, check every edit landed, and undo with `npm run unfix`. In the real repo, each fix is a few lines.
 
@@ -77,12 +79,15 @@ The source repo is private, so the fixes patch `node_modules/@getwithin/sdk` 0.3
 Needs Node 20+ and [Claude Code](https://code.claude.com) signed in (the `claude` command).
 
 ```bash
-npm install
+# npm no longer serves @getwithin/sdk (see the update above), so a plain `npm install` fails with a 404 on a machine without a cached
+# copy. This installs the 0.3.0 file from a public mirror (the same hash npm gave us) together with everything else:
+npm install https://registry.npmmirror.com/@getwithin/sdk/-/sdk-0.3.0.tgz
 npm run fix -- --wording       # zod + phone + wording (omit --wording to see the false alarm)
 npm run fix -- --question      # optional: also redact the customer's question text sent to /v1/answers (W-11)
 npm start                      # http://127.0.0.1:5180, then "Run 20 prompts"
 ```
 
+- **If `npm install` fails with a 404,** that is the missing package, not your setup. The first command above is the workaround: it points `@getwithin/sdk` in your local `package.json` at the mirror address. Tested on a fresh clone with an empty npm cache on 2026-11-20. The same applies inside `stress/`.
 - **Stub mode** (the default) fakes Within's API locally on `127.0.0.1:8787`, the SDK's own default. Nothing is sent to Within.
 - **Real Within API:** `WITHIN_MODE=proxy SUPPORTBRIDGE_API_KEY=sb_... npm start`. Each call is forwarded to `https://app.getwith.in` and recorded on the way, so the "what left the server" view still works. When this was first built it was tried only with an invalid key, which returned `401 {"error":"unauthorized"}`, and Claude then said it couldn't load the answer and did not guess a price. That was not re-run in the later audit, and no run of it is saved here.
 - **Repeat a prompt:** `npm run repeat -- --ids n09 --times 10 --model haiku`. Add `--extra experiments/comparison-prompts.json` for the comparison set.
@@ -124,6 +129,6 @@ This part is judgment from reading code and specs, not a measurement. Within's s
 | `docs/diagrams/` | The hand-drawn diagrams (animated SVG): nine are in this README, W-15 and W-03 are in the map |
 | `docs/index.html`, `docs/explorer/` | The interactive map of how Within works |
 | `FINDINGS.md`, `docs/findings.html` | The stress-test findings, built from `stress/findings.json` and the saved results |
-| `stress/` | The stress tests (`npm test`), the prototype patches, the real-Claude runs, and their saved results |
+| `stress/` | The stress tests (`npm test`), the checks for code that is new in 0.4.0 (`run-new.mjs`), the code comparison between versions (`code-locations.mjs`), the prototype patches, the real-Claude runs, and their saved results |
 
 Built with Claude Code by Satyaa Sudarshan Guruswamy Sethuraman. Not affiliated with Within.

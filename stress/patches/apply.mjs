@@ -8,7 +8,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const stock = path.resolve(here, "../node_modules/@getwithin/sdk");
+// PATCH_SRC = another unpacked package (default: the 0.3.0 in node_modules). PATCH_REPORT=1 lists every patch that does not match, instead of stopping at the first.
+const stock = path.resolve(here, process.env.PATCH_SRC ?? "../node_modules/@getwithin/sdk");
+const REPORT = Boolean(process.env.PATCH_REPORT), notApplied = [];
 const WORDING = process.env.WORDING ?? "v2"; // v2 = the wording fix we recommend; v1 = the first rewording we tried (it made things worse)
 const out = path.resolve(here, process.env.PATCH_OUT ?? "../patched-sdk");
 fs.rmSync(out, { recursive: true, force: true });
@@ -107,17 +109,24 @@ const PATCHES = [
 
 for (const p of PATCHES) {
   const n = src.split(p.from).length - 1;
-  if (n !== (p.count ?? 1)) throw new Error(`${p.id}: expected ${p.count ?? 1} match(es), found ${n}`);
+  if (n !== (p.count ?? 1)) {
+    if (REPORT) { notApplied.push(`${p.id} (${p.fixes}): expected ${p.count ?? 1} match(es), found ${n}`); continue; }
+    throw new Error(`${p.id}: expected ${p.count ?? 1} match(es), found ${n}`);
+  }
   src = src.split(p.from).join(p.to);
 }
 fs.writeFileSync(file, src);
 // P10: zod becomes a peer dependency, as the docs already say (the same change as ../../fixes/apply.mjs, fix 1)
 const pkgFile = path.join(out, "package.json");
 const pkg = JSON.parse(fs.readFileSync(pkgFile, "utf8"));
-if (!pkg.dependencies?.zod) throw new Error("P10: zod is not under dependencies");
-pkg.peerDependencies = { ...pkg.peerDependencies, zod: "^3.25.76 || ^4.0.0" };
-delete pkg.dependencies.zod;
+if (!pkg.dependencies?.zod) {
+  if (!REPORT) throw new Error("P10: zod is not under dependencies");
+  notApplied.push("P10 (W-01 (F1)): not needed, zod is already a peer dependency in this version");
+}
+if (pkg.dependencies?.zod) { pkg.peerDependencies = { ...pkg.peerDependencies, zod: "^3.25.76 || ^4.0.0" };
+delete pkg.dependencies.zod; }
 fs.writeFileSync(pkgFile, JSON.stringify(pkg, null, 2) + "\n");
-PATCHES.push({ id: "P10", fixes: "W-01 (F1)", what: "Move zod from dependencies to peerDependencies, as the docs already say (package.json)." });
+if (!notApplied.some((x) => x.startsWith("P10"))) PATCHES.push({ id: "P10", fixes: "W-01 (F1)", what: "Move zod from dependencies to peerDependencies, as the docs already say (package.json)." });
 console.log(`Built ${path.relative(process.cwd(), out) || out} with ${PATCHES.length} patches:`);
 for (const p of PATCHES) console.log(`  ${p.id.padEnd(3)} ${p.fixes.padEnd(16)} ${p.what}`);
+if (REPORT) { console.log(`\nPATCH REPORT against ${path.basename(stock)}: ${PATCHES.length} applied, ${notApplied.length} not applied`); for (const x of notApplied) console.log("  NOT APPLIED  " + x); }

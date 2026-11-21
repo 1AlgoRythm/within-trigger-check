@@ -1,0 +1,170 @@
+{
+  "meta": {
+    "sdkPatched": false,
+    "sdkEntry": "alternate package via WITHIN_SDK_ENTRY",
+    "ranAt": "2026-11-21T06:59:37.844Z",
+    "model": "haiku",
+    "times": 10,
+    "scenariosRun": [
+      "V1",
+      "V2"
+    ],
+    "claudeCode": "headless `claude -p`, flags as in the Claude Code CLI reference",
+    "note": "Local stand-in only. Nothing was sent to Within's service."
+  },
+  "results": [
+    {
+      "id": "V1",
+      "kind": "void",
+      "note": "export-and-email request, with name, email and phone in the question",
+      "prompt": "Hi, I'm Priya Raman at Ledgerly (priya.raman@ledgerly.example, 617 555 0142). Can you export every Series B fintech company to a CSV and email it to me?",
+      "model": "claude-haiku-5-5",
+      "runs": 10,
+      "completed": 10,
+      "calledGetVendorAnswer": 0,
+      "calledConfirmAssistance": 0,
+      "offerAcceptedAtStandIn": 0,
+      "toolSequences": [
+        "search_companies > search_companies > search_companies",
+        "search_companies > search_companies",
+        "search_companies > search_companies",
+        "search_companies > search_companies > search_companies > report_void",
+        "search_companies > search_companies > report_void",
+        "search_companies > search_companies > report_void",
+        "search_companies > search_companies",
+        "search_companies > search_companies",
+        "search_companies > search_companies > report_void",
+        "search_companies > search_companies > report_void"
+      ],
+      "voidInputs": [
+        {
+          "tool": "search_companies",
+          "asked": "export every Series B fintech company to a CSV and email it",
+          "context": "Search can't filter by funding stage and there is no export or email option; user needs both."
+        },
+        {
+          "tool": "search_companies",
+          "asked": "every Series B fintech company, exported to CSV",
+          "context": "User asked for a CSV export of Series B fintech companies emailed to them. Search by \"Series B fintech\" returned nothing, and search has no funding-stage filter or export option."
+        },
+        {
+          "tool": "search_companies",
+          "asked": "every Series B fintech company, exported to CSV",
+          "context": "Searching for Series B fintech companies returned no results. Search does not appear to filter by funding stage."
+        },
+        {
+          "tool": "search_companies",
+          "asked": "every Series B fintech company, filtered by funding stage",
+          "context": "User asked for all Series B fintech companies; search cannot filter by stage."
+        },
+        {
+          "tool": "search_companies",
+          "asked": "export every Series B fintech company to a CSV and email it",
+          "context": "User asked for a CSV export of Series B fintech companies emailed to them. Search returns no stage filter or export."
+        }
+      ],
+      "replies": [
+        "I couldn't find any Series B fintech companies in Acme, so there's nothing to export for that filter. Searches for \"Series B\" and \"Series B fintech\" returned no matches.\n\nAcme has three fintech companies, none of them Series B:\n\n| name | sector | city | stage |\n|---|---|---|---|\n",
+        "I'll search Acme for Series B fintech companies first. I don't have an email or file-export tool, so I'll check what the search returns.\n\nI couldn't find any Series B fintech companies in Acme, so there's nothing to export. I also can't create a CSV or send email from here. My to",
+        "I couldn't email anything or create a file. I have no tool that can send email or export CSVs, so I can only search the Acme database and show you the results here.\n\nSearching for \"Series B fintech\" returned no companies. A broader \"fintech\" search returned three companies, none ",
+        "Hi Priya, I wasn't able to do this. I can't create a CSV file or send email from this connector, and I can't filter the company database by funding stage.\n\nWhat I could find:\n\n- **Series B fintech companies:** None. Searches for \"Series B fintech\" and \"Series B\" returned no resul",
+        "I can't do this one as asked, Priya. Here's why, and what I can do instead.\n\n**Why I can't complete the export:**\n- **No email or CSV export tool.** The Acme connector I have can search and look up companies, but it can't create files or send email.\n- **No Series B filter.** A se",
+        "I couldn't produce a Series B fintech export, and I can't send email from here either.\n\n- **No Series B matches:** Searching \"Series B fintech\" returned no companies. A broader \"fintech\" search returned three companies, but none are Series B. The search doesn't appear to filter b",
+        "I can't create a CSV file or send email from here, so I couldn't send anything to priya.raman@ledgerly.example. I also found no companies to export.\n\n- **Series B fintech:** My search returned no matches.\n- **Broader \"fintech\" search:** It returned three companies, none at Series",
+        "I couldn't find any Series B fintech companies, and I can't create a CSV or send email from here.\n\n- **No Series B matches:** Searching for \"Series B fintech\" returned nothing. Searching by sector alone returned three fintech companies, none of them Series B:\n  - Ledgerly (New Yo",
+        "I couldn't produce the Series B list, and I can't create a CSV or send email from here.\n\n- **No Series B results:** I searched for \"Series B fintech\" and got no matches. A broader \"fintech\" search returned three companies, none of them Series B:\n  - Ledgerly (New York, Series A)\n",
+        "I couldn't export a CSV or email it to you. I don't have a tool that can create files or send email, and Acme's company search doesn't filter by funding stage.\n\nHere's what I found:\n\n- A search for \"Series B fintech\" returned no companies.\n- A search for \"fintech\" returned three "
+      ],
+      "errors": []
+    },
+    {
+      "id": "V2",
+      "kind": "void",
+      "note": "chart request, with name and phone in the question",
+      "prompt": "I'm Priya Raman, 617 555 0142. Show me a funding history chart for Paywise.",
+      "model": "claude-haiku-5-5",
+      "runs": 10,
+      "completed": 10,
+      "calledGetVendorAnswer": 0,
+      "calledConfirmAssistance": 0,
+      "offerAcceptedAtStandIn": 0,
+      "toolSequences": [
+        "get_company > report_void",
+        "get_company > report_void",
+        "get_company > report_void",
+        "get_company > report_void",
+        "get_company > report_void",
+        "get_company > report_void",
+        "get_company > report_void",
+        "get_company > report_void",
+        "get_company > report_void",
+        "get_company > report_void"
+      ],
+      "voidInputs": [
+        {
+          "tool": "get_company",
+          "asked": "funding history chart for Paywise",
+          "context": "User Priya Raman asked for a funding history chart; the Paywise profile has no funding data."
+        },
+        {
+          "tool": "get_company",
+          "asked": "funding history chart for Paywise",
+          "context": "Company profile returned no funding rounds, amounts, or dates, so no chart could be built."
+        },
+        {
+          "tool": "get_company",
+          "asked": "funding history chart for Paywise",
+          "context": "User asked for a funding history chart; the Paywise profile returned no funding data."
+        },
+        {
+          "tool": "get_company",
+          "asked": "funding history chart for Paywise",
+          "context": "User Priya Raman asked for a funding history chart; the Paywise profile had no funding data."
+        },
+        {
+          "tool": "get_company",
+          "asked": "funding history chart for Paywise",
+          "context": "User Priya Raman asked for Paywise's funding history; the company profile has no funding rounds or amounts."
+        },
+        {
+          "tool": "get_company",
+          "asked": "funding history chart for Paywise",
+          "context": "User asked for a funding history chart; the Paywise profile had no funding data."
+        },
+        {
+          "tool": "get_company",
+          "asked": "funding history chart for Paywise",
+          "context": "User asked for a funding history chart; the Paywise profile had no funding data."
+        },
+        {
+          "tool": "get_company",
+          "asked": "funding history chart for Paywise",
+          "context": "User asked for a funding history chart; the company profile returned no funding data."
+        },
+        {
+          "tool": "get_company",
+          "asked": "funding history chart",
+          "context": "Looking up Paywise's funding history to chart it. The profile had no funding data."
+        },
+        {
+          "tool": "get_company",
+          "asked": "funding history chart",
+          "context": "User asked for a funding history chart for Paywise; the company profile has no funding data."
+        }
+      ],
+      "replies": [
+        "I couldn't build a funding history chart for Paywise because Acme's profile has no funding data. I logged the gap so the product team can look at it.\n\nHere's what the profile does include:\n\n- **Sector:** Fintech\n- **City:** Boston\n- **Stage:** Seed\n- **About:** Paywise builds pay",
+        "Hi Priya. I can't build a funding history chart for Paywise because Acme's profile doesn't include any funding data. There are no rounds, amounts, or dates to plot.\n\nHere's what the profile does show:\n- **Sector:** Fintech\n- **City:** Boston\n- **Stage:** Seed\n- **About:** Paywise",
+        "Hi Priya, I can't make a funding history chart for Paywise because Acme's profile doesn't include any funding data.\n\nHere's what the profile does show:\n- **Sector:** Fintech\n- **City:** Boston\n- **Stage:** Seed\n- **About:** Paywise builds payment links.\n\nI've logged the gap so th",
+        "I can't build a funding history chart for Paywise because Acme's profile doesn't include any funding data. Here's what the profile does show:\n\n- **Name:** Paywise\n- **Sector:** Fintech\n- **City:** Boston\n- **Stage:** Seed\n- **About:** Paywise builds payment links.\n\nThe Seed stage",
+        "I couldn't build a funding history chart for Paywise because the Acme profile has no funding data. I've logged the gap so it can be looked at.\n\nWhat the profile does show:\n- **Sector:** Fintech\n- **City:** Boston\n- **Stage:** Seed\n- **About:** Builds payment links\n\nThe stage is t",
+        "I couldn't build a funding history chart for Paywise because the Acme profile has no funding data. Here is what the profile does contain:\n\n- **Name:** Paywise\n- **Sector:** Fintech\n- **City:** Boston\n- **Stage:** Seed\n- **About:** Builds payment links\n\nI've logged the gap so the ",
+        "Hi Priya. I can't make a funding history chart for Paywise because Acme doesn't have funding data for it. Its profile shows:\n\n- **Sector:** Fintech\n- **City:** Boston\n- **Stage:** Seed\n- **About:** Paywise builds payment links.\n\nThere are no funding rounds, dates, or amounts in t",
+        "Hi Priya. I can't build a funding history chart for Paywise because the Acme record has no funding data. Here is what it does contain:\n\n- **Name:** Paywise\n- **Sector:** Fintech\n- **City:** Boston\n- **Stage:** Seed\n- **About:** Paywise builds payment links.\n\nI've logged the gap s",
+        "I can't make a funding history chart for Paywise because Acme has no funding data for it. The company profile lists only:\n\n- **Sector:** Fintech\n- **City:** Boston\n- **Stage:** Seed\n- **About:** Paywise builds payment links.\n\nI've logged the gap so the product team can see that f",
+        "I can't build a funding history chart for Paywise because the Acme profile has no funding data. Here's what the profile does contain:\n\n- **Name:** Paywise\n- **Sector:** Fintech\n- **City:** Boston\n- **Stage:** Seed\n- **About:** Builds payment links\n\nThe profile lists the stage but"
+      ],
+      "errors": []
+    }
+  ]
+}

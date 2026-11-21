@@ -110,5 +110,5 @@ http.createServer((req, res) => {
 }).listen(PORT, "127.0.0.1", () => {
   const s = sdkStatus();
   console.log(`Trigger check on http://127.0.0.1:${PORT}  (Within ${MODE} mode, SDK ${s.version}, zod fix ${s.zodFix}, phone fix ${s.phoneFix})`);
-  if (!s.zodFix) console.log("Note: without the Zod fix the Acme server crashes on Zod 4. Run: npm run fix");
+  if (!s.zodFix) console.log("Note: SDK 0.3.0 crashes on Zod 4 (fixed in 0.4.0). Run: npm run fix");
 });
