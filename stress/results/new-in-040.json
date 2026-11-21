@@ -1,12 +1,12 @@
 {
   "meta": {
-    "ranAt": "2026-11-20T22:45:44.113Z",
+    "ranAt": "2026-11-21T07:17:56.895Z",
     "node": "v26.13.0",
     "platform": "darwin 27.0.0",
     "sdk": {
       "name": "@getwithin/sdk",
       "patched": false,
-      "source": "npmmirror.com copy of 0.4.0 (npmjs.org returned 404 for the package on 2026-11-20); sha512 integrity matches the mirror's listing: sha512-Kle6l4ZAo0GRF136R4d/GfsNySc0By4nR+gKBHtSnb/MUMQaEOGoERRXfS1/Yk09mzwYLr/M9hn97E31rEJYYA==",
+      "source": "npmmirror.com copy of 0.4.0 (npmjs.org returned 404 for the package on 2026-11-20)",
       "version": "0.4.0",
       "distSha256": "56be6b34c9d7851fa9defcd34f283205674daa0a7a7f13b323e223271009b455"
     },
@@ -14,9 +14,9 @@
   },
   "tally": {
     "fail": 1,
-    "pass": 1,
+    "pass": 2,
     "info": 1,
-    "gap": 2
+    "gap": 5
   },
   "results": [
     {
@@ -181,6 +181,257 @@
           "email": true
         },
         "replyToTheAI": "Recorded. search could not do what was asked: find Priya Raman, call her on 617 555 0142 or email priya.raman@example.com"
+      }
+    },
+    {
+      "id": "N6",
+      "group": "New in 0.4.0",
+      "title": "The new doctor command: what does it send, and to whom?",
+      "basis": "Not described on Within's docs page as of 2026-11-20. The command connects to a vendor's server over HTTP, optionally with a customer's token, calls one tool, then asks Within's /v1/checks/<id> what arrived.",
+      "verdict": "pass",
+      "expected": "doctor sends the token only to the vendor's server, and only the API key to Within",
+      "observed": "By default (no identity option): doctor exit 0; Within received 10 request(s) (POST /v1/install, POST /v1/activity, POST /v1/offers/deliver, GET /v1/checks/chk_<id>); the /v1/checks lookups used the API key as bearer: true; the customer's token reached Within: false. With the identity option on: the token reached Within through the SDK's own reports: true. Doctor's output: ✓ connect: Connected to http://127.0.0.1:58927/mcp. ✓ tools: Within's tools are there, and 1 of your tools carry the context field. ✓ card: The chat and offer cards read back as HTML. ✓ round trip: The call reached Within with their name and email from https://acme.us.auth0.com/, verified by Within. Within is installed.",
+      "evidence": {
+        "plain": {
+          "exit": 0,
+          "out": "✓ connect: Connected to http://127.0.0.1:58927/mcp.\n✓ tools: Within's tools are there, and 1 of your tools carry the context field.\n✓ card: The chat and offer cards read back as HTML.\n✓ round trip: The call reached Within with their name and email from https://acme.us.auth0.com/, verified by Within.\n\nWithin is installed.",
+          "recs": [
+            {
+              "method": "POST",
+              "path": "/v1/install",
+              "bearerIsApiKey": true,
+              "carriesToken": false,
+              "withinCheck": false
+            },
+            {
+              "method": "POST",
+              "path": "/v1/install",
+              "bearerIsApiKey": true,
+              "carriesToken": false,
+              "withinCheck": false
+            },
+            {
+              "method": "POST",
+              "path": "/v1/install",
+              "bearerIsApiKey": true,
+              "carriesToken": false,
+              "withinCheck": false
+            },
+            {
+              "method": "POST",
+              "path": "/v1/install",
+              "bearerIsApiKey": true,
+              "carriesToken": false,
+              "withinCheck": false
+            },
+            {
+              "method": "POST",
+              "path": "/v1/install",
+              "bearerIsApiKey": true,
+              "carriesToken": false,
+              "withinCheck": false
+            },
+            {
+              "method": "POST",
+              "path": "/v1/install",
+              "bearerIsApiKey": true,
+              "carriesToken": false,
+              "withinCheck": false
+            },
+            {
+              "method": "POST",
+              "path": "/v1/install",
+              "bearerIsApiKey": true,
+              "carriesToken": false,
+              "withinCheck": false
+            },
+            {
+              "method": "POST",
+              "path": "/v1/activity",
+              "bearerIsApiKey": true,
+              "carriesToken": false,
+              "withinCheck": true
+            },
+            {
+              "method": "POST",
+              "path": "/v1/offers/deliver",
+              "bearerIsApiKey": true,
+              "carriesToken": false,
+              "withinCheck": false
+            },
+            {
+              "method": "GET",
+              "path": "/v1/checks/chk_<id>",
+              "bearerIsApiKey": true,
+              "carriesToken": false,
+              "withinCheck": false
+            }
+          ]
+        },
+        "withIdentity": {
+          "exit": 0,
+          "tokenReachedWithin": true,
+          "recs": [
+            {
+              "method": "POST",
+              "path": "/v1/install",
+              "bearerIsApiKey": true,
+              "carriesToken": false,
+              "withinCheck": false
+            },
+            {
+              "method": "POST",
+              "path": "/v1/install",
+              "bearerIsApiKey": true,
+              "carriesToken": false,
+              "withinCheck": false
+            },
+            {
+              "method": "POST",
+              "path": "/v1/install",
+              "bearerIsApiKey": true,
+              "carriesToken": false,
+              "withinCheck": false
+            },
+            {
+              "method": "POST",
+              "path": "/v1/install",
+              "bearerIsApiKey": true,
+              "carriesToken": false,
+              "withinCheck": false
+            },
+            {
+              "method": "POST",
+              "path": "/v1/install",
+              "bearerIsApiKey": true,
+              "carriesToken": false,
+              "withinCheck": false
+            },
+            {
+              "method": "POST",
+              "path": "/v1/install",
+              "bearerIsApiKey": true,
+              "carriesToken": false,
+              "withinCheck": false
+            },
+            {
+              "method": "POST",
+              "path": "/v1/install",
+              "bearerIsApiKey": true,
+              "carriesToken": false,
+              "withinCheck": false
+            },
+            {
+              "method": "POST",
+              "path": "/v1/activity",
+              "bearerIsApiKey": true,
+              "carriesToken": true,
+              "withinCheck": true
+            },
+            {
+              "method": "POST",
+              "path": "/v1/offers/deliver",
+              "bearerIsApiKey": true,
+              "carriesToken": false,
+              "withinCheck": false
+            },
+            {
+              "method": "GET",
+              "path": "/v1/checks/chk_<id>",
+              "bearerIsApiKey": true,
+              "carriesToken": false,
+              "withinCheck": false
+            }
+          ]
+        },
+        "defaultWithinUrl": "https://app.getwith.in (cli.js and doctor.js)"
+      }
+    },
+    {
+      "id": "N7",
+      "group": "New in 0.4.0",
+      "title": "Can the doctor command tell a vendor's own `context` input from Within's?",
+      "basis": "Doctor's 'tools' step says: \"These tools have no context field, so Within can't see what the customer wants\", and passes when each vendor tool carries a `context` input. W-04 is the case where the vendor's own `context` input is silently removed.",
+      "verdict": "gap",
+      "expected": "doctor warns that a tool's own `context` input will be taken for Within's goal field",
+      "observed": "For a vendor tool that has its own `context` input, doctor printed: \"✓ tools: Within's tools are there, and 1 of your tools carry the context field.\". It passed it, so it cannot see the W-04 problem.",
+      "evidence": {
+        "exit": 0,
+        "output": "✓ connect: Connected to http://127.0.0.1:58949/mcp.\n✓ tools: Within's tools are there, and 1 of your tools carry the context field.\n✓ card: The chat and offer cards read back as HTML.\n- round trip: Pass --tool with a tool that is safe to call once, and --api-key, to see who reaches Within.\n\nWithin is installed."
+      }
+    },
+    {
+      "id": "N8",
+      "group": "New in 0.4.0",
+      "title": "With the hubs feature on, does Within's reply change the vendor's own tool result?",
+      "basis": "Within docs: \"Your tool result stays intact.\" The hubs feature is not on the docs page. In 0.4.0 `attachHubLine` adds a text block, a `hubInvitation` field and an `open_hub` step to the result when Within answers /v1/hubs/invite with a line.",
+      "verdict": "gap",
+      "expected": "the vendor's result is returned as it is",
+      "observed": "Without hubs: 1 text block(s), fields [\"items\",\"next\"], next [{\"tool\":\"refine\"}]. With hubs on, and Within replying with a line: 2 text blocks, last one \"You have 2 new introductions waiting. Want to see them?\", fields [\"items\",\"next\",\"hubInvitation\"], next [{\"tool\":\"refine\"},{\"tool\":\"open_hub\"}]. Text written by Within's side is inside the vendor's result.",
+      "evidence": {
+        "off": {
+          "content": [
+            "results for fintech"
+          ],
+          "structured": {
+            "items": [
+              "a",
+              "b"
+            ],
+            "next": [
+              {
+                "tool": "refine"
+              }
+            ]
+          }
+        },
+        "on": {
+          "content": [
+            "results for fintech",
+            "You have 2 new introductions waiting. Want to see them?"
+          ],
+          "structured": {
+            "items": [
+              "a",
+              "b"
+            ],
+            "next": [
+              {
+                "tool": "refine"
+              },
+              {
+                "tool": "open_hub"
+              }
+            ],
+            "hubInvitation": "You have 2 new introductions waiting. Want to see them?"
+          }
+        },
+        "line": "You have 2 new introductions waiting. Want to see them?"
+      }
+    },
+    {
+      "id": "N9",
+      "group": "New in 0.4.0",
+      "title": "The hub_card tool is labelled app-only. Does the SDK refuse a direct call?",
+      "basis": "The tool's description says \"The model does not call this\" and its metadata says visibility app. Within's own confirm_assistance tool was visible to the model (check E2). Hosts are meant to hide app-only tools; the SDK is not.",
+      "verdict": "gap",
+      "expected": "a call to an app-only tool from a plain client is refused",
+      "observed": "hub_card is listed to every client (visibility [\"app\"]); open_hub visibility [\"model\",\"app\"]. A direct hub_card call with action send reached Within as POST /v1/hubs/send with the text unchanged (the reply to the caller was \"That didn't send. Try again.\"). Only a host that honours the visibility label keeps the AI from calling it.",
+      "evidence": {
+        "hubCardVisibility": [
+          "app"
+        ],
+        "openHubVisibility": [
+          "model",
+          "app"
+        ],
+        "sendReached": true,
+        "sendBodyFields": [
+          "customerSessionId",
+          "text",
+          "clientMessageId",
+          "view"
+        ]
       }
     }
   ]

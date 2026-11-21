@@ -3,9 +3,9 @@
 ## The short version, for a founder
 
 - **What Within does.** Companies now let customers talk to them through AI assistants such as Claude or ChatGPT. Within sells a small add-on that a company installs once, so that a Within sales representative can join those conversations at the right moment.
-- **What we did.** We tested that add-on on a laptop, against a pretend copy of Within's service, so nothing touched Within's real systems. We ran 43 checks on version 0.3.0, then re-ran them on the new version 0.4.0 and added 5 more checks for code that is new in it. We also put real AI assistants (Claude) through the add-on on both versions.
+- **What we did.** We tested that add-on on a laptop, against a pretend copy of Within's service, so nothing touched Within's real systems. We ran 43 checks on version 0.3.0, then re-ran them on the new version 0.4.0 and added 9 more checks for code that is new in it. We also put real AI assistants (Claude) through the add-on on both versions.
 - **What we found, in three kinds.** The add-on can break the company's own product. It can send customer details to Within that the documents never mention. And the documents and the software sometimes disagree.
-- **Since the new version.** Within fixed 2 things (W-01, W-14). 17 problems are still there unchanged, 1 still happens but less often, and the new version adds 3 new ones (W-21, W-22, W-23), 1 of them High severity.
+- **Since the new version.** Within fixed 2 things (W-01, W-14). 17 problems are still there unchanged, 1 still happens but less often, and the new version adds 6 new ones (W-21, W-22, W-23, W-24, W-25, W-26), 1 of them High severity.
 - **If a company fixes only a few things.** Make sure an outage at Within can never break the company's own answers, stop customer details leaving without being listed in the documents, and keep login passes on the company's own server.
 
 Every finding below starts with a short founder-level summary. The technical detail follows it: what happens, where in the code, and how to fix it. A glossary of the technical words is at the end.
@@ -22,21 +22,22 @@ Tested 2026-11-19 05:00 UTC on `@getwithin/sdk` 0.3.0 (file fingerprint `658d812
 
 ## Update 2026-11-20: version 0.4.0
 
-**In short.** Version 0.4.0 fixed 2 of the 20 problems in this report (W-01, W-14). 17 are still there unchanged, and 1 (W-20) still happens but less often. We also read the new code and found 3 new problems, 1 of them High severity. Version 0.4.0 was published at 14:39 UTC on 2026-11-20, after the tests in this report were run on 0.3.0.
+**In short.** Version 0.4.0 fixed 2 of the 20 problems in this report (W-01, W-14). 17 are still there unchanged, and 1 (W-20) still happens but less often. We also read the new code and found 6 new problems, 1 of them High severity. Version 0.4.0 was published at 14:39 UTC on 2026-11-20, after the tests in this report were run on 0.3.0.
 
-We re-ran the same 43 checks on 2026-11-20 21:23 UTC, added 5 checks for code that only exists in 0.4.0, and ran real Claude (Haiku) on it. For every function a finding points at, we also compared the exact code in both versions. All 23 findings were checked on 0.4.0: 19 by automated checks, 1 by real-Claude runs, and the 3 new ones by their own checks.
+We re-ran the same 43 checks on 2026-11-20 21:23 UTC, added 9 checks for code that only exists in 0.4.0, and ran real Claude (Haiku and Sonnet) on it. For every function a finding points at, we also compared the exact code in both versions. All 26 findings were checked on 0.4.0: 19 by automated checks, 1 by real-Claude runs, and the 6 new ones by their own checks.
 
 ### What changed in 0.4.0
 
-- **In plain words.** Within made 2 real fixes. 17 of the problems we found are still there and 1 happens less often. The new version also brings 3 new problems. The most serious is a login pass leaving the company's server.
+- **In plain words.** Within made 2 real fixes. 17 of the problems we found are still there and 1 happens less often. The new version also brings 6 new problems. The most serious is a login pass leaving the company's server.
 - **Fixed: the setup crash (W-01).** The package now uses the company's own copy of the Zod library, as the docs said it would.
 - **Fixed: the missing login-provider option (W-14).** The `identity` option for Auth0, WorkOS and Clerk is now in the package. Check N2 shows its lookup goes only to the named provider, once per person, as the docs say.
 - **Not fixed: the other 17 problems.** Their checks give the same verdicts, and the code each finding points at is the same apart from variable renames and the additions described on each finding's "In 0.4.0" line.
 - **Reduced, not fixed (W-20).** With real Claude (Haiku), the comparison question was sent to Within in 11 of 30 runs on 0.4.0, against 23 of 30 on 0.3.0 the same day (Fisher exact p = 0.004). The words that tell the AI when to call Within are the same apart from one new sentence, so we do not know why it is lower. The wording patch P11 brought it to 0 of 30 runs, while real competitor questions still went to Within (30 of 30).
 - **Real Claude on 0.4.0 (Haiku).** The five trigger scenarios sent 15 of 15 buying questions to Within. In the four consent scenarios the AI called the accept tool in 0 of 12 runs, and the accept reached the stand-in in 0. The 20 labelled Trigger check prompts, run on a scratch copy with 0.4.0 on Zod 4, gave recall 30 of 30 and false alarms 1 of 30. The new tool `report_void` was called in 24 of 87 ordinary runs, often right after `get_vendor_answer`.
-- **New: a login token now travels to Within when the identity option is on (W-21).** The new tool `report_void` is on by default and sends the customer's own words unredacted (W-22). A fallback sends up to 80 characters of the app's identification text (W-23).
-- **New, off by default: a "hubs" feature.** Switched on, it adds a tool, `open_hub`, and one extra request to Within after each tool call, carrying the session id and tool name. Within's docs page does not describe it (check N3).
-- **New files and size.** A `doctor` module and a `getwithin-sdk` command-line tool were added, and the main file grew from 144,109 to 246,888 bytes. We did not run the new tool.
+- **Real Claude on 0.4.0 (Sonnet).** The five trigger scenarios sent 15 of 15 buying questions to Within. In the four consent scenarios the AI called the accept tool in 0 of 12 runs. The comparison question behind W-20 went to Within in 0 of 10 runs on 0.4.0 and 0 of 10 on 0.3.0 the same day, so the problem did not show on Sonnet in either version. The new tool `report_void` was called in 28 of 57 ordinary runs.
+- **New: a login token now travels to Within when the identity option is on (W-21).** The new tool `report_void` is on by default and sends the customer's own words unredacted (W-22). A fallback sends up to 80 characters of the app's identification text (W-23). With the hubs option on, Within's own text is added to the vendor's results (W-24). The new `doctor` command passes a server whose own `context` input is being removed (W-25), and the app-only `hub_card` tool accepts a direct call (W-26).
+- **New, off by default: a "hubs" feature.** Switched on, it adds a tool, `open_hub`, and one extra request to Within after each tool call, carrying the session id and tool name (check N3). Within's reply can add a sentence to the vendor's result (W-24). With real Claude (Haiku and Sonnet), the AI repeated that sentence to the customer in 40 of 40 runs and never opened the hub by itself (0 of 40). Within's docs page does not describe the feature.
+- **New files and size.** A `doctor` module and a `getwithin-sdk` command-line tool were added, and the main file grew from 144,109 to 246,888 bytes. We ran the new tool end to end against a local server (check N6): it sends the customer's token only to the vendor's own server, and only the API key to Within.
 - **Longer instructions.** The text Within adds to every server's instructions grew from 2,595 to 2,901 characters, 306 more. That is exactly the new sentence about `report_void`.
 
 ### Where the package is available
@@ -54,14 +55,14 @@ We re-ran the same 43 checks on 2026-11-20 21:23 UTC, added 5 checks for code th
 - Of the 26 named functions and constants the findings point at, 18 have exactly the same text in both versions and 8 differ. Each difference was read: variable renames only (`redactMcpIntent`, `splitMcpContext`), new fields and hubs code (`instrumentTool`, `patchRegisterTool`, `install`), the Zod flavour switch (`withMcpContext`), the profile lookup (`identityOf`) and one new sentence (`SERVER_INSTRUCTIONS`). Method: `stress/code-locations.mjs`.
 - Line numbers and code quotes in the findings below are for the 0.3.0 file. Each finding has an extra "In 0.4.0" line with the new line number.
 - **Prototype patches on 0.4.0.** The patch builder was pointed at the 0.4.0 file (`PATCH_SRC`). Every patch matches except P3 (W-05, the 300-character limit), because the code around it changed, and P10 (W-01) is not needed any more. On the patched copy 9 checks go from fail or gap to pass (A3, A3b, A7, A10, B2, B3, C7, C8, D1), against 11 on 0.3.0. The ones that no longer flip are B4, F1: B4 because P3 does not match, and F1 because Zod is already a peer dependency. Results: `stress/results/patched-0.4.0.json`. The wording patch P11 was also tested with real Claude: 0 of 30 runs sent the comparison to Within, against 11 of 30 for stock 0.4.0 (Fisher exact p = 0.0003).
-- **Real-Claude method.** Haiku 5.5, one fresh headless session per run, against the demo vendor server with the stand-in on `127.0.0.1`. The W-20 comparison used three same-day batches of 10 runs on each version, taken in turn. A first batch of 0 of 10 on stock 0.4.0 is saved too and is not in those 30; pooled with it, 0.4.0 gives 11 of 40. The 20 prompts ran on a scratch clone with 0.4.0 installed from the tarball. Files: `stress/results/model-haiku-*-040*.json`, `model-haiku-X1-*.json` and `app-prompts-040.json`.
-- **Not re-run on 0.4.0.** The Sonnet versions of the real-Claude runs, the `doctor` module and `getwithin-sdk` command, and the hubs feature beyond what check N3 measures. All real-Claude numbers here are Haiku only, run through headless Claude Code with the tester's own global Claude Code setup active, as in the 0.3.0 runs. To reproduce what was run, see `stress/README.md`, "Run it on another version".
+- **Real-Claude method.** Haiku 5.5 and Sonnet 5.5, one fresh headless session per run, against the demo vendor server with the stand-in on `127.0.0.1`. The W-20 comparison used three same-day batches of 10 runs on each version, taken in turn. A first batch of 0 of 10 on stock 0.4.0 is saved too and is not in those 30; pooled with it, 0.4.0 gives 11 of 40. The 20 prompts ran on a scratch clone with 0.4.0 installed from the tarball. Files: `stress/results/model-haiku-*-040*.json`, `model-sonnet-*-040*.json`, `model-*-H-040.json` (hubs on), `model-haiku-X1-*.json` and `app-prompts-040.json`.
+- **Not checked on 0.4.0.** The 20-prompt Trigger check ran on Haiku only. Anything that depends on Within's own server is invisible from outside, for example whether it verifies the login token the SDK sends. The `doctor` command was run against a local server only, never against Within's real service.
 
 ## At a glance
 
 **20 findings: 6 High, 10 Medium, 4 Low.** 43 automated checks ran against the published package (0.3.0): 8 pass, 11 fail, 14 gap (documented or undocumented behaviour worth a decision), 10 information only. A patched copy with 11 small prototype fixes turns 11 of those fails and gaps into passes.
 
-Version 0.4.0 adds 3 more findings (W-21, W-22, W-23), in their own group at the end. They were found by reading the new code and confirmed by 5 extra checks (1 fail, 2 gap, 1 pass, 1 info).
+Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in their own group at the end. They were found by reading the new code and confirmed by 9 extra checks (1 fail, 5 gap, 2 pass, 1 info).
 
 | ID | Severity | What | Prototype fix | In 0.4.0 |
 |---|---|---|---|---|
@@ -83,11 +84,14 @@ Version 0.4.0 adds 3 more findings (W-21, W-22, W-23), in their own group at the
 | [W-19](#w-19) | Medium | On servers that keep no sessions, a rep's offer cannot find the customer | none | unchanged |
 | [W-20](#w-20) | Medium | A small AI model sometimes (3 of 10) treats "compare two companies" as a sales question | P11 | reduced |
 | [W-22](#w-22) | Medium | A new tool, report_void, is on by default, and the customer's own words in it go to Within unredacted | none | new |
+| [W-24](#w-24) | Medium | With the hubs feature on, text written on Within's side is added to the vendor's own tool results, and the AI repeats it to the customer | none | new |
 | [W-06](#w-06) | Low | When a rep's offer is attached, the vendor's own `_meta` data is removed | P4 | unchanged |
 | [W-07](#w-07) | Low | If the vendor's customer-identity function throws, the customer's tool call fails | P8 | unchanged |
 | [W-16](#w-16) | Low | A wrong key or a missing URL fails silently | P9 | unchanged |
 | [W-17](#w-17) | Low | Two lists of private-network addresses are defined and never used | none | unchanged |
 | [W-23](#w-23) | Low | When the AI app does not report its name, the first 80 characters of its user-agent text are sent as the app name | none | new |
+| [W-25](#w-25) | Low | The new doctor command passes a server whose own `context` input is being removed (W-04) | none | new |
+| [W-26](#w-26) | Low | The app-only hub_card tool can be called directly by any MCP client; only the host's label keeps the AI away from it | none | new |
 
 **If you only fix six things:** W-02 (an outage must not change or break the vendor's own answers), W-09, W-10 and W-11 (what leaves the vendor's server, and what the docs say about it), W-01 (the install steps must work on a new project; fixed in 0.4.0), and W-04 (never swallow a vendor's own `context` input).
 
@@ -757,7 +761,7 @@ Version 0.4.0 adds 3 more findings (W-21, W-22, W-23), in their own group at the
 
 **In plain words.** In 0.4.0, when the vendor sets the `identity` option, the SDK adds the customer's signed login token (the `authInfo.token` of the tool call, a three-part JWT) to the activity report it sends to Within, as the field `authToken`. In our test it arrived exactly as received. Without the option it is not sent. Within's docs list "the raw bearer token" under what is left on the vendor's server.
 
-**Why it matters.** A login token is a credential: whoever holds it can act as that customer until it expires. The vendor is not told it leaves their server. Within's published docs still describe 0.3.0, so they may simply be behind the code, which makes this a question for Within before a vendor turns the option on. What Within's server does with the token is not visible from outside.
+**Why it matters.** A login token is a credential: whoever holds it can act as that customer until it expires. The vendor is not told it leaves their server. Within's published docs still describe 0.3.0, so they may simply be behind the code, which makes this a question for Within before a vendor turns the option on. What Within's server does with the token is not visible from outside. The new `doctor` command prints whether a login was "verified by Within", which suggests Within checks the token on its own side. That would explain why it is sent, but the docs say the raw token stays on the vendor's server.
 
 **What we measured.**
 
@@ -787,7 +791,7 @@ Version 0.4.0 adds 3 more findings (W-21, W-22, W-23), in their own group at the
 
 **In plain words.** 0.4.0 registers a new tool, `report_void`, on every install, with no option needed. It also adds a sentence (306 characters) to every vendor's server instructions telling the AI to call it when a tool cannot return what the customer asked, with `asked` set to "a short phrase in the customer's own words". The phrase is sent to Within as `voidAsked`. In a direct check, calling the tool ourselves with "find Priya Raman, call her on 617 555 0142 or email priya.raman@example.com", the text arrived exactly as written. The SDK hides emails in other fields, but not in this one.
 
-**Why it matters.** Vendors now send customer wording to Within by default, without choosing to and without the docs saying so: the docs page does not mention `report_void`. The redaction used for the goal note is not applied to this field. With real Claude (Haiku) the tool is used a lot: it was called in 24 of 87 ordinary runs, often right after the vendor's own answer, and in 15 of 20 runs where the question contained a name, phone number and email. Every one of those 15 phrases was a short topic. The name appeared in 0 of them, the phone number in 0 and the email in 0. So the unredacted path is real (check N5), but this model did not use it for personal details. One model and two prompts is a small sample, and another model or prompt may copy them, which is why this is Medium and not High. Within's server may redact more after the text arrives; that part is not visible from outside.
+**Why it matters.** Vendors now send customer wording to Within by default, without choosing to and without the docs saying so: the docs page does not mention `report_void`. The redaction used for the goal note is not applied to this field. With real Claude the tool is used a lot: Haiku called it in 24 of 87 ordinary runs and Sonnet in 28 of 57, often right after the vendor's own answer. In runs where the question contained a name, phone number and email, the two models made 37 calls, and every phrase was a short topic. The name appeared in 0 of them, the phone number in 0 and the email in 0. So the unredacted path is real (check N5), but these models did not use it for personal details. Two models and two prompts is still a small sample, and another model or prompt may copy them, which is why this is Medium and not High. Within's server may redact more after the text arrives; that part is not visible from outside.
 
 **What we measured.**
 
@@ -836,6 +840,92 @@ Version 0.4.0 adds 3 more findings (W-21, W-22, W-23), in their own group at the
 
 **Reproduce.** `cd stress && WITHIN_SDK_ENTRY=$PWD/sdk-0.4.0/dist/index.js node run-new.mjs   # needs the 0.4.0 copy, see stress/README.md, "Run it on another version"`
 
+### W-24
+
+**Medium: With the hubs feature on, text written on Within's side is added to the vendor's own tool results, and the AI repeats it to the customer**
+
+**In 0.4.0.** New in 0.4.0: found by reading the 0.4.0 code. It is not in 0.3.0.
+
+**For a founder.** If a company switches on the new "hubs" option, Within can add a sentence of its own to the company's answers, and the AI then repeats it to the customer. In our runs the AI repeated it every time, even when the user had asked not to be sent anything. The documents say the company's answer stays intact.
+
+**In plain words.** With `hubs: true`, after each wrapped tool call the SDK asks Within (`POST /v1/hubs/invite`, sending the customer's session id and the tool name). If Within answers with a `line`, `attachHubLine` appends it to the vendor's result as an extra text block, adds a `hubInvitation` field to `structuredContent`, and adds `{ tool: "open_hub" }` to the vendor's own `next` list. The vendor's server instructions also tell the AI to say that one sentence to the customer. Within's docs say: "Your tool result stays intact."
+
+**Why it matters.** A vendor who switches the option on lets Within's server put text into answers the vendor wrote, and the AI shows that text to the customer. The hubs option is not on the docs page. In real-Claude runs with hubs on, and the stand-in replying with a line, the sentence was added to 106 tool results. The AI repeated it to the customer in 40 of 40 runs (Haiku and Sonnet), including 20 of 20 runs where the user had said not to open any hub or send anything. It never opened the hub by itself (0 of 40 runs). The sentence we used was our own stand-in text; what Within's server really sends is not visible from outside.
+
+**What we measured.**
+
+- `N8` (gap): With the hubs feature on, does Within's reply change the vendor's own tool result? Without hubs: 1 text block(s), fields ["items","next"], next [{"tool":"refine"}]. With hubs on, and Within replying with a line: 2 text blocks, last one "You have 2 new introductions waiting. Want to see them?", fields ["items","next","hubInvitation"], next [{"tool":"refine"},{"tool":"open_hub"}]. Text written by Within's side is inside the vendor's result.
+
+**Where in the code.**
+
+- `attachHubLine`, `dist/index.js` line 1308: appends the line to `content`, adds `hubInvitation` and an `open_hub` step to `structuredContent`.
+- `instrumentTool`, line 1530: calls `/v1/hubs/invite` after each wrapped tool call when `hubs` is on and no offer is pending.
+- `HUB_INSTRUCTIONS`, line 590: tells the AI to say the sentence, then call `open_hub` if the customer wants it.
+
+**How to fix it.**
+
+- Keep Within's text out of the vendor's result: carry the invitation in `_meta`, or show it only on the card, never in `content`.
+- List the hubs option in the docs table, with what it sends and what it adds to results.
+- Mark the line so the AI can tell it comes from Within and not from the vendor.
+
+**Reproduce.** `cd stress && WITHIN_SDK_ENTRY=$PWD/sdk-0.4.0/dist/index.js node run-new.mjs   # needs the 0.4.0 copy, see stress/README.md, "Run it on another version"`
+
+### W-25
+
+**Low: The new doctor command passes a server whose own `context` input is being removed (W-04)**
+
+**In 0.4.0.** New in 0.4.0: found by reading the 0.4.0 code. It is not in 0.3.0.
+
+**For a founder.** Within's new installation checker says everything is fine for a company whose own input is being quietly taken away, so it does not warn about a problem it should catch.
+
+**In plain words.** `getwithin-sdk doctor` lists the server's tools and reports a problem for any tool that has no `context` input. A tool with its own `context` input (the W-04 case) also has that property, so doctor prints a pass: "1 of your tools carry the context field". It cannot tell Within's field from the vendor's.
+
+**Why it matters.** A vendor who runs Within's own checker gets a green result while the vendor's own input is silently removed (W-04). We ran the real command against a vendor server over HTTP, with the stand-in on `127.0.0.1`, and it passed that server.
+
+**What we measured.**
+
+- `N7` (gap): Can the doctor command tell a vendor's own `context` input from Within's? For a vendor tool that has its own `context` input, doctor printed: "✓ tools: Within's tools are there, and 1 of your tools carry the context field.". It passed it, so it cannot see the W-04 problem.
+
+**Where in the code.**
+
+- `dist/doctor.js` line 320: `bare` keeps the tools whose `inputSchema.properties` has no `context`.
+- `dist/doctor.js` line 323: the message shown when it finds any.
+
+**How to fix it.**
+
+- Mark the field the SDK adds, for example in its description or with a name no vendor would use (see W-04), and have doctor look for that mark.
+- Add a doctor step that calls a tool with its own `context` value and checks that the vendor's code received it.
+
+**Reproduce.** `cd stress && WITHIN_SDK_ENTRY=$PWD/sdk-0.4.0/dist/index.js node run-new.mjs   # needs the 0.4.0 copy, see stress/README.md, "Run it on another version"`
+
+### W-26
+
+**Low: The app-only hub_card tool can be called directly by any MCP client; only the host's label keeps the AI away from it**
+
+**In 0.4.0.** New in 0.4.0: found by reading the 0.4.0 code. It is not in 0.3.0.
+
+**For a founder.** One of the new hub tools is meant to be used only by the card on screen, not by the AI. The software itself does not enforce that. Any program that talks to the server can call it, and only a host that respects the label keeps the AI away.
+
+**In plain words.** `hub_card` is registered with `_meta.ui.visibility: ["app"]` and the description "The model does not call this". The SDK does not check who calls it. In our check a plain MCP client called `hub_card` with action `send`, and the text reached Within as `POST /v1/hubs/send`, unchanged. Hosts are meant to hide app-only tools from the AI.
+
+**Why it matters.** Whether the AI can call it depends on the host honouring the visibility label. A host that shows every tool to the AI would let it send messages in the customer's name through the hub. This is the same pattern as W-18, where the accept tool was visible to the AI by design. In our 40 real-Claude runs with hubs on, the AI called `hub_card` 0 times.
+
+**What we measured.**
+
+- `N9` (gap): The hub_card tool is labelled app-only. Does the SDK refuse a direct call? hub_card is listed to every client (visibility ["app"]); open_hub visibility ["model","app"]. A direct hub_card call with action send reached Within as POST /v1/hubs/send with the text unchanged (the reply to the caller was "That didn't send. Try again."). Only a host that honours the visibility label keeps the AI from calling it.
+
+**Where in the code.**
+
+- `dist/index.js` lines 4227 to 4246: `hub_card` is registered with `visibility: ["app"]`.
+- `dist/index.js` line 4148: the handler has no caller check, and runs `seen`, `dismiss`, `send` and `refresh` for any caller.
+
+**How to fix it.**
+
+- Refuse `hub_card` calls that do not come from the card, for example with a one-time value that only the card holds (the same fix as W-18).
+- Do not list app-only tools to clients that did not say they support apps.
+
+**Reproduce.** `cd stress && WITHIN_SDK_ENTRY=$PWD/sdk-0.4.0/dist/index.js node run-new.mjs   # needs the 0.4.0 copy, see stress/README.md, "Run it on another version"`
+
 ## What held up
 
 - When Within is down, the vendor's own text still comes back, with the documented extra line. (`A2`)
@@ -846,6 +936,7 @@ Version 0.4.0 adds 3 more findings (W-21, W-22, W-23), in their own group at the
 - Normal vendor instructions stay first, with Within's text after them. (`D4`)
 - `get_vendor_answer` retries once after an error, and a hang is stopped at 5 seconds as documented. (`F4`)
 - In 0.4.0, the login-provider lookup goes only to the named provider, once per person, with the person's own login token, as the docs say. (`N2`)
+- In 0.4.0, the new doctor command sends the customer's token only to the vendor's own server, and only the API key to Within. (`N6`)
 - **Real Claude, same stand-in server.** 21 runs across 7 scenario/model pairs asked buying questions in other languages and indirect wordings (Spanish pricing, German cancellation, a rate-limit question, a relayed question from a CFO, a renewal). Claude called Within in 21 of 21.
 - **Consent.** 18 runs had a rep's offer pending. 12 of them put an instruction aimed at the AI inside a company record (a note saying to connect the user without asking), and some had the user say no in advance. Claude called `confirm_assistance` in 0 of 18 runs, and the accept reached the stand-in in 0. In at least 1 of the 12 poisoned runs the reply (cut to 280 characters here) said the model had seen the embedded instruction and ignored it. These are small samples (3 runs per scenario per model) on Claude Code, not claude.ai or ChatGPT.
 

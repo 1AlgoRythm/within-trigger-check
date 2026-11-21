@@ -27,6 +27,7 @@ const codeLoc = exists("code-locations-0.4.0.json") ? read("results/code-locatio
 const patched040 = exists("patched-0.4.0.json") ? read("results/patched-0.4.0.json") : null;
 const modelOf = (f) => (exists(f) ? read("results/" + f) : null);
 const mTS4 = modelOf("model-haiku-T-S-040.json"), mXS4 = modelOf("model-haiku-X-040-stock.json"), mXP4 = modelOf("model-haiku-X-040-patched.json"), mV4 = modelOf("model-haiku-V-040.json"), app4 = modelOf("app-prompts-040.json");
+const mSTS = modelOf("model-sonnet-T-S-040.json"), mSXS = modelOf("model-sonnet-X-040-stock.json"), mSV = modelOf("model-sonnet-V-040.json"), mSX1n = modelOf("model-sonnet-X1-040-a.json"), mSX1o = modelOf("model-sonnet-X1-030-a.json"), mHH = modelOf("model-haiku-H-040.json"), mHS = modelOf("model-sonnet-H-040.json");
 const rowsOf = (m) => Object.fromEntries((m?.results ?? []).map((r) => [r.id, r]));
 // pooled counts for one scenario over the three same-day batches a, b, c (e.g. tag "X1-040" reads model-haiku-X1-040-a.json ...)
 const pooled = (tag, id) => {
@@ -51,7 +52,7 @@ const V = v040 ? byId(v040) : null;
 const P4 = patched040 ? byId(patched040) : null;
 const NEWR = newRes ? byId(newRes) : {};
 const CODE = codeLoc ? Object.fromEntries(codeLoc.findings.map((r) => [r.id, r.units])) : {};
-const FINDINGS = V && newRes && P4 && mTS4 && mXS4 && mXP4 && mV4 && app4 && pooled("X1-040", "X1") && pooled("X1-030", "X1") && pooled("X1-040P", "X1") ? src.findings : src.findings.filter((f) => !f.since);
+const FINDINGS = V && newRes && P4 && mTS4 && mXS4 && mXP4 && mV4 && app4 && mSTS && mSXS && mSV && mSX1n && mSX1o && mHH && mHS && pooled("X1-040", "X1") && pooled("X1-030", "X1") && pooled("X1-040P", "X1") ? src.findings : src.findings.filter((f) => !f.since);
 const oldFindings = FINDINGS.filter((f) => !f.since), newFindings = FINDINGS.filter((f) => f.since);
 const when2 = (iso) => iso.replace("T", " ").slice(0, 16) + " UTC";
 const status040 = (f) => {
@@ -113,6 +114,23 @@ const U = (() => {
         appRuns: tot(A, "of"), recallCalled: tot(rec, "called"), recallOf: tot(rec, "of"), falseCalled: tot(fa, "called"), falseOf: tot(fa, "of"), appErrors: tot(A, "errors"), appPrompts: A.length,
         x1New: `${c4.c} of ${c4.n}`, x1Ctl: `${c3.c} of ${c3.n}`, x1P: fisherP(c4.c, c4.n - c4.c, c3.c, c3.n - c3.c).toFixed(3), x1Patched: `${cp.c} of ${cp.n}`, x1PatchedP: fisherP(cp.c, cp.n - cp.c, c4.c, c4.n - c4.c).toFixed(4), x2Patched: `${x2p.c} of ${x2p.n}`,
         x1First: `${rowsOf(mXS4).X1.calledGetVendorAnswer} of ${rowsOf(mXS4).X1.completed}`, x1All: `${c4.c + rowsOf(mXS4).X1.calledGetVendorAnswer} of ${c4.n + rowsOf(mXS4).X1.completed}`,
+      };
+    })(),
+    ...(() => {
+      const st = rowsOf(mSTS), sx = rowsOf(mSXS), sv = rowsOf(mSV), a = rowsOf(mSX1n).X1, b = rowsOf(mSX1o).X1;
+      const kind = (rows, k, f) => Object.values(rows).filter((r) => r.kind === k).reduce((n, r) => n + (r[f] ?? 0), 0);
+      const ord = [...Object.values(st), ...Object.values(sx)];
+      const voidIn = (m) => Object.values(rowsOf(m)).flatMap((r) => r.voidInputs ?? []).map((x) => String(x.asked ?? "").toLowerCase());
+      const allV = [...voidIn(mSV), ...voidIn(mV4)];
+      const hubRows = [mHH, mHS].flatMap((m) => Object.values(rowsOf(m))), h2 = [mHH, mHS].map((m) => rowsOf(m).H2);
+      const sum = (rows, f) => rows.reduce((n, r) => n + r[f], 0);
+      return {
+        sTrigRuns: kind(st, "trigger", "completed"), sTrigCalled: kind(st, "trigger", "calledGetVendorAnswer"), sConsRuns: kind(st, "consent", "completed"), sConsConfirm: kind(st, "consent", "calledConfirmAssistance"),
+        sVoidRuns: ord.reduce((n, r) => n + r.toolSequences.filter((q) => q.includes("report_void")).length, 0), sTotalRuns: sum(ord, "completed"),
+        allVoidCalls: allV.length, allNames: allV.filter((x) => x.includes("priya") || x.includes("raman")).length, allPhones: allV.filter((x) => x.includes("555")).length, allEmails: allV.filter((x) => x.includes("@")).length,
+        sX1New: `${a.calledGetVendorAnswer} of ${a.completed}`, sX1Old: `${b.calledGetVendorAnswer} of ${b.completed}`,
+        hubInvites: sum(hubRows, "hubInvitesSent"), hubRuns: sum(hubRows, "completed"), hubRelayed: sum(hubRows, "relayedInvitation"), hubRunsH2: sum(h2, "completed"), hubRelayedH2: sum(h2, "relayedInvitation"),
+        hubOpened: sum(hubRows, "calledOpenHub"), hubCardCalls: hubRows.flatMap((r) => r.toolSequences).filter((q) => q.includes("hub_card")).length,
       };
     })(),
     patchFlipNew: flipNew.length, patchFlipNewList: list(flipNew), patchFlipOld: flipOld.length, patchNotFlipped: list(flipOld.filter((id) => !flipNew.includes(id))),

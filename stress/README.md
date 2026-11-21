@@ -23,14 +23,14 @@ node run.mjs A3 C8     # run only some checks
 
 | Path | What |
 |---|---|
-| `new/040-only.mjs`, `run-new.mjs` | Five checks (N1 to N5) for behaviour that exists only in 0.4.0, found by reading its code. They run separately, so the 43 checks and their saved 0.3.0 results do not change |
+| `new/040-only.mjs`, `run-new.mjs` | Nine checks (N1 to N9) for behaviour that exists only in 0.4.0, found by reading its code, including the new `doctor` command and the hubs feature. They run separately, so the 43 checks and their saved 0.3.0 results do not change |
 | `code-locations.mjs` | Finds every function a finding points at, in two versions, and compares the exact text. It reads files as text and never runs the SDK |
 | `lib/harness.mjs` | The stand-in for Within's API, and a helper that boots an MCP server with the SDK installed |
 | `tests/` | The checks, in six files by topic. Each states what it expected, and why |
 | `model/` | The real-Claude runs: trigger questions, consent and injection, and the comparison wording |
 | `patches/apply.mjs` | Builds `patched-sdk/`: the stock package plus eleven small prototype patches, each one asserted to match exactly once |
 | `findings.json` | The one source for the report. Numbers in its prose are placeholders filled from `results/` |
-| `results/` | Saved output of every run. The real-Claude files for 0.4.0 are `model-haiku-T-S-040.json`, `model-haiku-X-040-*.json`, `model-haiku-V-040.json`, `model-haiku-X1-*.json` (three same-day batches each, 0.4.0, a 0.3.0 control and the wording patch) and `app-prompts-040.json`. `latest.json` is the stock package (0.3.0), `patched.json` the patched copy, `sdk-0.4.0.json` the same 43 checks on 0.4.0, `new-in-040.json` the five 0.4.0-only checks, `code-locations-0.4.0.json` the code comparison |
+| `results/` | Saved output of every run. The real-Claude files for 0.4.0 are `model-haiku-T-S-040.json`, `model-haiku-X-040-*.json`, `model-haiku-V-040.json`, `model-haiku-X1-*.json` (three same-day batches each, 0.4.0, a 0.3.0 control and the wording patch), `model-haiku-H-040.json` and `model-sonnet-H-040.json` (hubs on), the matching `model-sonnet-*-040*.json` files and `app-prompts-040.json`. `latest.json` is the stock package (0.3.0), `patched.json` the patched copy, `sdk-0.4.0.json` the same 43 checks on 0.4.0, `new-in-040.json` the nine 0.4.0-only checks, `code-locations-0.4.0.json` the code comparison |
 
 Verdicts: **pass** (did what the docs or a reasonable vendor would expect), **fail** (contradicts the docs or breaks something reasonable), **gap** (a risk or an undocumented behaviour, a decision for Within's team), **info** (a measurement).
 
@@ -56,7 +56,7 @@ got="sha512-$(openssl dgst -sha512 -binary /tmp/sdk-0.4.0.tgz | openssl base64 -
 mkdir sdk-0.4.0 && tar -xzf /tmp/sdk-0.4.0.tgz -C sdk-0.4.0 --strip-components=1     # run from this folder
 WITHIN_SDK_ENTRY="$PWD/sdk-0.4.0/dist/index.js" STOCK_COPY=1 RESULTS_FILE=results/sdk-0.4.0.json \
   F2_SPEC=/tmp/sdk-0.4.0.tgz SDK_SOURCE="npmmirror.com copy of 0.4.0" node run.mjs
-WITHIN_SDK_ENTRY="$PWD/sdk-0.4.0/dist/index.js" SDK_SOURCE="npmmirror.com copy of 0.4.0" node run-new.mjs   # the five 0.4.0-only checks, writes results/new-in-040.json
+WITHIN_SDK_ENTRY="$PWD/sdk-0.4.0/dist/index.js" SDK_SOURCE="npmmirror.com copy of 0.4.0" node run-new.mjs   # the nine 0.4.0-only checks, writes results/new-in-040.json
 node code-locations.mjs node_modules/@getwithin/sdk/dist/index.js sdk-0.4.0/dist/index.js results/code-locations-0.4.0.json
 npm run build:findings     # adds the "In 0.4.0" column, the three new findings and the update section to the report
 ```
@@ -74,7 +74,7 @@ On 0.4.0 every patch matches except P3 (the code around it changed), and P10 is 
 
 ### Real Claude on another version
 
-The model runs read the same `WITHIN_SDK_ENTRY`, plus `STOCK_COPY=1` for an unmodified package and `RESULT_TAG` for the output name. Scenarios V1 and V2 put personal details in the question, to see whether the AI copies them into 0.4.0's `report_void` (it saves what it wrote as `voidInputs`).
+The model runs read the same `WITHIN_SDK_ENTRY`, plus `STOCK_COPY=1` for an unmodified package and `RESULT_TAG` for the output name. Scenarios V1 and V2 put personal details in the question, to see whether the AI copies them into 0.4.0's `report_void` (it saves what it wrote as `voidInputs`). Scenarios H1 and H2 switch the hubs option on (`ACME_HUBS=1`, set by the runner) and have the stand-in reply with an invitation line, to see whether the AI repeats it or opens the hub. Everything here was also run with `--model sonnet`.
 
 ```bash
 E="$PWD/sdk-0.4.0/dist/index.js"

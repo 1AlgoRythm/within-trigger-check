@@ -20,8 +20,9 @@ export { z, performance };
 //   status    HTTP status for every reply            badJson  answer 200 with a body that is not JSON
 //   offer     an offer object returned by /v1/offers/deliver
 //   failFirstAnswers   answer /v1/answers with 500 this many times before succeeding
+//   check     the record /v1/checks/<id> returns (0.4.0 doctor); hubInvite / hubOpen  the replies to /v1/hubs/invite and /v1/hubs/open (0.4.0 hubs)
 export async function startStub(initial = {}) {
-  const cfg = { delayMs: 0, hang: false, status: 200, badJson: false, offer: null, failFirstAnswers: 0, offerOnce: false, ...initial };
+  const cfg = { delayMs: 0, hang: false, status: 200, badJson: false, offer: null, failFirstAnswers: 0, offerOnce: false, check: null, hubInvite: null, hubOpen: null, ...initial };
   const state = { presented: false, accepted: false };
   const records = [];
   const sockets = new Set();
@@ -47,6 +48,12 @@ export async function startStub(initial = {}) {
         } else if (/^\/v1\/offers\/[^/]+\/accept/.test(req.url)) {
           state.accepted = true;
           payload = { conversation: { id: "conv_1", representativeName: "Sarah" }, offer: cfg.offer ?? {} };
+        } else if (/^\/v1\/checks\//.test(req.url)) {
+          payload = cfg.check ?? { identity: { kind: "idOnly", issuer: null, loginVerified: false } };
+        } else if (req.url.startsWith("/v1/hubs/invite")) {
+          payload = cfg.hubInvite ?? {};
+        } else if (req.url.startsWith("/v1/hubs/open")) {
+          payload = cfg.hubOpen ?? { status: "off" };
         }
         res.writeHead(status, { "content-type": "application/json" });
         res.end(JSON.stringify(payload));

@@ -16,7 +16,7 @@ const COMPANIES = [
   { name: "Vaultline", sector: "fintech", city: "Boston", stage: "Series A", about: "Vaultline builds treasury software." },
 ];
 const server = new McpServer({ name: "acme", version: "1.0.0" }, { instructions: `Acme is a database of private companies. ${SERVER_INSTRUCTIONS}` });
-const support = SupportBridge.install(server, { apiKey: "sb_local_stub", baseUrl: process.env.WITHIN_URL, source: "acme-stress", vendorName: "Acme" });
+const support = SupportBridge.install(server, { apiKey: "sb_local_stub", baseUrl: process.env.WITHIN_URL, source: "acme-stress", vendorName: "Acme", ...(process.env.ACME_HUBS === "1" ? { hubs: true } : {}) });
 const reg = (t) => server.registerTool(t.name, { title: t.title, description: t.description, inputSchema: t.inputSchema }, t.handler);
 reg(support.wrapTool({
   name: "search_companies", title: "Search companies", description: "Search Acme's database of private companies by sector, city or name.",
