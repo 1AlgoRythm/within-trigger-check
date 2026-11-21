@@ -10,7 +10,7 @@
 
 **Update 2026-11-20: Within's new version, 0.4.0.** In plain words: it fixed 2 of the 20 problems, 17 are still there unchanged, 1 (a plain comparison question being sent to Within) happens less often, and it adds 6 new ones. The most serious new one is a login pass leaving the company's server. Real Claude (Haiku and Sonnet) was run on it, and so was the new `doctor` command. Every finding was re-checked on 0.4.0, including with real Claude. Details, and what was not re-run: [the update in FINDINGS.md](FINDINGS.md#update-2026-11-20-version-040). **Where the package is available:** npm's own catalogue says "not found" for it, including 0.3.0 and 0.4.0 (checked 2026-11-20 at 22:39 UTC), so `npm install` in this repo now fails on any machine without a cached copy. A public mirror still holds every version, and the steps in [Run it](#run-it) work with it. Within's own docs still say "on npm" and "release 0.3.0".
 
-**See how Within works: [an interactive map](https://1algorythm.github.io/within-trigger-check/).** Click a box to go one level deeper, from the whole system, to the inside of the SDK, to a hand-drawn diagram of each defect. Every screen says whether it is measured, read from Within's docs and source, or judgment. The files are in `docs/`.
+**See how Within works: [an interactive map](https://1algorythm.github.io/within-trigger-check/)** (it shows version 0.3.0; the 0.4.0 changes are on the findings page). Click a box to go one level deeper, from the whole system, to the inside of the SDK, to a hand-drawn diagram of each defect. Every screen says whether it is measured, read from Within's docs and source, or judgment. The files are in `docs/`.
 
 ## Why this exists
 

@@ -35,7 +35,7 @@
           "sdk",
           "api"
         ],
-        "note": "Most of the 20 findings sit in the SDK (W-01 to W-17). W-18 and W-19 are design questions. W-20 is the model's decision."
+        "note": "In 0.3.0, most of the 20 findings sit in the SDK (W-01 to W-17). Version 0.4.0 fixed W-01 and W-14 and added W-21 to W-26, which are on the findings page and not drawn on this map. W-18 and W-19 are design questions. W-20 is the model's decision."
       },
       {
         "id": "team-side",
