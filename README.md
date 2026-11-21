@@ -6,11 +6,35 @@
 
 [Within](https://www.getwith.in) puts a sales agent inside a vendor's MCP server. The whole product depends on one moment: the model in Claude or ChatGPT choosing to call `get_vendor_answer`. Within's console can test *what* Within answers ("Try a question"). Within's docs describe no test of *whether* the agent asks at all.
 
+**To reproduce any of it, follow [REPRODUCE.md](REPRODUCE.md).**
+
 **Read the findings: [FINDINGS.md](FINDINGS.md)** (also as [a web page](https://1algorythm.github.io/within-trigger-check/findings.html)). A stress test of `@getwithin/sdk` 0.3.0 found 20 things to fix or decide (26 counting the six found in 0.4.0), each explained in plain words first, then with the code location, a fix, and a one-line command to reproduce it. The tests are in `stress/`.
 
-**Update 2026-11-20: Within's new version, 0.4.0.** In plain words: it fixed 2 of the 20 problems, 17 are still there unchanged, 1 (a plain comparison question being sent to Within) happens less often, and it adds 6 new ones. The most serious new one is a login pass leaving the company's server. Real Claude (Haiku and Sonnet) was run on it, and so was the new `doctor` command. Every finding was re-checked on 0.4.0, including with real Claude. Details, and what was not re-run: [the update in FINDINGS.md](FINDINGS.md#update-2026-11-20-version-040). **Where the package is available:** npm's own catalogue says "not found" for it, including 0.3.0 and 0.4.0 (checked 2026-11-20 at 22:39 UTC), so `npm install` in this repo now fails on any machine without a cached copy. A public mirror still holds every version, and the steps in [Run it](#run-it) work with it. Within's own docs still say "on npm" and "release 0.3.0".
+**Update 2026-11-20: Within's new version, 0.4.0.** In plain words: it fixed 2 of the 20 problems, 17 are still there unchanged, 1 (a plain comparison question being sent to Within) happens less often, and it adds 6 new ones. The most serious new one is a login pass leaving the company's server. Real Claude (Haiku and Sonnet) was run on it, and so was the new `doctor` command. Every finding was re-checked on 0.4.0, including with real Claude. Details, and what was not re-run: [the update in FINDINGS.md](FINDINGS.md#update-2026-11-20-version-040). **Where the package is available:** npm's own catalogue says "not found" for it, including 0.3.0 and 0.4.0 (checked 2026-11-20 at 22:39 UTC), so a plain `npm install` of that name fails on a machine without a cached copy. A public mirror still holds every version. This repo's top folder points at the mirror's file for 0.4.0, so `npm install` here works; the `stress/` folder (pinned to 0.3.0) needs the mirror address first, see [stress/README.md](stress/README.md). Within's own docs still say "on npm" and "release 0.3.0".
 
 **See how Within works: [an interactive map](https://1algorythm.github.io/within-trigger-check/)** (redrawn on 2026-11-21 for version 0.4.0, with a "New in 0.4.0" screen and the findings pages one click from the boxes). Click a box to go one level deeper, from the whole system, to the inside of the SDK, to a hand-drawn diagram of each defect. Every screen says whether it is measured, read from Within's docs and source, or judgment. The files are in `docs/`.
+
+### What changed in 0.4.0, in sketches
+
+![What changed in 0.4.0: 2 of 20 problems fixed, 1 reduced, 17 unchanged, 6 new, with the package available on the npmmirror.com mirror and not on npmjs.org](docs/diagrams/15-whats-new-in-040.svg)
+
+<details><summary>The six new findings, one hand-drawn sketch each (W-21 to W-26)</summary>
+
+![W-21, High: with the identity option on, the customer's login token is copied into the report and sent to Within on every call](docs/diagrams/16-login-token-sent.svg)
+
+![W-22, Medium: report_void is on by default and the customer's own words in it are sent to Within unredacted; real Claude never copied personal details in 37 calls](docs/diagrams/17-report-void-default.svg)
+
+![W-23, Low: when the AI app reports no name, the first 80 characters of its user-agent text are sent as the app name](docs/diagrams/18-user-agent-fallback.svg)
+
+![W-24, Medium: with hubs on, Within's text is added to the vendor's tool result and the AI repeated it in 40 of 40 runs](docs/diagrams/19-hub-text-inserted.svg)
+
+![W-25, Low: the new doctor command passes a server whose own context input is being removed](docs/diagrams/20-doctor-misses-w04.svg)
+
+![W-26, Low: the app-only hub_card tool can be called by any MCP client; only the host's label keeps the AI away](docs/diagrams/21-hub-card-app-only.svg)
+
+</details>
+
+The older sketches below keep their 0.3.0 numbers and carry a dated 0.4.0 note at the bottom. The Zod sketch (W-01) is stamped "fixed in 0.4.0".
 
 ## Why this exists
 
@@ -126,8 +150,9 @@ This part is judgment from reading code and specs, not a measurement. Within's s
 | `server/within-relay.mjs` | Stub or proxy for Within's API |
 | `fixes/apply.mjs`, `fixes/check.mjs` | The fixes and their before/after check |
 | `prompts.json`, `experiments/comparison-prompts.json` | The labelled prompts |
-| `docs/diagrams/` | The hand-drawn diagrams (animated SVG): nine are in this README, W-15 and W-03 are in the map |
-| `docs/index.html`, `docs/explorer/` | The interactive map of how Within works |
+| `docs/diagrams/` | The hand-drawn diagrams (animated SVG), 01 to 21: sixteen are in this README, the rest are in the map. 15 to 21 are the 0.4.0 sketches |
+| `docs/index.html`, `docs/explorer/` | The interactive map of how Within works. `docs/explorer/rebuild.sh` rebuilds its five architecture pages from `docs/explorer/src/` |
+| `REPRODUCE.md`, `stress/scripts/` | **Every step to reproduce the findings, with the result to expect**, and the scripts it calls (fetch and verify 0.4.0, the checks that need no AI, the real-Claude runs, the 20 prompts) |
 | `FINDINGS.md`, `docs/findings.html` | The stress-test findings, built from `stress/findings.json` and the saved results |
 | `stress/` | The stress tests (`npm test`), the checks for code that is new in 0.4.0 (`run-new.mjs`), the code comparison between versions (`code-locations.mjs`), the prototype patches, the real-Claude runs, and their saved results |
 

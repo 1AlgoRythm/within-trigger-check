@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" width="1000" height="620" role="img" aria-label="Recall and precision as a smoke alarm, with run 1 numbers: 10 true positives, 0 misses, 1 false alarm, 9 true negatives. Recall 10 of 10 is 100 percent, precision 10 of 11 is 91 percent.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 712" width="1000" height="712" role="img" aria-label="Recall and precision as a smoke alarm, with run 1 numbers: 10 true positives, 0 misses, 1 false alarm, 9 true negatives. Recall 10 of 10 is 100 percent, precision 10 of 11 is 91 percent.">
 <title>Recall and precision, as a smoke alarm (run 1 numbers)</title>
 <defs><filter id="wobble" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G"/></filter></defs>
 <style>
@@ -16,7 +16,7 @@ text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cu
 .h{font-size:26px;font-weight:bold}.l{font-size:17px}.s{font-size:14.5px}.big{font-size:34px;font-weight:bold}
 .g{fill:var(--grn)}.r{fill:var(--red)}.o{fill:var(--org)}
 </style>
-<rect x="0" y="0" width="1000" height="620" rx="18" fill="#fffdf7"/>
+<rect x="0" y="0" width="1000" height="712" rx="18" fill="#fffdf7"/>
 <text x="30" y="44" class="h">5 · The two scores, as a smoke alarm</text>
 <text x="30" y="70" class="s">A buying question is a "fire". Calling get_vendor_answer is the alarm "ringing". Numbers from run 1.</text>
 
@@ -56,4 +56,8 @@ text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cu
 
 <text x="30" y="565" class="l">Why recall alone isn't enough:</text>
 <text x="30" y="590" class="s">an alarm that rings all day catches every fire (100% recall), but nobody trusts it. You need both numbers.</text>
+<g filter="url(#wobble)"><rect x="30" y="612" width="940" height="90" rx="12" class="org"/></g>
+<text x="46" y="636" class="l o">0.4.0 note (2026-11-21):</text>
+<text x="46" y="660" class="s">These numbers are run 1 on 0.3.0. On 0.4.0, the same 20 prompts (Haiku, 3 runs each, on a scratch copy) gave recall 30 of 30</text>
+<text x="46" y="680" class="s">and false alarms 1 of 30. Recall stays at 100%; the false alarm is still the competitor-comparison question (W-20).</text>
 </svg>

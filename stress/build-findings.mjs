@@ -13,6 +13,16 @@ const read = (p) => JSON.parse(fs.readFileSync(path.join(here, p), "utf8"));
 const src = read("findings.json");
 const stock = read("results/latest.json");
 const patched = read("results/patched.json");
+// The hand-drawn sketch for a finding, if there is one: [file in docs/diagrams, link text]. The map (docs/index.html) opens the same files.
+const SKETCH = {
+  "W-01": ["07-zod-bug.svg", "The Zod crash"], "W-02": ["12-outage-alters-data.svg", "An outage changes the vendor's answer"],
+  "W-03": ["11-every-call-waits.svg", "Every call waits"], "W-04": ["13-context-input-lost.svg", "The vendor's own context input is lost"],
+  "W-09": ["14-unwrapped-tools-report.svg", "An unwrapped tool still reports"], "W-10": ["08-pii-gap.svg", "The goal text gap"],
+  "W-15": ["10-instructions-deleted.svg", "Instructions replaced"], "W-20": ["06-false-alarm-and-fixes.svg", "The false alarm and the fixes"],
+  "W-21": ["16-login-token-sent.svg", "The login token is sent"], "W-22": ["17-report-void-default.svg", "report_void sends the customer's words"],
+  "W-23": ["18-user-agent-fallback.svg", "The app name fallback"], "W-24": ["19-hub-text-inserted.svg", "Within's text inside the vendor's result"],
+  "W-25": ["20-doctor-misses-w04.svg", "The doctor command misses W-04"], "W-26": ["21-hub-card-app-only.svg", "hub_card is app-only by label"],
+};
 const byId = (r) => Object.fromEntries(r.results.map((x) => [x.id, x]));
 const S = byId(stock), P = byId(patched);
 
@@ -288,6 +298,7 @@ for (const g of groups) {
     L();
     if (U) L(`**In 0.4.0.** ${status040(f).label}`), L();
     if (U) L(`**For a founder.** ${f.founder}`), L();
+    if (SKETCH[f.id]) L(`**Sketch.** [${SKETCH[f.id][1]}](../docs/diagrams/${SKETCH[f.id][0]}) (hand-drawn, animated)`.replace("](../docs/", "](docs/")), L();
     L(`**In plain words.** ${resolve(f.plain)}`);
     L();
     L(`**Why it matters.** ${resolve(f.why)}`);
@@ -406,6 +417,7 @@ for (const g of groups) {
     H(`<div class="card ${f.severity}" id="${f.id.toLowerCase()}"><h3><span class="badge ${f.severity}">${f.severity}</span>${f.id} · ${inline(f.title)}</h3>`);
     if (U) H(`<p class="st ${status040(f).key}"><strong>In 0.4.0.</strong> ${esc(status040(f).label)}</p>`);
     if (U) H(`<div class="k">For a founder</div><p>${esc(f.founder)}</p>`);
+    if (SKETCH[f.id]) H(`<div class="k">Sketch</div><p><a href="diagrams/${SKETCH[f.id][0]}">${esc(SKETCH[f.id][1])}</a> (hand-drawn, animated; the map opens it too)</p>`);
     H(`<div class="k">In plain words</div><p>${inline(resolve(f.plain))}</p><div class="k">Why it matters</div><p>${inline(resolve(f.why))}</p>`);
     if (f.tests.length) {
       H(`<div class="k">What we measured</div><ul>`);

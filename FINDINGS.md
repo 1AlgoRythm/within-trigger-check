@@ -120,6 +120,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 
 **For a founder.** If a company follows Within's own setup instructions on a brand-new project, their server will not start until they find a workaround. It is the very first thing every new customer would hit. Fixed in the new version.
 
+**Sketch.** [The Zod crash](docs/diagrams/07-zod-bug.svg) (hand-drawn, animated)
+
 **In plain words.** A developer follows the docs line by line on a new project, and their server refuses to start with the error "Mixed Zod versions detected". Zod is a small library that describes what a tool's inputs must look like. The docs say the package shares the developer's copy of Zod. It actually ships its own private copy, and npm installs the developer's newer copy next to it.
 
 **Why it matters.** It is the first thing a new vendor does. On a fresh project that follows the docs, the server does not start until the developer finds the workaround (pin an older Zod).
@@ -154,6 +156,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 
 **For a founder.** Within is sold as a safe add-on. But when Within itself is down, the company's own product can show an error, or end every answer with a confusing "service unreachable" message. A problem at Within becomes the company's problem.
 
+**Sketch.** [An outage changes the vendor's answer](docs/diagrams/12-outage-alters-data.svg) (hand-drawn, animated)
+
 **In plain words.** The docs promise that if Within cannot be reached, the vendor's result still comes back with one extra line. The extra line does arrive. But the SDK also writes `status: "service_unreachable"` into the vendor's structured data, overwriting any `status` the vendor already uses. A tool whose declared output format restricts a `status` field (for example to fixed values), or forbids extra fields, fails outright during the outage with an "Output validation error".
 
 **Why it matters.** A Within outage becomes the vendor's own outage for tools like that. The customer sees an error from the vendor's product. Even when it works, the chat ends with "The service is unreachable.", which (in our reading) looks as if the vendor's product is broken.
@@ -186,6 +190,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 **In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
 
 **For a founder.** When Within is slow, every action in the company's product waits five extra seconds. An AI assistant takes many actions to answer one question, so the customer feels a very slow product and blames the company.
+
+**Sketch.** [Every call waits](docs/diagrams/11-every-call-waits.svg) (hand-drawn, animated)
 
 **In plain words.** The docs say calls to Within stop after 5 seconds, and that is true. But the SDK has no memory: when Within hangs, call after call waits the full 5 seconds. It also makes two requests to Within for every successful wrapped tool call, even when no offer is waiting.
 
@@ -220,6 +226,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 **In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
 
 **For a founder.** If one of the company's own tools already has an input with a common name, Within quietly takes it away before the company's code sees it, and the feature misbehaves with no error message.
+
+**Sketch.** [The vendor's own context input is lost](docs/diagrams/13-context-input-lost.svg) (hand-drawn, animated)
 
 **In plain words.** Within adds an optional "goal" input named `context` to every tool registered with `registerTool` after install (except tools marked app-only). If the vendor's tool already has an input with that name (an ordinary name for an input), Within takes the customer's value out before the vendor's code runs, and sends it to Within as the "goal".
 
@@ -381,6 +389,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 
 **For a founder.** A company that deliberately keeps a sensitive internal tool out of Within's sight is not actually protected. Within can still learn that the tool was used and, with one setting on, what was typed into it.
 
+**Sketch.** [An unwrapped tool still reports](docs/diagrams/14-unwrapped-tools-report.svg) (hand-drawn, animated)
+
 **In plain words.** The docs say: wrap the tools you want Within to see. In practice the SDK hooks every tool registered with `registerTool` after install (the older `server.tool()` call is not hooked). If the AI fills in the goal input on an unwrapped tool, Within receives the tool's name, whether it worked, and the goal text. With argument capture on, it also receives the tool's arguments.
 
 **Why it matters.** A vendor who leaves a sensitive internal tool unwrapped to keep it private is not protected. In our test, with argument capture on, an HR lookup's arguments, including a name and a phone number, reached the stand-in.
@@ -409,6 +419,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 **In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
 
 **For a founder.** A short summary of what the customer wants, written by the AI, is sent to Within. Private details such as phone numbers and names can be in it, even though Within's homepage says personal data is hidden before storage. Companies are not told this happens.
+
+**Sketch.** [The goal text gap](docs/diagrams/08-pii-gap.svg) (hand-drawn, animated)
 
 **In plain words.** Whenever the AI fills in the optional goal note about what the customer wants (Claude did in our runs), the SDK sends it to Within. Within's home page says "PII redacted before storage". The docs narrow that to "when arguments are captured". The SDK hides emails, keys that start with `sk-` or `sb_`, bearer tokens and valid card numbers. It does not hide phone numbers, names, street addresses, social security numbers, the letters of a bank account number (IBAN: its digits look like a card number, so they are hidden), or keys in other formats such as Stripe, AWS, GitHub and JWT. The "What leaves your server" table does not mention this note at all, and it is sent even when argument capture is off.
 
@@ -568,6 +580,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 **In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
 
 **For a founder.** The documents say a banned phrase removes one paragraph of the company's instructions to the AI. In fact all of the company's own instructions are replaced, silently, so the AI starts behaving differently with no warning.
+
+**Sketch.** [Instructions replaced](docs/diagrams/10-instructions-deleted.svg) (hand-drawn, animated)
 
 **In plain words.** The docs say that if the vendor's server instructions contain one of five phrases ("Do not mention" and similar), the paragraph holding it is replaced by Within's text. The code replaces the vendor's entire instructions with Within's text. It only happens when the vendor did not paste `SERVER_INSTRUCTIONS` into its own text, as the quickstart does. And the check is case-sensitive, so "do not mention" and "Never mention" are untouched.
 
@@ -731,6 +745,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 
 **For a founder.** When a customer asks a plain question about the company's own products, such as "compare A and B", a smaller AI model sometimes treats it as a sales question and sends it to Within.
 
+**Sketch.** [The false alarm and the fixes](docs/diagrams/06-false-alarm-and-fixes.svg) (hand-drawn, animated)
+
 **In plain words.** The trigger list tells the AI to call Within for "a competitive comparison". A small model reads that as any comparison. Asked "Compare Ledgerly and Paywise", two companies in the vendor's own data, Claude Haiku 5.5 sent the question to Within 3 of 10 times in the re-run. With one clarifying phrase added it was 0 of 10, and real competitor questions still went to Within (10 of 10 and 10 of 10).
 
 **Why it matters.** A customer asking about the vendor's own data gets pulled toward a sales conversation. The vendor's tool is not the problem. The wording is.
@@ -758,6 +774,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 **In 0.4.0.** New in 0.4.0: found by reading the 0.4.0 code. It is not in 0.3.0.
 
 **For a founder.** In the new version, switching on the new "who is this customer" option makes each customer's login pass travel to Within with every action. A login pass is a credential: whoever holds it can act as that customer until it expires. Within's documents say it stays on the company's server.
+
+**Sketch.** [The login token is sent](docs/diagrams/16-login-token-sent.svg) (hand-drawn, animated)
 
 **In plain words.** In 0.4.0, when the vendor sets the `identity` option, the SDK adds the customer's signed login token (the `authInfo.token` of the tool call, a three-part JWT) to the activity report it sends to Within, as the field `authToken`. In our test it arrived exactly as received. Without the option it is not sent. Within's docs list "the raw bearer token" under what is left on the vendor's server.
 
@@ -789,6 +807,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 
 **For a founder.** The new version adds a tool that every company gets by default, and tells the AI to use it whenever it cannot give the customer what they asked for. What the AI writes there, in the customer's own words, goes to Within. A name, phone number or email would go through unchanged if the AI wrote one. In our real-AI runs it wrote only a short topic. The documents do not mention the tool.
 
+**Sketch.** [report_void sends the customer's words](docs/diagrams/17-report-void-default.svg) (hand-drawn, animated)
+
 **In plain words.** 0.4.0 registers a new tool, `report_void`, on every install, with no option needed. It also adds a sentence (306 characters) to every vendor's server instructions telling the AI to call it when a tool cannot return what the customer asked, with `asked` set to "a short phrase in the customer's own words". The phrase is sent to Within as `voidAsked`. In a direct check, calling the tool ourselves with "find Priya Raman, call her on 617 555 0142 or email priya.raman@example.com", the text arrived exactly as written. The SDK hides emails in other fields, but not in this one.
 
 **Why it matters.** Vendors now send customer wording to Within by default, without choosing to and without the docs saying so: the docs page does not mention `report_void`. The redaction used for the goal note is not applied to this field. With real Claude the tool is used a lot: Haiku called it in 24 of 87 ordinary runs and Sonnet in 28 of 57, often right after the vendor's own answer. In runs where the question contained a name, phone number and email, the two models made 37 calls, and every phrase was a short topic. The name appeared in 0 of them, the phone number in 0 and the email in 0. So the unredacted path is real (check N5), but these models did not use it for personal details. Two models and two prompts is still a small sample, and another model or prompt may copy them, which is why this is Medium and not High. Within's server may redact more after the text arrives; that part is not visible from outside.
@@ -819,6 +839,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 
 **For a founder.** The new version records which AI app the customer is using. Usually that is just the app's name. When the app does not say, it falls back to the first 80 characters of its technical identification text and sends that instead.
 
+**Sketch.** [The app name fallback](docs/diagrams/18-user-agent-fallback.svg) (hand-drawn, animated)
+
 **In plain words.** 0.4.0 adds host fields to every activity report. When the app reports itself (`clientInfo`), only its name and version are sent, as the docs say. When it does not, `hostFieldsFromExtra` falls back to the connection's `user-agent` header. If that text contains `claude`, `chatgpt`, `openai` or `cursor`, the first 80 characters are sent as the app name.
 
 **Why it matters.** Small, and not personal by itself, but more than the docs line "the client's name and version", and user-agent text often includes operating-system and build details.
@@ -847,6 +869,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 **In 0.4.0.** New in 0.4.0: found by reading the 0.4.0 code. It is not in 0.3.0.
 
 **For a founder.** If a company switches on the new "hubs" option, Within can add a sentence of its own to the company's answers, and the AI then repeats it to the customer. In our runs the AI repeated it every time, even when the user had asked not to be sent anything. The documents say the company's answer stays intact.
+
+**Sketch.** [Within's text inside the vendor's result](docs/diagrams/19-hub-text-inserted.svg) (hand-drawn, animated)
 
 **In plain words.** With `hubs: true`, after each wrapped tool call the SDK asks Within (`POST /v1/hubs/invite`, sending the customer's session id and the tool name). If Within answers with a `line`, `attachHubLine` appends it to the vendor's result as an extra text block, adds a `hubInvitation` field to `structuredContent`, and adds `{ tool: "open_hub" }` to the vendor's own `next` list. The vendor's server instructions also tell the AI to say that one sentence to the customer. Within's docs say: "Your tool result stays intact."
 
@@ -878,6 +902,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 
 **For a founder.** Within's new installation checker says everything is fine for a company whose own input is being quietly taken away, so it does not warn about a problem it should catch.
 
+**Sketch.** [The doctor command misses W-04](docs/diagrams/20-doctor-misses-w04.svg) (hand-drawn, animated)
+
 **In plain words.** `getwithin-sdk doctor` lists the server's tools and reports a problem for any tool that has no `context` input. A tool with its own `context` input (the W-04 case) also has that property, so doctor prints a pass: "1 of your tools carry the context field". It cannot tell Within's field from the vendor's.
 
 **Why it matters.** A vendor who runs Within's own checker gets a green result while the vendor's own input is silently removed (W-04). We ran the real command against a vendor server over HTTP, with the stand-in on `127.0.0.1`, and it passed that server.
@@ -905,6 +931,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 **In 0.4.0.** New in 0.4.0: found by reading the 0.4.0 code. It is not in 0.3.0.
 
 **For a founder.** One of the new hub tools is meant to be used only by the card on screen, not by the AI. The software itself does not enforce that. Any program that talks to the server can call it, and only a host that respects the label keeps the AI away.
+
+**Sketch.** [hub_card is app-only by label](docs/diagrams/21-hub-card-app-only.svg) (hand-drawn, animated)
 
 **In plain words.** `hub_card` is registered with `_meta.ui.visibility: ["app"]` and the description "The model does not call this". The SDK does not check who calls it. In our check a plain MCP client called `hub_card` with action `send`, and the text reached Within as `POST /v1/hubs/send`, unchanged. Hosts are meant to hide app-only tools from the AI.
 

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="1000" height="600" role="img" aria-label="The weak spot: the AI decides from written instructions whether to call Within. Three outcomes: buying question captured, buying question missed, normal question sent as a false alarm. Within's console tests what it answers, nothing tested whether the AI calls.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 692" width="1000" height="692" role="img" aria-label="The weak spot: the AI decides from written instructions whether to call Within. Three outcomes: buying question captured, buying question missed, normal question sent as a false alarm. Within's console tests what it answers, nothing tested whether the AI calls.">
 <title>The weak spot: the AI decides, and it is probabilistic</title>
 <defs><filter id="wobble" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G"/></filter>
 <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#222" stroke-width="1.6" stroke-linecap="round"/></marker></defs>
@@ -17,7 +17,7 @@ text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cu
 .h{font-size:26px;font-weight:bold}.l{font-size:17px}.s{font-size:14.5px}.m{font-family:Menlo,monospace;font-size:13px}
 .o{fill:var(--org)}.g{fill:var(--grn)}.r{fill:var(--red)}
 </style>
-<rect x="0" y="0" width="1000" height="600" rx="18" fill="#fffdf7"/>
+<rect x="0" y="0" width="1000" height="692" rx="18" fill="#fffdf7"/>
 <text x="30" y="44" class="h">2 · The weak spot</text>
 <text x="30" y="70" class="s">Nothing forces the call. The AI reads a long instruction note and decides, a bit differently each time.</text>
 
@@ -69,4 +69,8 @@ text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cu
 <text x="52" y="492" class="s">✓  "Try a question" in the console tests WHAT Within answers (the saved sentence for a topic).</text>
 <text x="52" y="518" class="s">✗  Within's docs describe no test of WHETHER the AI calls.</text>
 <text x="52" y="548" class="l o">→ the gap we filled: Trigger check</text>
+<g filter="url(#wobble)"><rect x="30" y="592" width="940" height="90" rx="12" class="org"/></g>
+<text x="46" y="616" class="l o">0.4.0 note (2026-11-21):</text>
+<text x="46" y="640" class="s">The weak spot is unchanged. The instruction note is 306 characters longer in 0.4.0 (a sentence telling the AI to call report_void),</text>
+<text x="46" y="660" class="s">and hubs adds more when switched on. The numbers on the next sketches are 0.3.0 measurements; their 0.4.0 notes are at the bottom.</text>
 </svg>

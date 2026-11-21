@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 640" width="1000" height="640" role="img" aria-label="What changed in version 0.4.0 of the Within SDK. Of the 20 original problems, 2 are fixed (W-01 setup crash, W-14 missing login-provider option), 1 is reduced (W-20), 17 are unchanged. Six new problems were found in the new code: W-21 login token sent (High), W-22 report_void and W-24 hubs text (Medium), W-23, W-25, W-26 (Low). The package is on the npmmirror.com mirror; npmjs.org returns 404.">
+<title>What changed in 0.4.0</title>
+<defs><filter id="wobble" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G"/></filter>
+<marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#222" stroke-width="1.6" stroke-linecap="round"/></marker></defs>
+<style>
+:root{--ink:#222;--org:#f97316;--blu:#3b82f6;--grn:#10b981;--red:#ef4444}
+.ink{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.blu{fill:none;stroke:var(--blu);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.grn{fill:none;stroke:var(--grn);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.red{fill:none;stroke:var(--red);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.org{fill:none;stroke:var(--org);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.flow{fill:none;stroke:var(--org);stroke-width:3;stroke-dasharray:8 7;animation:dash 1.2s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-30}}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.25}}
+.hot{fill:var(--red);animation:blink 1s steps(1) infinite}
+text{fill:var(--ink);font-family:'Bradley Hand','Segoe Print','Comic Sans MS',cursive}
+.h{font-size:26px;font-weight:bold}.l{font-size:17px}.s{font-size:14px}.m{font-family:Menlo,monospace;font-size:12.5px}
+.r{fill:var(--red)}.g{fill:var(--grn)}.b{fill:var(--blu)}.o{fill:var(--org)}
+</style>
+<rect x="0" y="0" width="1000" height="640" rx="18" fill="#fffdf7"/>
+<text x="30" y="44" class="h">15 · What changed in 0.4.0 (published 2026-11-20)</text>
+<text x="30" y="70" class="s">We ran the same 43 checks again, added 9 for the new code, and read every finding's code in both versions.</text>
+
+<text x="30" y="108" class="l">The 20 problems we reported on 0.3.0:</text>
+<g filter="url(#wobble)">
+  <rect x="30" y="122" width="290" height="150" rx="12" class="grn"/>
+  <rect x="340" y="122" width="150" height="150" rx="12" class="blu"/>
+  <rect x="510" y="122" width="170" height="150" rx="12" class="ink"/>
+</g>
+<text x="48" y="152" class="l g">2 fixed</text>
+<text x="48" y="180" class="s">W-01 setup crash (Zod)</text>
+<text x="48" y="202" class="s">W-14 login-provider option</text>
+<text x="48" y="224" class="s">now in the package</text>
+<text x="48" y="252" class="s">checked by our own tests</text>
+<text x="356" y="152" class="l b">1 reduced</text>
+<text x="356" y="180" class="s">W-20: the AI asks</text>
+<text x="356" y="202" class="s">Within less often</text>
+<text x="356" y="224" class="s">(cause unknown)</text>
+<text x="526" y="152" class="l">17 unchanged</text>
+<text x="526" y="180" class="s">same verdict, and</text>
+<text x="526" y="202" class="s">same code apart from</text>
+<text x="526" y="224" class="s">renames and additions</text>
+<path d="M700 197 Q735 190 770 197" class="flow" marker-end="url(#ah)"/>
+
+<g filter="url(#wobble)"><rect x="790" y="122" width="180" height="150" rx="12" class="red"/></g>
+<text x="806" y="152" class="l r">+ 6 new</text>
+<text x="806" y="180" class="s">found in the new code</text>
+<text x="806" y="202" class="s">1 High, 2 Medium,</text>
+<text x="806" y="224" class="s">3 Low</text>
+
+<text x="30" y="312" class="l">The six new problems (click a finding in the map for detail):</text>
+<g filter="url(#wobble)">
+  <rect x="30" y="326" width="940" height="38" rx="9" class="red"/>
+  <rect x="30" y="372" width="940" height="38" rx="9" class="org"/>
+  <rect x="30" y="418" width="940" height="38" rx="9" class="org"/>
+  <rect x="30" y="464" width="940" height="38" rx="9" class="ink"/>
+  <rect x="30" y="510" width="940" height="38" rx="9" class="ink"/>
+  <rect x="30" y="556" width="940" height="38" rx="9" class="ink"/>
+</g>
+<text x="46" y="351" class="l r">W-21 High</text><text x="170" y="351" class="s">the customer's login token is sent to Within on every call, when the identity option is on</text>
+<text x="46" y="397" class="l o">W-22 Medium</text><text x="170" y="397" class="s">report_void is on by default; the customer's own words in it are not redacted</text>
+<text x="46" y="443" class="l o">W-24 Medium</text><text x="170" y="443" class="s">hubs on: Within's text is added to the vendor's results, and the AI repeats it (40 of 40 runs)</text>
+<text x="46" y="489" class="l">W-23 Low</text><text x="170" y="489" class="s">no app name reported: the first 80 characters of the user-agent text are sent instead</text>
+<text x="46" y="535" class="l">W-25 Low</text><text x="170" y="535" class="s">the new doctor command passes a server whose own context input is being removed (W-04)</text>
+<text x="46" y="581" class="l">W-26 Low</text><text x="170" y="581" class="s">the app-only hub_card tool can be called by any client; only the host's label guards it</text>
+
+<text x="30" y="624" class="s">Where it lives: npmmirror.com serves 0.4.0. npmjs.org returns 404 for the whole package (cause unknown). Nothing here hit Within's service.</text>
+</svg>

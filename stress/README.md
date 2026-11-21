@@ -25,6 +25,7 @@ node run.mjs A3 C8     # run only some checks
 
 | Path | What |
 |---|---|
+| `scripts/` | One script per step of [`../REPRODUCE.md`](../REPRODUCE.md): `fetch-040.sh` (download and check 0.4.0), `deterministic-040.sh` (everything that needs no AI), `model-040.sh haiku\|sonnet` (real Claude, spends usage), `app-prompts-040.sh` (the 20 labelled prompts) |
 | `new/040-only.mjs`, `run-new.mjs` | Nine checks (N1 to N9) for behaviour that exists only in 0.4.0, found by reading its code, including the new `doctor` command and the hubs feature. They run separately, so the 43 checks and their saved 0.3.0 results do not change |
 | `code-locations.mjs` | Finds every function a finding points at, in two versions, and compares the exact text. It reads files as text and never runs the SDK |
 | `lib/harness.mjs` | The stand-in for Within's API, and a helper that boots an MCP server with the SDK installed |
