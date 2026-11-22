@@ -1,6 +1,6 @@
 {
   "meta": {
-    "ranAt": "2026-11-22T15:38:19.414Z",
+    "ranAt": "2026-11-22T15:45:54.503Z",
     "sdk": {
       "name": "within-sdk",
       "version": "1.0.4",
@@ -135,13 +135,14 @@
       "title": "Wrong API key (Within answers 401): does the vendor get any signal?",
       "basis": "Vendor expectation: a rejected key should show somewhere the vendor looks.",
       "verdict": "info",
-      "observed": "vendor result ok=true. Lines about the failure in ~/within-sdk.log: 4. Nothing reaches the vendor's own code or console; first line: [2026-11-22T15:32:39.866Z] Failed to send event evt_3MT58ikbv33pl6SGxdbnZ92MG5x, retrying... [Error: {\"stack\":\"Error: HTTP 401: {\\\"ok\\\":fals.",
+      "observed": "vendor result ok=true. Lines about the failure in ~/within-sdk.log: 4. Nothing reaches the vendor's own code or console; first line: [2026-11-22T15:45:50.258Z] Failed to send event evt_3MT6kDgC0C5HBB1WGjAEQmXTGR3, retrying... [Error: {\"stack\":\"Error: HTTP 401: {\\\"ok\\\":fals.",
       "evidence": {
         "lines": [
-          "[2026-11-22T15:32:39.866Z] Failed to send event evt_3MT58ikbv33pl6SGxdbnZ92MG5x, retrying... [Error: {\"stack\":\"Error: HTTP 401: {\\\"ok\\\":false}\\n    at postEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:229:15)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\\n    at async EventQueue.sendEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:84:13)\",\"message\":\"HTTP 401: {\\\"ok\\\":false}\"}]",
-          "[2026-11-22T15:32:39.867Z] Failed to send event evt_3MT58mJCTs7sPcfZ3kak8g9YIdK, retrying... [Error: {\"stack\":\"Error: HTTP 401: {\\\"ok\\\":false}\\n    at postEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:229:15)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\\n    at async EventQueue.sendEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:84:13)\",\"message\":\"HTTP 401: {\\\"ok\\\":false}\"}]",
-          "[2026-11-22T15:32:40.874Z] Failed to send event evt_3MT58ikbv33pl6SGxdbnZ92MG5x, retrying... [Error: {\"stack\":\"Error: HTTP 401: {\\\"ok\\\":false}\\n    at postEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:229:15)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\\n    at async EventQueue.sendEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:84:13)\",\"message\":\"HTTP 401: {\\\"ok\\\":false}\"}]"
-        ]
+          "[2026-11-22T15:45:50.258Z] Failed to send event evt_3MT6kDgC0C5HBB1WGjAEQmXTGR3, retrying... [Error: {\"stack\":\"Error: HTTP 401: {\\\"ok\\\":false}\\n    at postEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:229:15)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\\n    at async EventQueue.sendEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:84:13)\",\"message\":\"HTTP 401: {\\\"ok\\\":false}\"}]",
+          "[2026-11-22T15:45:50.260Z] Failed to send event evt_3MT6kCfAOOm9NWUK4QlFIHje4yo, retrying... [Error: {\"stack\":\"Error: HTTP 401: {\\\"ok\\\":false}\\n    at postEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:229:15)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\\n    at async EventQueue.sendEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:84:13)\",\"message\":\"HTTP 401: {\\\"ok\\\":false}\"}]",
+          "[2026-11-22T15:45:51.264Z] Failed to send event evt_3MT6kDgC0C5HBB1WGjAEQmXTGR3, retrying... [Error: {\"stack\":\"Error: HTTP 401: {\\\"ok\\\":false}\\n    at postEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:229:15)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\\n    at async EventQueue.sendEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:84:13)\",\"message\":\"HTTP 401: {\\\"ok\\\":false}\"}]"
+        ],
+        "count": 4
       }
     },
     {
@@ -253,7 +254,7 @@
       "title": "The client leaves `context` out (it is listed as required): does the vendor's tool call still work?",
       "basis": "README: 'tool-call context parameter ... Defaults to true'. The advertised schema marks it required.",
       "verdict": "gap",
-      "observed": "required inputs now: [\"query\",\"context\"]. A call without context: worked. In 0.x the field was optional.",
+      "observed": "required inputs now: [\"query\",\"context\"]. A call without context: worked.",
       "evidence": {
         "required": [
           "query",
@@ -320,7 +321,7 @@
       "title": "Default settings: which fields of a tools/call event reach Within?",
       "basis": "README Privacy: identity-like fields removed or redacted; field and event limits.",
       "verdict": "gap",
-      "observed": "top-level fields: id, sessionId, projectId, vendorSlug, eventType, timestamp, duration, sdkLanguage, sdkVersion, serverName, serverVersion, clientName, clientVersion, resourceName, parameters, response, userIntent. The vendor's tool ARGUMENTS leave by default (the query 'acme corp' is in the event: true) and so does the RESULT text (true). In 0.x both stayed home unless captureArguments was on. There is no switch named in the README to turn argument capture off.",
+      "observed": "top-level fields: id, sessionId, projectId, vendorSlug, eventType, timestamp, duration, sdkLanguage, sdkVersion, serverName, serverVersion, clientName, clientVersion, resourceName, parameters, response, userIntent. The vendor's tool ARGUMENTS leave by default (the query 'acme corp' is in the event: true) and so does the RESULT text (true). The README names no switch to turn argument capture off.",
       "evidence": {
         "fields": [
           "id",
@@ -622,17 +623,17 @@
     },
     {
       "id": "D4",
-      "title": "Vendor server instructions: unchanged? How much text does Within add?",
-      "basis": "0.x added text to every server's instructions.",
+      "title": "Vendor server instructions: are they left unchanged?",
+      "basis": "The README does not say the package touches the vendor's instructions.",
       "verdict": "pass",
-      "observed": "vendor wrote 51 characters; the client sees 51. Identical: true. The 0.x text Within added (about 2,901 characters) is gone.",
+      "observed": "vendor wrote 51 characters; the client sees 51. Identical: true.",
       "evidence": {
         "seen": "Vendor business rules. Be brief.\n\nSecond paragraph."
       }
     },
     {
       "id": "F1",
-      "title": "Does the SDK work with a Zod 4 schema (the 0.x problem), and what are its peer dependencies?",
+      "title": "Does the package work with a Zod 4 schema, and what are its peer dependencies?",
       "basis": "README: Node 20+, MCP SDK 1.11+. No Zod requirement stated.",
       "verdict": "pass",
       "observed": "peer dependencies: {\"@modelcontextprotocol/sdk\":\">=1.11\"}. Zod 4 tool: {\"props\":[\"q\",\"context\"],\"required\":[\"q\",\"context\"],\"res\":[{\"type\":\"text\",\"text\":\"z4 x\"}]}.",
@@ -661,7 +662,7 @@
     },
     {
       "id": "F5",
-      "title": "Static: does the package contain a private-network address list (the 0.x identity lookups had two)?",
+      "title": "Static: does the package contain a list of private-network addresses?",
       "basis": "Static check of dist/.",
       "verdict": "info",
       "observed": "files mentioning private or loopback addresses: none.",
@@ -716,7 +717,7 @@
     },
     {
       "id": "S1",
-      "title": "Static: which words from the 0.x package appear anywhere in the 1.0.4 code? (counts of files and lines)",
+      "title": "Static: which of these feature names appear anywhere in the package's code? (counts of files and lines)",
       "basis": "Reading the package, not running it.",
       "verdict": "info",
       "observed": "searched 30 .js files. Not found anywhere: report_void, hub_card, hubs, doctor, confirm_assistance, get_vendor_answer, assistance, offer, issuer, auth0, workos, clerk, userinfo, user-agent, banned, nonce, SupportBridge, getwithin. Found: zod (3 files, 7 lines), _zod (1 files, 3 lines).",
@@ -862,7 +863,7 @@
       "title": "Vendor option: a redaction function that masks digit runs, keys, URLs and IP addresses. What still leaves?",
       "basis": "Same option. A pattern cannot find a name, so names are the expected leftover.",
       "verdict": "pass",
-      "observed": "with the vendor's function, still unredacted in the sent arguments: name, address. Before, 9 kinds survived.",
+      "observed": "with the vendor's function, still unredacted in the sent arguments: name, address.",
       "evidence": {
         "survivors": [
           "name",

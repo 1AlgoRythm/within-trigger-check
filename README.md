@@ -6,10 +6,10 @@ Within sells a recorder for AI tool calls. A company installs one npm package, `
 
 <!-- summary:start -->
 
-**11 findings on `within-sdk` 1.0.4: 2 High, 7 Medium, 2 Low.** 48 checks on the stock package (21 pass, 14 gap, 11 info, 2 fail), tested 2026-11-22 15:38 UTC.
+**11 findings on `within-sdk` 1.0.4: 2 High, 7 Medium, 2 Low.** 48 checks on the stock package (21 pass, 14 gap, 11 info, 2 fail), tested 2026-11-22 15:45 UTC.
 
 - **In short.** 48 checks ran on Within's public package, version 1.0.4 (21 pass, 14 gap, 11 info, 2 fail). We found 11 problems: 2 High, 7 Medium and 2 Low.
-- **The most serious.** One long piece of unbroken text in a customer's request freezes the company's whole AI server for about 5.8 seconds at 100,000 characters, and no setting prevents it. A vendor can avoid it today with its own redaction function. Within can fix it by changing the order of two steps.
+- **The most serious.** One long piece of unbroken text in a customer's request freezes the company's whole AI server for about 5.8 seconds at 100,000 characters. The package's own size limit does not stop it. A vendor can avoid it today with its own redaction function, and Within can fix it by changing the order of two steps.
 - **Customer data.** The package sends what customers ask for, and what the company's tools answer, to Within by default. It hides only a short list of private details, and some only when they are the whole value.
 - **What a vendor can do.** 8 of the 11 problems have a fix that works today with the package's own options. 6 have a small change that Within could make, and we tested each one on a patched copy: P1 for W-01, P4 for W-04, P2 for W-05, P3 for W-06, P6 for W-07, P5 for W-10.
 - **What held up.** An outage at Within does not change or slow the company's own answers, a broken reply from Within does not hurt the company's tools, 40 customers at once do not mix their data, and the company's own instructions are left alone.

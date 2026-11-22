@@ -123,7 +123,7 @@ check("A4", "Wrong API key (Within answers 401): does the vendor get any signal?
   const { client } = await boot({ stub }); const { r } = await call(client, "search_companies", Q); await stub.settle(1500);
   const log = readLog().slice(before); stub.close();
   const lines = log.split("\n").filter((l) => /401|Failed to send|unauthor/i.test(l));
-  return [lines.length ? "info" : "gap", `vendor result ok=${!r.isError}. Lines about the failure in ${LOG.replace(HOME, "~")}: ${lines.length}. Nothing reaches the vendor's own code or console${lines.length ? "; first line: " + lines[0].slice(0, 140) : ""}.`, { lines: lines.slice(0, 3) }];
+  return [lines.length ? "info" : "gap", `vendor result ok=${!r.isError}. Lines about the failure in ${LOG.replace(HOME, "~")}: ${lines.length}. Nothing reaches the vendor's own code or console${lines.length ? "; first line: " + lines[0].slice(0, 140) : ""}.`, { lines: lines.slice(0, 3), count: lines.length }];
 });
 check("A5", "Within sends a broken (non-JSON) reply: does the vendor's tool survive?", "Vendor expectation.", async () => {
   const stub = await startStub({ kind: "garbage" }); const { client } = await boot({ stub });
@@ -191,7 +191,7 @@ check("B5", "The client leaves `context` out (it is listed as required): does th
   const tools = (await client.listTools()).tools; const t = tools.find((x) => x.name === "search_companies");
   let r, err = null; try { r = (await call(client, "search_companies", { query: "acme corp" })).r; } catch (e) { err = String(e.message ?? e).slice(0, 200); }
   stub.close(); const rejected = err || r?.isError;
-  return [rejected || t.inputSchema.required?.includes("context") ? "gap" : "pass", `required inputs now: ${JSON.stringify(t.inputSchema.required)}. A call without context: ${rejected ? "REJECTED: " + (err ?? JSON.stringify(r.content)).slice(0, 160) : "worked"}. In 0.x the field was optional.`, { required: t.inputSchema.required, err, r }];
+  return [rejected || t.inputSchema.required?.includes("context") ? "gap" : "pass", `required inputs now: ${JSON.stringify(t.inputSchema.required)}. A call without context: ${rejected ? "REJECTED: " + (err ?? JSON.stringify(r.content)).slice(0, 160) : "worked"}.`, { required: t.inputSchema.required, err, r }];
 });
 check("B5b", "A vendor tool with no inputs: what does its contract become?", "Measurement.", async () => {
   const { client } = await boot({ tracked: true, setup: (s) => s.tool("ping", async () => ({ content: [{ type: "text", text: "pong" }] })) });
@@ -221,7 +221,7 @@ const survivors = (blob) => Object.entries(PII).filter(([, v]) => blob.includes(
 check("C1", "Default settings: which fields of a tools/call event reach Within?", "README Privacy: identity-like fields removed or redacted; field and event limits.", async () => {
   const stub = await startStub(); const { client } = await boot({ stub }); await call(client, "search_companies", Q); await stub.settle(); const ev = stub.toolCalls("search_companies")[0]; stub.close();
   const hasArgs = JSON.stringify(ev).includes("acme corp"), hasResult = JSON.stringify(ev.response ?? {}).includes("found 3");
-  return ["gap", `top-level fields: ${Object.keys(ev).join(", ")}. The vendor's tool ARGUMENTS leave by default (the query 'acme corp' is in the event: ${hasArgs}) and so does the RESULT text (${hasResult}). In 0.x both stayed home unless captureArguments was on. There is no switch named in the README to turn argument capture off.`, { fields: Object.keys(ev), hasArgs, hasResult }];
+  return ["gap", `top-level fields: ${Object.keys(ev).join(", ")}. The vendor's tool ARGUMENTS leave by default (the query 'acme corp' is in the event: ${hasArgs}) and so does the RESULT text (${hasResult}). The README names no switch to turn argument capture off.`, { fields: Object.keys(ev), hasArgs, hasResult }];
 });
 check("C2", "The model-written context text holds private data: which kinds survive in what is sent?", "README: client-side redaction of identity-like fields; the rest relies on a server-side pass.", async () => {
   const stub = await startStub(); const { client } = await boot({ stub });
@@ -340,12 +340,12 @@ check("C13", "reportConversion: userId hashed, metadata redacted, and where does
 });
 
 // ================= D / F: instructions and docs =================
-check("D4", "Vendor server instructions: unchanged? How much text does Within add?", "0.x added text to every server's instructions.", async () => {
+check("D4", "Vendor server instructions: are they left unchanged?", "The README does not say the package touches the vendor's instructions.", async () => {
   const stub = await startStub(); const text = "Vendor business rules. Be brief.\n\nSecond paragraph.";
   const { client } = await boot({ stub, instructions: text }); const seen = client.getInstructions(); stub.close();
-  return [seen === text ? "pass" : "fail", `vendor wrote ${text.length} characters; the client sees ${seen?.length ?? 0}. Identical: ${seen === text}. The 0.x text Within added (about 2,901 characters) is gone.`, { seen }];
+  return [seen === text ? "pass" : "fail", `vendor wrote ${text.length} characters; the client sees ${seen?.length ?? 0}. Identical: ${seen === text}.`, { seen }];
 });
-check("F1", "Does the SDK work with a Zod 4 schema (the 0.x problem), and what are its peer dependencies?", "README: Node 20+, MCP SDK 1.11+. No Zod requirement stated.", async () => {
+check("F1", "Does the package work with a Zod 4 schema, and what are its peer dependencies?", "README: Node 20+, MCP SDK 1.11+. No Zod requirement stated.", async () => {
   const peers = JSON.parse(fs.readFileSync(path.join(PKG, "package.json"))).peerDependencies;
   let z4; try { z4 = await import("zod4"); } catch (e) { return ["info", "zod 4 alias not installed", {}]; }
   const stub = await startStub(); let r, err = null;
@@ -355,7 +355,7 @@ check("F1", "Does the SDK work with a Zod 4 schema (the 0.x problem), and what a
   stub.close();
   return [err ? "fail" : "pass", `peer dependencies: ${JSON.stringify(peers)}. Zod ${z4.z.version?.major ?? "4"} tool: ${err ? "ERROR " + err : JSON.stringify(r)}.`, { peers, r, err }];
 });
-check("F5", "Static: does the package contain a private-network address list (the 0.x identity lookups had two)?", "Static check of dist/.", async () => {
+check("F5", "Static: does the package contain a list of private-network addresses?", "Static check of dist/.", async () => {
   const dist = path.join(PKG, "dist") + "/"; let hits = [];
   const walk = (d) => { for (const f of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, f.name); if (f.isDirectory()) walk(p); else if (p.endsWith(".js") && /192\.168|169\.254|127\.0\.0\.1|localhost/.test(fs.readFileSync(p, "utf8"))) hits.push(p.replace(dist, "")); } };
   walk(dist);
@@ -379,7 +379,7 @@ check("Z2b", "enableTracing false: does anything leave, and is the vendor's serv
   return [n === 0 && !r.isError ? "pass" : "gap", `events sent with enableTracing false: ${n}. Tools advertised: ${tools.map((x) => x.name)} (the extra input and tool are controlled by their own switches). Vendor result ok: ${!r.isError}.`, { n, tools: tools.map((x) => x.name) }];
 });
 
-check("S1", "Static: which words from the 0.x package appear anywhere in the 1.0.4 code? (counts of files and lines)", "Reading the package, not running it.", async () => {
+check("S1", "Static: which of these feature names appear anywhere in the package's code? (counts of files and lines)", "Reading the package, not running it.", async () => {
   const dist = path.join(PKG, "dist") + "/"; const files = [];
   const walk = (d) => { for (const f of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, f.name); if (f.isDirectory()) walk(p); else if (p.endsWith(".js")) files.push(p); } }; walk(dist);
   const text = files.map((f) => fs.readFileSync(f, "utf8"));
@@ -403,7 +403,7 @@ check("M2", "Vendor option: a redaction function that masks digit runs, keys, UR
   const stub = await startStub(); const { client } = await boot({ stub, trackOpts: { redactSensitiveInformation: async (s) => (s === stub.url || s === "within_sk_test_123456" ? s : mask(s)) } }); // leaves the API key and the address alone, see M8
   await call(client, "search_companies", { query: piiText, context: piiText }); await stub.settle(); const ev = stub.toolCalls("search_companies")[0]; stub.close();
   const sent = JSON.stringify(ev.parameters.request.params.arguments); const s = survivors(sent);
-  return [s.length <= 2 && !s.includes("card") && !s.includes("ssn") ? "pass" : "gap", `with the vendor's function, still unredacted in the sent arguments: ${s.join(", ") || "none"}. Before, ${survivors(piiText).length ? "9 kinds" : ""} survived.`, { survivors: s }];
+  return [s.length <= 2 && !s.includes("card") && !s.includes("ssn") ? "pass" : "gap", `with the vendor's function, still unredacted in the sent arguments: ${s.join(", ") || "none"}.`, { survivors: s }];
 });
 check("M3", "Vendor option: privacy.redactKeys with the identity-like names the defaults miss", "README: 'privacy: ... additional keys to redact'.", async () => {
   const names = ["name", "address", "dob", "customer", "session_id", "ip", "city"]; const stub = await startStub();

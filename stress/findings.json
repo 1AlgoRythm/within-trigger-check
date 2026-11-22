@@ -1,7 +1,7 @@
 {
  "title": "Stress test of Within's public package, within-sdk 1.0.4: what fails, what a vendor can do about it, and what Within must fix",
  "intro": [
-  "Within sells a recorder for AI tool calls. A company installs one npm package, `within-sdk`. It sits inside the company's MCP server, watches every tool call, and sends a copy to Within, where the company sees what its customers' AI assistants ask for.",
+  "Within sells analytics for AI tool calls. A company installs one npm package, `within-sdk`. It sits inside the company's MCP server, records every tool call, and sends a copy to Within. The package describes itself as \"MCP analytics, workflow intelligence, and qualified opportunities\".",
   "This report lists what we found when we tried to break that package. Every finding has a plain-words explanation, then the technical detail, then **what a vendor can do today** with the package's own options, and **what Within must change**, shown by a patched copy that we tested.",
   "Everything ran on our own machine against the published package, version 1.0.4, and a small stand-in for Within's server. We did not send load or attack traffic to Within's service, and we did not look at anything behind its login."
  ],
@@ -21,7 +21,7 @@
  ],
  "summary": [
   "**In short.** {{V:n}} checks ran on Within's public package, version {{V:version}} ({{V:tally}}). We found {{V:count}} problems: {{V:high}} High, {{V:medium}} Medium and {{V:low}} Low.",
-  "**The most serious.** One long piece of unbroken text in a customer's request freezes the company's whole AI server for about {{V:stallSeconds}} seconds at 100,000 characters, and no setting prevents it. A vendor can avoid it today with its own redaction function. Within can fix it by changing the order of two steps.",
+  "**The most serious.** One long piece of unbroken text in a customer's request freezes the company's whole AI server for about {{V:stallSeconds}} seconds at 100,000 characters. The package's own size limit does not stop it. A vendor can avoid it today with its own redaction function, and Within can fix it by changing the order of two steps.",
   "**Customer data.** The package sends what customers ask for, and what the company's tools answer, to Within by default. It hides only a short list of private details, and some only when they are the whole value.",
   "**What a vendor can do.** {{V:mitigatedCount}} of the {{V:count}} problems have a fix that works today with the package's own options. {{V:patchedCount}} have a small change that Within could make, and we tested each one on a patched copy: {{V:patchSummary}}.",
   "**What held up.** An outage at Within does not change or slow the company's own answers, a broken reply from Within does not hurt the company's tools, 40 customers at once do not mix their data, and the company's own instructions are left alone."
@@ -105,7 +105,7 @@
     "Cut the text to the field limit before any pattern runs (patch P1).",
     "Or replace the pattern with one that does not rescan: it should take time in proportion to the length. Add a test with a 100,000-character input."
    ],
-   "founder": "One customer pasting a very long, unbroken piece of text can freeze the company's whole AI server for several seconds, for every other customer too. It happens in the normal setup. No setting turns it off.",
+   "founder": "One customer pasting a very long, unbroken piece of text can freeze the company's whole AI server for several seconds, for every other customer too. It happens in the normal setup, and the package's own size limit does not stop it.",
    "mitigation": {
     "check": "M1",
     "text": "A redaction function that cuts every string to 2,000 characters brought the stall at 100,000 letters from {{R:M1.evidence.stock.maxEventLoopStallMs}} ms to {{R:M1.evidence.cut.maxEventLoopStallMs}} ms, because the vendor's function runs before the package's pattern. Setting the field limit alone does not help."
@@ -315,7 +315,7 @@
    "id": "W-09",
    "severity": "Low",
    "title": "A missing or rejected key shows only in a log file in the home folder, and the file only grows",
-   "plain": "With no key and no exporter, `track()` does not complain: it writes one warning to `~/within-sdk.log`. With a wrong key (HTTP 401) the vendor's code gets no signal either: the log file holds {{R:A4.evidence.lines.length}} lines about the failure. The log file is never rotated or capped (it only appends), and in our test one connection and one call added {{R:C12.evidence.bytes}} bytes. The log holds no vendor data in what we sent.",
+   "plain": "With no key and no exporter, `track()` does not complain: it writes one warning to `~/within-sdk.log`. With a wrong key (HTTP 401) the vendor's code gets no signal either: the log file holds {{R:A4.evidence.count}} lines about the failure. The log file is never rotated or capped (it only appends), and in our test one connection and one call added {{R:C12.evidence.bytes}} bytes. The log holds no vendor data in what we sent.",
    "why": "A mistyped key means no analytics and no error. In a container the home folder is often not looked at.",
    "tests": [
     "A4",
