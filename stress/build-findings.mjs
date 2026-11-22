@@ -6,11 +6,15 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { load104 } from "./lib104.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "..");
 const read = (p) => JSON.parse(fs.readFileSync(path.join(here, p), "utf8"));
 const src = read("findings.json");
+// The 1.0.4 update (optional): a status line on every finding and a pointer near the top. See lib104.mjs and build-findings-104.mjs.
+const D104 = load104(src);
+const s104 = (f) => D104?.status(f.id) ?? null;
 const stock = read("results/latest.json");
 const patched = read("results/patched.json");
 // The hand-drawn sketch for a finding, if there is one: [file in docs/diagrams, link text]. The map (docs/index.html) opens the same files.
@@ -247,6 +251,13 @@ for (const p of src.intro) L(resolve(p)), L();
 L(`Tested ${when(stock.meta.ranAt)} on \`@getwithin/sdk\` ${stock.meta.sdk.version} (file fingerprint \`${stock.meta.sdk.distSha256.slice(0, 12)}\`), Node ${stock.meta.node}, MCP SDK ${stock.meta.mcpSdk}. Line numbers below refer to that package's \`dist/index.js\`, because Within's source repository is not public (the address in the package's package.json returns 404).`);
 L();
 const fixedNote = (id) => (V && status040(FINDINGS.find((f) => f.id === id))?.key === "fixed" ? "; fixed in 0.4.0" : "");
+if (D104) {
+  L(`## ${D104.src.title}`);
+  L();
+  for (const p of D104.src.summary) L(D104.resolve(p)), L();
+  L("**The full update, with the five new findings and every earlier finding re-checked, is in [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md)** ([web page](docs/findings-1.0.4.html)). The sections below describe 0.3.0 and 0.4.0; each finding has an \"In 1.0.4\" line.");
+  L();
+}
 if (U) {
   L(`## ${src.update040.title}`);
   L();
@@ -269,10 +280,10 @@ L();
 L(`**${oldFindings.length} findings: ${count("High")} High, ${count("Medium")} Medium, ${count("Low")} Low.** ${Object.keys(S).length} automated checks ran against the published package (0.3.0): ${tally(stock).pass} pass, ${tally(stock).fail} fail, ${tally(stock).gap} gap (documented or undocumented behaviour worth a decision), ${tally(stock).info} information only. A patched copy with ${nProto} small prototype fixes turns ${Object.keys(S).filter((id) => ["fail", "gap"].includes(S[id].verdict) && P[id]?.verdict === "pass").length} of those fails and gaps into passes.`);
 L();
 if (U) L(`Version 0.4.0 adds ${newFindings.length} more findings (${newFindings.map((f) => f.id).join(", ")}), in their own group at the end. They were found by reading the new code and confirmed by ${U.nNew} extra checks (${newRes.tally.fail ?? 0} fail, ${newRes.tally.gap ?? 0} gap, ${newRes.tally.pass ?? 0} pass, ${newRes.tally.info ?? 0} info).`), L();
-L(`| ID | Severity | What | Prototype fix |${U ? " In 0.4.0 |" : ""}`);
-L(`|---|---|---|---|${U ? "---|" : ""}`);
+L(`| ID | Severity | What | Prototype fix |${U ? " In 0.4.0 |" : ""}${D104 ? " In 1.0.4 |" : ""}`);
+L(`|---|---|---|---|${U ? "---|" : ""}${D104 ? "---|" : ""}`);
 for (const f of [...FINDINGS].sort((a, b) => sevOrder[a.severity] - sevOrder[b.severity] || a.id.localeCompare(b.id)))
-  L(`| [${f.id}](#${f.id.toLowerCase()}) | ${f.severity} | ${f.title} | ${f.prototype ?? "none"} |${U ? ` ${status040(f).key === "fixed" ? "**fixed**" : status040(f).short} |` : ""}`);
+  L(`| [${f.id}](#${f.id.toLowerCase()}) | ${f.severity} | ${f.title} | ${f.prototype ?? "none"} |${U ? ` ${status040(f).key === "fixed" ? "**fixed**" : status040(f).short} |` : ""}${D104 ? ` ${s104(f)?.short ?? "n/a"} |` : ""}`);
 L();
 L("**If you only fix six things:** W-02 (an outage must not change or break the vendor's own answers), W-09, W-10 and W-11 (what leaves the vendor's server, and what the docs say about it), W-01 (the install steps must work on a new project" + fixedNote("W-01") + "), and W-04 (never swallow a vendor's own `context` input).");
 L();
@@ -297,6 +308,7 @@ for (const g of groups) {
     L(`**${f.severity}: ${f.title}**`);
     L();
     if (U) L(`**In 0.4.0.** ${status040(f).label}`), L();
+    if (s104(f)) L(`**In 1.0.4 (${s104(f).short}).** ${s104(f).text} See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).`), L();
     if (U) L(`**For a founder.** ${f.founder}`), L();
     if (SKETCH[f.id]) L(`**Sketch.** [${SKETCH[f.id][1]}](../docs/diagrams/${SKETCH[f.id][0]}) (hand-drawn, animated)`.replace("](../docs/", "](docs/")), L();
     L(`**In plain words.** ${resolve(f.plain)}`);
@@ -383,7 +395,7 @@ table{border-collapse:collapse;width:100%;font-size:14px;margin:12px 0}th,td{bor
 .v{font-size:12px;font-weight:700;border-radius:4px;padding:0 5px;color:#fff}.v.pass{background:var(--grn)}.v.fail{background:var(--red)}.v.gap{background:var(--org)}.v.info{background:#6b7280}.v.error{background:#111}
 pre{background:#161b22;color:#e6edf3;padding:12px;border-radius:8px;overflow:auto;font-size:13px}
 .sum td:first-child{white-space:nowrap}
-.st{font-size:13px;font-weight:600;margin:6px 0}.st.fixed{color:var(--grn)}.st.unchanged,.st.notrerun{color:var(--mute)}.st.changed{color:var(--org)}
+.st{font-size:13px;font-weight:600;margin:6px 0}.st.fixed{color:var(--grn)}.st.unchanged,.st.notrerun{color:var(--mute)}.st.changed{color:var(--org)}.st.present{color:var(--red)}.st.notreproduced,.st.absent{color:var(--grn)}.st.nottested{color:var(--mute)}
 </style></head><body><div class="wrap">
 <div class="top"><a href="index.html" target="_top">← Back to the interactive map</a> · <a href="https://github.com/1AlgoRythm/within-trigger-check">Source and tests on GitHub</a></div>
 <h1>${esc(src.title)}</h1>`);
@@ -394,6 +406,11 @@ if (U) {
 H(`<h2>About this report</h2>`);
 for (const p of src.intro) H(`<p>${inline(resolve(p))}</p>`);
 H(`<p class="mute">Tested ${when(stock.meta.ranAt)} on <code>@getwithin/sdk</code> ${stock.meta.sdk.version} (file fingerprint <code>${stock.meta.sdk.distSha256.slice(0, 12)}</code>), Node ${stock.meta.node}, MCP SDK ${stock.meta.mcpSdk}. Line numbers refer to that package's <code>dist/index.js</code>, because Within's source repository is not public (the address in the package's package.json returns 404).</p>`);
+if (D104) {
+  H(`<h2 id="update-version-104">${esc(D104.src.title)}</h2>`);
+  for (const p of D104.src.summary) H(`<p>${inline(D104.resolve(p))}</p>`);
+  H(`<p><strong>The full update, with the five new findings and every earlier finding re-checked, is on <a href="findings-1.0.4.html">its own page</a></strong> (also <a href="https://github.com/1AlgoRythm/within-trigger-check/blob/main/FINDINGS-1.0.4.md">on GitHub</a>). The sections below describe 0.3.0 and 0.4.0; each finding has an "In 1.0.4" line.</p>`);
+}
 if (U) {
   H(`<h2 id="update-version-040">${esc(src.update040.title)}</h2>`);
   for (const p of src.update040.summary) H(`<p>${inline(resolve(p))}</p>`);
@@ -403,9 +420,9 @@ if (U) {
 }
 H(`<h2>At a glance</h2><p><strong>${oldFindings.length} findings: ${count("High")} High, ${count("Medium")} Medium, ${count("Low")} Low.</strong> ${Object.keys(S).length} automated checks ran against the published package (0.3.0): ${tally(stock).pass} pass, ${tally(stock).fail} fail, ${tally(stock).gap} gap, ${tally(stock).info} information only. A patched copy with ${nProto} small prototype fixes turns ${Object.keys(S).filter((id) => ["fail", "gap"].includes(S[id].verdict) && P[id]?.verdict === "pass").length} of those fails and gaps into passes.</p>`);
 if (U) H(`<p>Version 0.4.0 adds ${newFindings.length} more findings (${newFindings.map((f) => f.id).join(", ")}), in their own group at the end. They were found by reading the new code and confirmed by ${U.nNew} extra checks (${newRes.tally.fail ?? 0} fail, ${newRes.tally.gap ?? 0} gap, ${newRes.tally.pass ?? 0} pass, ${newRes.tally.info ?? 0} info).</p>`);
-H(`<table class="sum"><tr><th>ID</th><th>Severity</th><th>What</th><th>Prototype fix</th>${U ? "<th>In 0.4.0</th>" : ""}</tr>`);
+H(`<table class="sum"><tr><th>ID</th><th>Severity</th><th>What</th><th>Prototype fix</th>${U ? "<th>In 0.4.0</th>" : ""}${D104 ? "<th>In 1.0.4</th>" : ""}</tr>`);
 for (const f of [...FINDINGS].sort((a, b) => sevOrder[a.severity] - sevOrder[b.severity] || a.id.localeCompare(b.id)))
-  H(`<tr><td><a href="#${f.id.toLowerCase()}">${f.id}</a></td><td><span class="badge ${f.severity}">${f.severity}</span></td><td>${inline(f.title)}</td><td>${f.prototype ?? "none"}</td>${U ? `<td><span class="st ${status040(f).key}">${status040(f).short}</span></td>` : ""}</tr>`);
+  H(`<tr><td><a href="#${f.id.toLowerCase()}">${f.id}</a></td><td><span class="badge ${f.severity}">${f.severity}</span></td><td>${inline(f.title)}</td><td>${f.prototype ?? "none"}</td>${U ? `<td><span class="st ${status040(f).key}">${status040(f).short}</span></td>` : ""}${D104 ? `<td><span class="st ${s104(f)?.key ?? ""}">${s104(f)?.short ?? "n/a"}</span></td>` : ""}</tr>`);
 H(`</table><p><strong>If you only fix six things:</strong> W-02 (an outage must not change or break the vendor's own answers), W-09, W-10 and W-11 (what leaves the vendor's server, and what the docs say about it), W-01 (the install steps must work on a new project${fixedNote("W-01")}), and W-04 (never swallow a vendor's own <code>context</code> input).</p>`);
 if (U) H(`<p><strong>New in 0.4.0, fix these as well:</strong> ${newFindings.filter((f) => f.severity === "High").map((f) => f.id).join(" and ")} (customer data that leaves the server without the documents saying so).</p>`);
 H(`<h3 style="margin-top:20px">What the words mean</h3><ul>`);
@@ -416,6 +433,7 @@ for (const g of groups) {
   for (const f of FINDINGS.filter((x) => x.group === g)) {
     H(`<div class="card ${f.severity}" id="${f.id.toLowerCase()}"><h3><span class="badge ${f.severity}">${f.severity}</span>${f.id} · ${inline(f.title)}</h3>`);
     if (U) H(`<p class="st ${status040(f).key}"><strong>In 0.4.0.</strong> ${esc(status040(f).label)}</p>`);
+    if (s104(f)) H(`<p class="st ${s104(f).key}"><strong>In 1.0.4 (${esc(s104(f).short)}).</strong> ${inline(s104(f).text)} <a href="findings-1.0.4.html#${f.id.toLowerCase()}-104">Details</a></p>`);
     if (U) H(`<div class="k">For a founder</div><p>${esc(f.founder)}</p>`);
     if (SKETCH[f.id]) H(`<div class="k">Sketch</div><p><a href="diagrams/${SKETCH[f.id][0]}">${esc(SKETCH[f.id][1])}</a> (hand-drawn, animated; the map opens it too)</p>`);
     H(`<div class="k">In plain words</div><p>${inline(resolve(f.plain))}</p><div class="k">Why it matters</div><p>${inline(resolve(f.why))}</p>`);

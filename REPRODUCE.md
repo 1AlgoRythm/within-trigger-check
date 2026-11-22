@@ -99,6 +99,22 @@ This writes `results/model-<model>-T-S-040.json` (trigger and consent), `-X-040-
 | Hubs on: AI repeated Within's line to the customer | 40 of 40 runs, both models together, including 20 of 20 where told not to | |
 | Hubs on: AI opened the hub, or called `hub_card` | 0 of 40, and 0 of 40 | |
 
+## 5b. Version 1.0.4, the public package (no AI, free)
+
+On 2026-11-22 Within said the public package is `within-sdk` 1.0.4, on npm itself. It is different code from `@getwithin/sdk`, so it has its own folder, `stress/v104/`, with the checks that still make sense ported from `stress/tests/` (ids kept where the question carries over; Z1 to Z3, S1, C8b and C11 to C13 are new). Nothing contacts Within: every request goes to a stand-in on `127.0.0.1` or to a stubbed `fetch`, and the SDK's log file goes to a throwaway home folder.
+
+```bash
+cd stress/v104
+npm install --ignore-scripts     # within-sdk 1.0.4 from npm, MCP SDK 1.32.2, Zod 3.25.76 and 4.6.7
+node run-all.mjs                 # about 5 minutes; every check runs in its own process
+node run-all.mjs C8 Z3           # only these, merged with the saved output of the others
+cd .. && npm run build:findings  # rebuilds FINDINGS.md, FINDINGS-1.0.4.md and both web pages
+```
+
+**Expect** (`results/sdk-1.0.4.json`): 39 checks, pass 15, gap 12, info 11, fail 1 (`C8`, the freeze). The build stops if the saved results and `findings-1.0.4.json` disagree. Check `F2` runs `npm install` on a fresh project, so it needs the network. Compare verdicts, not milliseconds: on one machine the freeze at 100,000 letters took between 5.5 and 6.3 seconds in different runs.
+
+**Why each check has its own process:** the package keeps one process-wide event queue. A first full run in a single process was invalid for that reason: after `A1` hung Within, every later check saw no events. That is also how W-27 was found.
+
 ## 6. The 20 labelled Trigger check prompts (spends usage)
 
 ```bash

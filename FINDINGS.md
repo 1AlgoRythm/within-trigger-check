@@ -20,6 +20,18 @@ Everything ran on our own machine, against the published package (version 0.3.0,
 
 Tested 2026-11-19 05:00 UTC on `@getwithin/sdk` 0.3.0 (file fingerprint `658d812c0ae1`), Node v26.13.0, MCP SDK 1.32.2. Line numbers below refer to that package's `dist/index.js`, because Within's source repository is not public (the address in the package's package.json returns 404).
 
+## Update 2026-11-22: version 1.0.4, the public package
+
+**In short.** The package Within points to as public is version 1.0.4, published on 2026-07-23. It is different code from the versions 0.3.0 and 0.4.0 that this report tested before, and we missed it because we looked under the wrong name. We ran 39 checks on it (15 pass, 12 gap, 11 info, 1 fail). Of the 26 problems in this report, 7 are still there, 7 did not show up, 11 are about features that are no longer in the package, and 1 could not be tested. We also found 5 new problems, none of them High.
+
+**The most serious one is old.** W-08 is still there and now needs no setting. One long piece of unbroken text in a customer's request freezes the company's whole AI server for about 6.3 seconds at 100,000 characters, and the time grows much faster than the length.
+
+**Customer data.** The add-on sends what customers ask for, and what the company's tools answer, to Within by default. Only a short list of private details is hidden. Phone numbers, card numbers, names and addresses written inside a sentence go through.
+
+**What got better.** The setup crash is gone. An outage at Within no longer changes the company's answers or slows its calls. The company's own instructions are no longer rewritten. A customer's id is turned into a code before it leaves.
+
+**The full update, with the five new findings and every earlier finding re-checked, is in [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md)** ([web page](docs/findings-1.0.4.html)). The sections below describe 0.3.0 and 0.4.0; each finding has an "In 1.0.4" line.
+
 ## Update 2026-11-20: version 0.4.0
 
 **In short.** Version 0.4.0 fixed 2 of the 20 problems in this report (W-01, W-14). 17 are still there unchanged, and 1 (W-20) still happens but less often. We also read the new code and found 6 new problems, 1 of them High severity. Version 0.4.0 was published at 14:39 UTC on 2026-11-20, after the tests in this report were run on 0.3.0.
@@ -64,34 +76,34 @@ We re-ran the same 43 checks on 2026-11-20 21:23 UTC, added 9 checks for code th
 
 Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in their own group at the end. They were found by reading the new code and confirmed by 9 extra checks (1 fail, 5 gap, 2 pass, 1 info).
 
-| ID | Severity | What | Prototype fix | In 0.4.0 |
-|---|---|---|---|---|
-| [W-01](#w-01) | High | The docs' own install steps crash on a new project | P10 | **fixed** |
-| [W-02](#w-02) | High | When Within is down, the vendor's own answers can be changed, or fail | P1 | unchanged |
-| [W-04](#w-04) | High | A vendor tool that already has an input called `context` silently loses it | P2 | unchanged |
-| [W-09](#w-09) | High | Tools the vendor chose NOT to wrap still report to Within | P6 | unchanged |
-| [W-10](#w-10) | High | The AI's goal summary goes to Within with private details in it, and the docs table does not list it | none | unchanged |
-| [W-11](#w-11) | High | The customer's full question goes to Within unredacted, and the docs do not say so | none | unchanged |
-| [W-21](#w-21) | High | With the new identity option on, the customer's login token is sent to Within on every tool call | none | new |
-| [W-03](#w-03) | Medium | A hung Within adds 5 seconds to every successful wrapped tool call, every time | none | unchanged |
-| [W-05](#w-05) | Medium | If the AI writes a goal longer than 300 characters, the whole tool call is rejected | P3 | unchanged |
-| [W-08](#w-08) | Medium | With argument capture on, very long text without spaces can freeze the vendor's server for seconds | P5 | unchanged |
-| [W-12](#w-12) | Medium | Error messages carry private details to Within even when argument capture is off | none | unchanged |
-| [W-13](#w-13) | Medium | With argument capture on, tool results also leave, and several secrets slip through | none | unchanged |
-| [W-14](#w-14) | Medium | The docs describe a login-provider option that is not in the published package | none | **fixed** |
-| [W-15](#w-15) | Medium | The docs say a banned phrase replaces one paragraph. The code replaces all of the vendor's instructions | P7 | unchanged |
-| [W-18](#w-18) | Medium | On the SDK side, consent rests on the AI, because the SDK itself does not check that the customer chose | none | unchanged |
-| [W-19](#w-19) | Medium | On servers that keep no sessions, a rep's offer cannot find the customer | none | unchanged |
-| [W-20](#w-20) | Medium | A small AI model sometimes (3 of 10) treats "compare two companies" as a sales question | P11 | reduced |
-| [W-22](#w-22) | Medium | A new tool, report_void, is on by default, and the customer's own words in it go to Within unredacted | none | new |
-| [W-24](#w-24) | Medium | With the hubs feature on, text written on Within's side is added to the vendor's own tool results, and the AI repeats it to the customer | none | new |
-| [W-06](#w-06) | Low | When a rep's offer is attached, the vendor's own `_meta` data is removed | P4 | unchanged |
-| [W-07](#w-07) | Low | If the vendor's customer-identity function throws, the customer's tool call fails | P8 | unchanged |
-| [W-16](#w-16) | Low | A wrong key or a missing URL fails silently | P9 | unchanged |
-| [W-17](#w-17) | Low | Two lists of private-network addresses are defined and never used | none | unchanged |
-| [W-23](#w-23) | Low | When the AI app does not report its name, the first 80 characters of its user-agent text are sent as the app name | none | new |
-| [W-25](#w-25) | Low | The new doctor command passes a server whose own `context` input is being removed (W-04) | none | new |
-| [W-26](#w-26) | Low | The app-only hub_card tool can be called directly by any MCP client; only the host's label keeps the AI away from it | none | new |
+| ID | Severity | What | Prototype fix | In 0.4.0 | In 1.0.4 |
+|---|---|---|---|---|---|
+| [W-01](#w-01) | High | The docs' own install steps crash on a new project | P10 | **fixed** | not reproduced |
+| [W-02](#w-02) | High | When Within is down, the vendor's own answers can be changed, or fail | P1 | unchanged | not reproduced |
+| [W-04](#w-04) | High | A vendor tool that already has an input called `context` silently loses it | P2 | unchanged | not reproduced |
+| [W-09](#w-09) | High | Tools the vendor chose NOT to wrap still report to Within | P6 | unchanged | still there |
+| [W-10](#w-10) | High | The AI's goal summary goes to Within with private details in it, and the docs table does not list it | none | unchanged | still there |
+| [W-11](#w-11) | High | The customer's full question goes to Within unredacted, and the docs do not say so | none | unchanged | still there |
+| [W-21](#w-21) | High | With the new identity option on, the customer's login token is sent to Within on every tool call | none | new | feature gone |
+| [W-03](#w-03) | Medium | A hung Within adds 5 seconds to every successful wrapped tool call, every time | none | unchanged | not reproduced |
+| [W-05](#w-05) | Medium | If the AI writes a goal longer than 300 characters, the whole tool call is rejected | P3 | unchanged | not reproduced |
+| [W-08](#w-08) | Medium | With argument capture on, very long text without spaces can freeze the vendor's server for seconds | P5 | unchanged | still there |
+| [W-12](#w-12) | Medium | Error messages carry private details to Within even when argument capture is off | none | unchanged | still there |
+| [W-13](#w-13) | Medium | With argument capture on, tool results also leave, and several secrets slip through | none | unchanged | still there |
+| [W-14](#w-14) | Medium | The docs describe a login-provider option that is not in the published package | none | **fixed** | not reproduced |
+| [W-15](#w-15) | Medium | The docs say a banned phrase replaces one paragraph. The code replaces all of the vendor's instructions | P7 | unchanged | feature gone |
+| [W-18](#w-18) | Medium | On the SDK side, consent rests on the AI, because the SDK itself does not check that the customer chose | none | unchanged | feature gone |
+| [W-19](#w-19) | Medium | On servers that keep no sessions, a rep's offer cannot find the customer | none | unchanged | feature gone |
+| [W-20](#w-20) | Medium | A small AI model sometimes (3 of 10) treats "compare two companies" as a sales question | P11 | reduced | not tested |
+| [W-22](#w-22) | Medium | A new tool, report_void, is on by default, and the customer's own words in it go to Within unredacted | none | new | feature gone |
+| [W-24](#w-24) | Medium | With the hubs feature on, text written on Within's side is added to the vendor's own tool results, and the AI repeats it to the customer | none | new | feature gone |
+| [W-06](#w-06) | Low | When a rep's offer is attached, the vendor's own `_meta` data is removed | P4 | unchanged | feature gone |
+| [W-07](#w-07) | Low | If the vendor's customer-identity function throws, the customer's tool call fails | P8 | unchanged | not reproduced |
+| [W-16](#w-16) | Low | A wrong key or a missing URL fails silently | P9 | unchanged | still there |
+| [W-17](#w-17) | Low | Two lists of private-network addresses are defined and never used | none | unchanged | feature gone |
+| [W-23](#w-23) | Low | When the AI app does not report its name, the first 80 characters of its user-agent text are sent as the app name | none | new | feature gone |
+| [W-25](#w-25) | Low | The new doctor command passes a server whose own `context` input is being removed (W-04) | none | new | feature gone |
+| [W-26](#w-26) | Low | The app-only hub_card tool can be called directly by any MCP client; only the host's label keeps the AI away from it | none | new | feature gone |
 
 **If you only fix six things:** W-02 (an outage must not change or break the vendor's own answers), W-09, W-10 and W-11 (what leaves the vendor's server, and what the docs say about it), W-01 (the install steps must work on a new project; fixed in 0.4.0), and W-04 (never swallow a vendor's own `context` input).
 
@@ -117,6 +129,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 **High: The docs' own install steps crash on a new project**
 
 **In 0.4.0.** Fixed in 0.4.0: its checks now pass.
+
+**In 1.0.4 (not reproduced).** The package has no Zod dependency of its own and asks only for the MCP SDK (1.11 or newer). A tool written with Zod 4 was tracked and called without a crash (`F1`), and the README's own install line plus its quickstart ran on a fresh project (`F2`). See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
 
 **For a founder.** If a company follows Within's own setup instructions on a brand-new project, their server will not start until they find a workaround. It is the very first thing every new customer would hit. Fixed in the new version.
 
@@ -154,6 +168,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 
 **In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
 
+**In 1.0.4 (not reproduced).** With Within refusing connections, the vendor's result came back, and its text, `structuredContent` and `_meta` were identical to an untracked server's (`A2`, `A3`). See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
+
 **For a founder.** Within is sold as a safe add-on. But when Within itself is down, the company's own product can show an error, or end every answer with a confusing "service unreachable" message. A problem at Within becomes the company's problem.
 
 **Sketch.** [An outage changes the vendor's answer](docs/diagrams/12-outage-alters-data.svg) (hand-drawn, animated)
@@ -188,6 +204,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 **Medium: A hung Within adds 5 seconds to every successful wrapped tool call, every time**
 
 **In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
+
+**In 1.0.4 (not reproduced).** With Within never answering, five calls took 2, 0, 0, 0, 0 ms: the vendor's call no longer waits for Within. A different problem took its place, see W-27 (`A1`). See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
 
 **For a founder.** When Within is slow, every action in the company's product waits five extra seconds. An AI assistant takes many actions to answer one question, so the customer feels a very slow product and blames the company.
 
@@ -225,6 +243,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 
 **In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
 
+**In 1.0.4 (not reproduced).** The vendor's own `context` input reaches its handler unchanged, and the SDK skips its own field for that tool and writes a warning to its log file (`B3`). The cost is that Within gets no goal text for that tool. See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
+
 **For a founder.** If one of the company's own tools already has an input with a common name, Within quietly takes it away before the company's code sees it, and the feature misbehaves with no error message.
 
 **Sketch.** [The vendor's own context input is lost](docs/diagrams/13-context-input-lost.svg) (hand-drawn, animated)
@@ -260,6 +280,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 
 **In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
 
+**In 1.0.4 (not reproduced).** A goal text of 2,000 characters was accepted and the vendor's tool call worked (`B4`). The text is sent in full: nothing cuts it to 300 characters. See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
+
 **For a founder.** If the AI writes a slightly long note, the whole action fails instead of the note being trimmed. A customer can see a failure over something trivial.
 
 **In plain words.** The extra goal input is limited to 300 characters. Models are often wordy. When one writes a longer goal, validation rejects the whole call instead of trimming the text.
@@ -289,6 +311,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 **Low: When a rep's offer is attached, the vendor's own `_meta` data is removed**
 
 **In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
+
+**In 1.0.4 (feature gone).** There is no rep's offer in 1.0.4 (the words `assistance` and `offer` appear nowhere in the code, `S1`). In the normal flow the vendor's `_meta` came back unchanged (`A3`). See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
 
 **For a founder.** At exactly the moments a Within sales rep's offer appears, some of the company's own behind-the-scenes labels disappear. That is hard to notice and hard to debug.
 
@@ -321,6 +345,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 
 **In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
 
+**In 1.0.4 (not reproduced).** When the vendor's `identify` function throws, the vendor's tool still returns its result (`A7`). See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
+
 **For a founder.** A helper that exists only to tell Within who the customer is can bring down the company's real feature when that helper has a problem.
 
 **In plain words.** A vendor can pass a function that works out who the customer is. If that function throws, for example because a session store is down, the vendor's tool call fails even though the tool itself worked.
@@ -349,6 +375,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 **Medium: With argument capture on, very long text without spaces can freeze the vendor's server for seconds**
 
 **In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
+
+**In 1.0.4 (still there).** Still there, and now needs no setting. The same pattern runs on every tool argument by default. A call with 100,000 unbroken letters froze the process for 6252 ms, 50,000 for 1882 ms and 10,000 for 109 ms (`C8`). The pattern alone shows the same curve (`C8b`). Cutting the text to the 10,000-byte field limit happens after the pattern runs, so the limit does not help. We would now rate it High. See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
 
 **For a founder.** One customer pasting a very long, unbroken piece of text can freeze the company's whole AI server for several seconds, for every other customer too. This only applies when the optional "capture arguments" setting is on.
 
@@ -387,6 +415,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 
 **In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
 
+**In 1.0.4 (still there).** Still there, by design: there is no longer a choice to wrap a tool. Every tool call on the server is reported, including a tool registered after `track()` (`B7`). The README's configuration table lists no way to leave one tool out. See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
+
 **For a founder.** A company that deliberately keeps a sensitive internal tool out of Within's sight is not actually protected. Within can still learn that the tool was used and, with one setting on, what was typed into it.
 
 **Sketch.** [An unwrapped tool still reports](docs/diagrams/14-unwrapped-tools-report.svg) (hand-drawn, animated)
@@ -417,6 +447,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 **High: The AI's goal summary goes to Within with private details in it, and the docs table does not list it**
 
 **In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
+
+**In 1.0.4 (still there).** Still there. In the model-written goal text, phone, ssn, card, skkey, aws, url, ip, name, address went out unredacted. Only emails and bearer tokens were hidden (`C2`). The README says a second pass on Within's side redacts more. We cannot test that. See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
 
 **For a founder.** A short summary of what the customer wants, written by the AI, is sent to Within. Private details such as phone numbers and names can be in it, even though Within's homepage says personal data is hidden before storage. Companies are not told this happens.
 
@@ -455,6 +487,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 
 **In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
 
+**In 1.0.4 (still there).** Still there, and wider: every tool argument is sent, not only the question. In a free-text argument, phone, ssn, card, skkey, aws, url, ip, name, address went out as written (`C1`, `C5`). See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
+
 **For a founder.** The customer's whole question goes to Within exactly as typed, including any name or phone number in it. Within probably needs the question to find the right answer, but companies are not told it is sent.
 
 **In plain words.** The docs table says that for `get_vendor_answer`, Within gets the topic and sends back the saved answer. The SDK also sends the customer's whole question, up to 2,000 characters, exactly as the model wrote it.
@@ -485,6 +519,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 
 **In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
 
+**In 1.0.4 (still there).** Still there. In an error message, card, skkey, name went out unredacted (`C3`). See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
+
 **For a founder.** When a company's tool fails, the start of the error message, which often contains what the customer typed, is sent to Within, even if the company never switched data capture on.
 
 **In plain words.** When a vendor's tool fails, the first 160 characters of the error message are sent to Within on every failed call to a wrapped tool. Error messages often contain what the customer typed. The SDK hides emails and cards in it but not phone numbers or names.
@@ -514,6 +550,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 **Medium: With argument capture on, tool results also leave, and several secrets slip through**
 
 **In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
+
+**In 1.0.4 (still there).** Still there, and now on by default: the tool's result text is sent, with card, name unredacted (`C4`). There is no argument-capture setting to leave off. See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
 
 **For a founder.** If a company switches on the optional capture setting for one tool, more leaves the server than the documents say, including parts of the answers, and the filter that hides secrets misses some common kinds.
 
@@ -551,6 +589,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 
 **In 0.4.0.** Fixed in 0.4.0: its checks now pass.
 
+**In 1.0.4 (not reproduced).** The `identify` option the README describes is in the package and works: the raw user id and name were not sent, only a hashed subject (`C11`). A phone number written inside a free-text field of the identity data still went out (see W-10). See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
+
 **For a founder.** Within's documents describe a way to show real names and emails for signed-in customers, but the feature was not actually in the package. Companies relying on the documents would only see anonymous ids. It is in the new version, and the new checks show it works as described.
 
 **In plain words.** The docs list an `identity` option for Auth0, WorkOS and Clerk, so that a token with only a user id can be turned into a name and email. The published package has no code for it. Passing the option does nothing, and no lookup is made.
@@ -578,6 +618,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 **Medium: The docs say a banned phrase replaces one paragraph. The code replaces all of the vendor's instructions**
 
 **In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
+
+**In 1.0.4 (feature gone).** 1.0.4 does not touch the vendor's server instructions: 51 characters in, 51 out, identical (`D4`). The word `banned` appears nowhere in the code (`S1`). See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
 
 **For a founder.** The documents say a banned phrase removes one paragraph of the company's instructions to the AI. In fact all of the company's own instructions are replaced, silently, so the AI starts behaving differently with no warning.
 
@@ -613,6 +655,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 
 **In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
 
+**In 1.0.4 (still there).** Still there. A rejected key (HTTP 401) and a missing key give no error to the vendor's code. The only trace is lines in `~/within-sdk.log`, which the code only ever appends to (`A4`, `A10`, `C12`). See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
+
 **For a founder.** A typo in the web address or the key makes Within silently do nothing, or look like an outage, and the company gets no message saying it is a setup mistake.
 
 **In plain words.** If Within answers a wrong API key with a 401 (the stand-in does, and the real API did once, per this repo's README), the SDK treats it as normal, so Within silently does nothing, and nothing is logged. If the URL is left out, which the homepage snippet allows, every call goes to a local address and every customer answer ends with "The service is unreachable.". A key made only of spaces is accepted.
@@ -647,6 +691,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 
 **In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
 
+**In 1.0.4 (feature gone).** The package contains no list of private-network addresses (`F5`). See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
+
 **For a founder.** The package builds a safety list that nothing ever uses. Nothing is broken today. It looks like an unfinished safety feature.
 
 **In plain words.** The package builds two lists of private network addresses, the kind a safety check would use before contacting a web address. No code checks any address against them.
@@ -676,6 +722,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 **Medium: On the SDK side, consent rests on the AI, because the SDK itself does not check that the customer chose**
 
 **In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
+
+**In 1.0.4 (feature gone).** There is no consent flow: `confirm_assistance`, `assistance`, `offer` and `nonce` appear nowhere in the code (`S1`). See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
 
 **For a founder.** Within promises a human sales rep only joins after the customer says yes. Today that promise rests on the AI behaving correctly, because the software itself does not check for the customer's click. What Within's own server checks cannot be seen from outside.
 
@@ -713,6 +761,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 
 **In 0.4.0.** Unchanged in 0.4.0: its checks give the same verdicts.
 
+**In 1.0.4 (feature gone).** There is no rep's offer to lose on a server without sessions (`S1`). See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
+
 **For a founder.** For companies whose servers do not remember visitors between requests, a sales rep's offer may never reach the right customer. Whether Within covers this on its own side cannot be seen from outside.
 
 **In plain words.** The docs say a rep's offer is delivered on the customer's next tool call in that session, and that a new connection gets a new session id. In check C9, three connections got three ids. By the code at lines 3585 to 3599, a server that builds a new transport for every request gets a new id on every call (inferred from the code, not run over real HTTP).
@@ -743,6 +793,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 
 **In 0.4.0.** Still present in 0.4.0, but less often: real Claude (Haiku) sent this to Within in 11 of 30 runs on 0.4.0 against 23 of 30 on 0.3.0 the same day (Fisher exact p = 0.004).
 
+**In 1.0.4 (not tested).** 1.0.4 has no `get_vendor_answer` tool (`S1`), so the question "does the AI send a comparison to Within" does not exist in the same form. We did not run real Claude on 1.0.4. See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
+
 **For a founder.** When a customer asks a plain question about the company's own products, such as "compare A and B", a smaller AI model sometimes treats it as a sales question and sends it to Within.
 
 **Sketch.** [The false alarm and the fixes](docs/diagrams/06-false-alarm-and-fixes.svg) (hand-drawn, animated)
@@ -772,6 +824,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 **High: With the new identity option on, the customer's login token is sent to Within on every tool call**
 
 **In 0.4.0.** New in 0.4.0: found by reading the 0.4.0 code. It is not in 0.3.0.
+
+**In 1.0.4 (feature gone).** The identity lookup is gone: `issuer`, `auth0`, `workos`, `clerk` and `userinfo` appear nowhere in the code (`S1`). The incoming request's auth information is replaced by `[redacted]` in the events we saw. See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
 
 **For a founder.** In the new version, switching on the new "who is this customer" option makes each customer's login pass travel to Within with every action. A login pass is a credential: whoever holds it can act as that customer until it expires. Within's documents say it stays on the company's server.
 
@@ -805,6 +859,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 
 **In 0.4.0.** New in 0.4.0: found by reading the 0.4.0 code. It is not in 0.3.0.
 
+**In 1.0.4 (feature gone).** `report_void` appears nowhere in the code (`S1`). See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
+
 **For a founder.** The new version adds a tool that every company gets by default, and tells the AI to use it whenever it cannot give the customer what they asked for. What the AI writes there, in the customer's own words, goes to Within. A name, phone number or email would go through unchanged if the AI wrote one. In our real-AI runs it wrote only a short topic. The documents do not mention the tool.
 
 **Sketch.** [report_void sends the customer's words](docs/diagrams/17-report-void-default.svg) (hand-drawn, animated)
@@ -837,6 +893,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 
 **In 0.4.0.** New in 0.4.0: found by reading the 0.4.0 code. It is not in 0.3.0.
 
+**In 1.0.4 (feature gone).** `user-agent` appears nowhere in the code (`S1`). See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
+
 **For a founder.** The new version records which AI app the customer is using. Usually that is just the app's name. When the app does not say, it falls back to the first 80 characters of its technical identification text and sends that instead.
 
 **Sketch.** [The app name fallback](docs/diagrams/18-user-agent-fallback.svg) (hand-drawn, animated)
@@ -867,6 +925,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 **Medium: With the hubs feature on, text written on Within's side is added to the vendor's own tool results, and the AI repeats it to the customer**
 
 **In 0.4.0.** New in 0.4.0: found by reading the 0.4.0 code. It is not in 0.3.0.
+
+**In 1.0.4 (feature gone).** `hubs` appears nowhere in the code (`S1`). See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
 
 **For a founder.** If a company switches on the new "hubs" option, Within can add a sentence of its own to the company's answers, and the AI then repeats it to the customer. In our runs the AI repeated it every time, even when the user had asked not to be sent anything. The documents say the company's answer stays intact.
 
@@ -900,6 +960,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 
 **In 0.4.0.** New in 0.4.0: found by reading the 0.4.0 code. It is not in 0.3.0.
 
+**In 1.0.4 (feature gone).** `doctor` appears nowhere in the code (`S1`). See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
+
 **For a founder.** Within's new installation checker says everything is fine for a company whose own input is being quietly taken away, so it does not warn about a problem it should catch.
 
 **Sketch.** [The doctor command misses W-04](docs/diagrams/20-doctor-misses-w04.svg) (hand-drawn, animated)
@@ -929,6 +991,8 @@ Version 0.4.0 adds 6 more findings (W-21, W-22, W-23, W-24, W-25, W-26), in thei
 **Low: The app-only hub_card tool can be called directly by any MCP client; only the host's label keeps the AI away from it**
 
 **In 0.4.0.** New in 0.4.0: found by reading the 0.4.0 code. It is not in 0.3.0.
+
+**In 1.0.4 (feature gone).** `hub_card` appears nowhere in the code (`S1`). See [FINDINGS-1.0.4.md](FINDINGS-1.0.4.md).
 
 **For a founder.** One of the new hub tools is meant to be used only by the card on screen, not by the AI. The software itself does not enforce that. Any program that talks to the server can call it, and only a host that respects the label keeps the AI away.
 
