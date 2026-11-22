@@ -1,0 +1,18 @@
+:root{--ink:#1f2328;--mute:#59636e;--line:#d8dee4;--bg:#fbfaf6;--red:#d1242f;--org:#d97706;--blu:#2563eb;--grn:#059669}
+*{box-sizing:border-box}body{margin:0;font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg)}
+.wrap{max-width:860px;margin:0 auto;padding:24px 20px 80px}
+a{color:#0969da}h1{font-size:28px;line-height:1.25;margin:8px 0 16px}h2{margin:40px 0 8px;font-size:22px;border-bottom:1px solid var(--line);padding-bottom:6px}
+h3{margin:0;font-size:18px}code{background:#eef0f3;padding:1px 5px;border-radius:4px;font-size:.9em}
+.top{font-size:14px;margin-bottom:6px}.mute{color:var(--mute)}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:12px 0}th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}th{background:#f1f3f5}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:18px 0;border-left-width:6px}
+.card.High{border-left-color:var(--red)}.card.Medium{border-left-color:var(--org)}.card.Low{border-left-color:var(--blu)}
+.badge{display:inline-block;font-size:12px;font-weight:700;padding:1px 8px;border-radius:999px;color:#fff;margin-right:8px;vertical-align:middle}
+.badge.High{background:var(--red)}.badge.Medium{background:var(--org)}.badge.Low{background:var(--blu)}
+.k{font-weight:700;margin:12px 0 2px}ul{margin:4px 0 4px 20px;padding:0}li{margin:3px 0}
+.v{font-size:12px;font-weight:700;border-radius:4px;padding:0 5px;color:#fff}.v.pass{background:var(--grn)}.v.fail{background:var(--red)}.v.gap{background:var(--org)}.v.info{background:#6b7280}.v.error{background:#111}
+pre{background:#161b22;color:#e6edf3;padding:12px;border-radius:8px;overflow:auto;font-size:13px}
+.sum td:first-child{white-space:nowrap}
+.st{font-size:13px;font-weight:600;margin:6px 0}.st.fixed{color:var(--grn)}.st.unchanged,.st.notrerun{color:var(--mute)}.st.changed{color:var(--org)}.st.present{color:var(--red)}.st.notreproduced,.st.absent{color:var(--grn)}.st.nottested{color:var(--mute)}
+.st.present{color:var(--red)}.st.notreproduced,.st.absent{color:var(--grn)}.st.nottested{color:var(--mute)}
+.st.yes{color:var(--grn)}.st.no{color:var(--mute)}.mit{background:#f3faf6;border:1px solid #cfe8da;border-radius:8px;padding:8px 12px;margin:8px 0}.pat{background:#f3f7fd;border:1px solid #cfdcf3;border-radius:8px;padding:8px 12px;margin:8px 0}.big{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.big div{flex:1;min-width:130px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px}.big b{display:block;font-size:26px}

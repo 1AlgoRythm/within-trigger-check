@@ -9,7 +9,7 @@
     "test:model": "node model/run-model.mjs",
     "patch": "node patches/apply.mjs",
     "test:patched": "node patches/apply.mjs && WITHIN_SDK_ENTRY=$PWD/patched-sdk/dist/index.js node run.mjs",
-    "build:findings": "node build-findings.mjs && node build-findings-104.mjs"
+    "build:findings": "node build.mjs"
   },
   "dependencies": {
     "@getwithin/sdk": "0.3.0",

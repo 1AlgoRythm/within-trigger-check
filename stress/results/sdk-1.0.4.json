@@ -1,6 +1,6 @@
 {
   "meta": {
-    "ranAt": "2026-11-22T15:21:00.373Z",
+    "ranAt": "2026-11-22T15:38:19.414Z",
     "sdk": {
       "name": "within-sdk",
       "version": "1.0.4",
@@ -13,10 +13,10 @@
     "zod4": "4.6.7"
   },
   "tally": {
-    "pass": 15,
-    "gap": 12,
+    "pass": 21,
+    "gap": 14,
     "info": 11,
-    "fail": 1
+    "fail": 2
   },
   "results": [
     {
@@ -24,10 +24,10 @@
       "title": "Within hangs: how long does the vendor's tool wait, call after call?",
       "basis": "README: telemetry is added around the vendor's tool; the vendor's result should not depend on Within answering.",
       "verdict": "pass",
-      "observed": "five calls with Within never answering took 2, 0, 0, 0, 0 ms. Worst 2 ms.",
+      "observed": "five calls with Within never answering took 3, 0, 0, 0, 0 ms. Worst 3 ms.",
       "evidence": {
         "times": [
-          2,
+          3,
           0,
           0,
           0,
@@ -135,12 +135,12 @@
       "title": "Wrong API key (Within answers 401): does the vendor get any signal?",
       "basis": "Vendor expectation: a rejected key should show somewhere the vendor looks.",
       "verdict": "info",
-      "observed": "vendor result ok=true. Lines about the failure in ~/within-sdk.log: 4. Nothing reaches the vendor's own code or console; first line: [2026-11-22T15:15:41.233Z] Failed to send event evt_3MT34oiAlASwEljbrV8snKmofB6, retrying... [Error: {\"stack\":\"Error: HTTP 401: {\\\"ok\\\":fals.",
+      "observed": "vendor result ok=true. Lines about the failure in ~/within-sdk.log: 4. Nothing reaches the vendor's own code or console; first line: [2026-11-22T15:32:39.866Z] Failed to send event evt_3MT58ikbv33pl6SGxdbnZ92MG5x, retrying... [Error: {\"stack\":\"Error: HTTP 401: {\\\"ok\\\":fals.",
       "evidence": {
         "lines": [
-          "[2026-11-22T15:15:41.233Z] Failed to send event evt_3MT34oiAlASwEljbrV8snKmofB6, retrying... [Error: {\"stack\":\"Error: HTTP 401: {\\\"ok\\\":false}\\n    at postEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:229:15)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\\n    at async EventQueue.sendEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:84:13)\",\"message\":\"HTTP 401: {\\\"ok\\\":false}\"}]",
-          "[2026-11-22T15:15:41.235Z] Failed to send event evt_3MT34rHEF0WegmbpUIHph4WW8iO, retrying... [Error: {\"stack\":\"Error: HTTP 401: {\\\"ok\\\":false}\\n    at postEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:229:15)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\\n    at async EventQueue.sendEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:84:13)\",\"message\":\"HTTP 401: {\\\"ok\\\":false}\"}]",
-          "[2026-11-22T15:15:42.238Z] Failed to send event evt_3MT34oiAlASwEljbrV8snKmofB6, retrying... [Error: {\"stack\":\"Error: HTTP 401: {\\\"ok\\\":false}\\n    at postEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:229:15)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\\n    at async EventQueue.sendEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:84:13)\",\"message\":\"HTTP 401: {\\\"ok\\\":false}\"}]"
+          "[2026-11-22T15:32:39.866Z] Failed to send event evt_3MT58ikbv33pl6SGxdbnZ92MG5x, retrying... [Error: {\"stack\":\"Error: HTTP 401: {\\\"ok\\\":false}\\n    at postEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:229:15)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\\n    at async EventQueue.sendEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:84:13)\",\"message\":\"HTTP 401: {\\\"ok\\\":false}\"}]",
+          "[2026-11-22T15:32:39.867Z] Failed to send event evt_3MT58mJCTs7sPcfZ3kak8g9YIdK, retrying... [Error: {\"stack\":\"Error: HTTP 401: {\\\"ok\\\":false}\\n    at postEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:229:15)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\\n    at async EventQueue.sendEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:84:13)\",\"message\":\"HTTP 401: {\\\"ok\\\":false}\"}]",
+          "[2026-11-22T15:32:40.874Z] Failed to send event evt_3MT58ikbv33pl6SGxdbnZ92MG5x, retrying... [Error: {\"stack\":\"Error: HTTP 401: {\\\"ok\\\":false}\\n    at postEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:229:15)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\\n    at async EventQueue.sendEvent (file:///Users/satyaags/Projects/within-trigger-check/stress/v104/node_modules/within-sdk/dist/modules/eventQueue.js:84:13)\",\"message\":\"HTTP 401: {\\\"ok\\\":false}\"}]"
         ]
       }
     },
@@ -157,9 +157,9 @@
       "title": "40 customers at once with a slow Within (300 ms): do calls overlap, and does each event keep its own context text?",
       "basis": "Vendor expectation: concurrent customers must not slow each other or swap data.",
       "verdict": "pass",
-      "observed": "40 calls took 5 ms in total. Wrong results: 0. Events seen: 40. Events whose query and context disagree: 0.",
+      "observed": "40 calls took 6 ms in total. Wrong results: 0. Events seen: 40. Events whose query and context disagree: 0.",
       "evidence": {
-        "total": 5.176791999999992,
+        "total": 5.506208000000001,
         "wrong": 0,
         "swapped": 0,
         "seen": 40
@@ -193,11 +193,11 @@
       "title": "How much time does the SDK add to one vendor tool call (Within answering in 0 ms and in 300 ms)?",
       "basis": "Measurement, median of 7.",
       "verdict": "info",
-      "observed": "median ms: untracked 0.15; tracked with Within at 0 ms 0.07; at 300 ms 0.06.",
+      "observed": "median ms: untracked 0.19; tracked with Within at 0 ms 0.11; at 300 ms 0.04.",
       "evidence": {
-        "untracked": 0.15141699999999503,
-        "tracked_0": 0.06974999999999909,
-        "tracked_300": 0.058707999999995764
+        "untracked": 0.19012499999999477,
+        "tracked_0": 0.10637499999999989,
+        "tracked_300": 0.03650000000000375
       }
     },
     {
@@ -217,11 +217,11 @@
       "title": "No API key and no exporter at start-up: does track() complain?",
       "basis": "README: apiKey 'falls back to WITHIN_SDK_API_KEY, then WITHIN_SDK_INGEST_KEY'. Nothing is said about a missing key.",
       "verdict": "gap",
-      "observed": "track() threw: no. Warning only in the log file: [2026-11-22T15:15:50.978Z] Warning: No Within apiKey provided and no exporters configured. Events will not be sent anywhere.. The vendor's process starts normally and sends nothing.",
+      "observed": "track() threw: no. Warning only in the log file: [2026-11-22T15:32:49.488Z] Warning: No Within apiKey provided and no exporters configured. Events will not be sent anywhere.. The vendor's process starts normally and sends nothing.",
       "evidence": {
         "threw": null,
         "added": [
-          "[2026-11-22T15:15:50.978Z] Warning: No Within apiKey provided and no exporters configured. Events will not be sent anywhere."
+          "[2026-11-22T15:32:49.488Z] Warning: No Within apiKey provided and no exporters configured. Events will not be sent anywhere."
         ]
       }
     },
@@ -230,7 +230,7 @@
       "title": "A vendor tool that already has an input called `context`: does the handler still get the vendor's value?",
       "basis": "README does not mention a collision; the SDK source says it skips injection.",
       "verdict": "pass",
-      "observed": "handler received {\"context\":\"vendor value\",\"q\":\"x\"}. Advertised inputs: context,q; required: [\"context\",\"q\"]. The SDK skipped its own field, so Within gets no goal text for this tool. Log line: [2026-11-22T15:15:51.189Z] WARN: Tool \"retrieve\" already has 'context' parameter. Skipping context injection.",
+      "observed": "handler received {\"context\":\"vendor value\",\"q\":\"x\"}. Advertised inputs: context,q; required: [\"context\",\"q\"]. The SDK skipped its own field, so Within gets no goal text for this tool. Log line: [2026-11-22T15:32:49.674Z] WARN: Tool \"retrieve\" already has 'context' parameter. Skipping context injection.",
       "evidence": {
         "got": {
           "context": "vendor value",
@@ -252,7 +252,7 @@
       "id": "B5",
       "title": "The client leaves `context` out (it is listed as required): does the vendor's tool call still work?",
       "basis": "README: 'tool-call context parameter ... Defaults to true'. The advertised schema marks it required.",
-      "verdict": "pass",
+      "verdict": "gap",
       "observed": "required inputs now: [\"query\",\"context\"]. A call without context: worked. In 0.x the field was optional.",
       "evidence": {
         "required": [
@@ -459,44 +459,44 @@
       "title": "A long free-text argument: does redaction freeze the vendor's whole process? (event-loop stall, 4 sizes, 2 shapes)",
       "basis": "README: 'Configurable field and event limits truncate oversized payloads' (default 10,000 bytes per field). Vendor expectation: the SDK runs inside the vendor's process.",
       "verdict": "fail",
-      "observed": "event-loop stall per argument (ms): letters 10000 chars -> 109; letters 25000 chars -> 334; letters 50000 chars -> 1882; letters 100000 chars -> 6252; words 100000 chars -> 17; dots 50000 chars -> 1384. The vendor's own tool call returned in about 2 ms each time: the freeze comes after, while the event is cleaned, and blocks every customer on the process. Cause: the email pattern in privacy.js is applied to the whole string before it is cut to the 10,000-byte limit.",
+      "observed": "event-loop stall per argument (ms): letters 10000 chars -> 71; letters 25000 chars -> 371; letters 50000 chars -> 1455; letters 100000 chars -> 5773; words 100000 chars -> 15; dots 50000 chars -> 1293. The vendor's own tool call returned in about 3 ms each time. The freeze comes after, while the event is cleaned, and blocks every customer on the process. Cause: the email pattern in privacy.js is applied to the whole string before it is cut to the 10,000-byte limit.",
       "evidence": {
         "out": [
           {
             "shape": "letters",
             "n": 10000,
-            "callMs": 2,
-            "maxEventLoopStallMs": 109
+            "callMs": 3,
+            "maxEventLoopStallMs": 71
           },
           {
             "shape": "letters",
             "n": 25000,
-            "callMs": 1,
-            "maxEventLoopStallMs": 334
+            "callMs": 2,
+            "maxEventLoopStallMs": 371
           },
           {
             "shape": "letters",
             "n": 50000,
-            "callMs": 2,
-            "maxEventLoopStallMs": 1882
+            "callMs": 1,
+            "maxEventLoopStallMs": 1455
           },
           {
             "shape": "letters",
             "n": 100000,
-            "callMs": 1,
-            "maxEventLoopStallMs": 6252
+            "callMs": 2,
+            "maxEventLoopStallMs": 5773
           },
           {
             "shape": "words",
             "n": 100000,
             "callMs": 1,
-            "maxEventLoopStallMs": 17
+            "maxEventLoopStallMs": 15
           },
           {
             "shape": "dots",
             "n": 50000,
             "callMs": 1,
-            "maxEventLoopStallMs": 1384
+            "maxEventLoopStallMs": 1293
           }
         ]
       }
@@ -506,23 +506,23 @@
       "title": "Does loading the SDK change how the vendor's process handles SIGTERM? (one signal, then a second one 3 s later)",
       "basis": "Source: eventQueue.js registers process.once handlers for SIGINT, SIGTERM and beforeExit.",
       "verdict": "gap",
-      "observed": "SIGTERM to a plain Node process: exited after 2 ms. To a process that called track(): still running after 12 s (force-killed). With a second SIGTERM sent 3 s after the first: exited after 3003 ms (signal SIGTERM).",
+      "observed": "SIGTERM to a plain Node process: exited after 3 ms. To a process that called track(): still running after 12 s (force-killed). With a second SIGTERM sent 3 s after the first: exited after 3007 ms (signal SIGTERM).",
       "evidence": {
         "plain": {
           "exited": true,
           "sig": "SIGTERM",
           "code": null,
-          "ms": 2
+          "ms": 3
         },
         "one": {
           "exited": false,
-          "ms": 11832
+          "ms": 11840
         },
         "two": {
           "exited": true,
           "sig": "SIGTERM",
           "code": null,
-          "ms": 3003
+          "ms": 3007
         }
       }
     },
@@ -531,7 +531,7 @@
       "title": "The email pattern on its own: time against input length (copy of the pattern, checked against the package file)",
       "basis": "Isolates the cause of the freeze measured in C8.",
       "verdict": "info",
-      "observed": "pattern found in privacy.js unchanged: true. Letters with no @ (ms): 10000 -> 55, 25000 -> 358, 50000 -> 1463, 100000 -> 5879. Doubling the length multiplied the time by about 4.0. Ordinary words (100,000 chars): 1 ms. The same 100,000 letters cut to 10,000 first: 60 ms. An email in 100,000 spaces: 0 ms.",
+      "observed": "pattern found in privacy.js unchanged: true. Letters with no @ (ms): 10000 -> 55, 25000 -> 321, 50000 -> 1287, 100000 -> 5158. Doubling the length multiplied the time by about 4.0. Ordinary words (100,000 chars): 1 ms. The same 100,000 letters cut to 10,000 first: 56 ms. An email in 100,000 spaces: 0 ms.",
       "evidence": {
         "inFile": true,
         "rows": [
@@ -541,19 +541,19 @@
           },
           {
             "chars": 25000,
-            "ms": 358
+            "ms": 321
           },
           {
             "chars": 50000,
-            "ms": 1463
+            "ms": 1287
           },
           {
             "chars": 100000,
-            "ms": 5879
+            "ms": 5158
           }
         ],
         "words": 1,
-        "cutFirst": 60,
+        "cutFirst": 56,
         "normal": 0
       }
     },
@@ -574,12 +574,12 @@
       "title": "Customer session ids: stable within a connection, new per connection?",
       "basis": "Measurement.",
       "verdict": "info",
-      "observed": "session ids per call: ses_3MT3CFrT, ses_3MT3CEz1, ses_3MT3CFrT. Distinct: 2 (two connections, three calls).",
+      "observed": "session ids per call: ses_3MT5Hssc, ses_3MT5HysI, ses_3MT5Hssc. Distinct: 2 (two connections, three calls).",
       "evidence": {
         "ids": [
-          "ses_3MT3CFrTJ6Wxf3u49OG0RAELtx5",
-          "ses_3MT3CEz1x4b1ePS4Kv479kdsrqK",
-          "ses_3MT3CFrTJ6Wxf3u49OG0RAELtx5"
+          "ses_3MT5Hssc4w7OcWjeUdUJKfx4op0",
+          "ses_3MT5HysIh5RwlmECK7SS3Qq0Jah",
+          "ses_3MT5Hssc4w7OcWjeUdUJKfx4op0"
         ]
       }
     },
@@ -600,7 +600,7 @@
       "title": "Local log file: what does the SDK write to ~/within-sdk.log, and is it ever capped?",
       "basis": "README: 'default local SDK log destination'. Contents not described.",
       "verdict": "gap",
-      "observed": "file ~/within-sdk.log: 1119 bytes, 7 lines from one connect, one tool call and its sends. Vendor data inside it: none. Rotation or size cap in logging.js: none (it only appends). Last lines: [2026-11-22T15:16:42.114Z] Successfully sent event evt_3MT3CWFCmvHHNiF3QRhQrEJKpm7 | mcp:initialize | session ses_3MT3CUfXYLGWhgsWpU3DTqChiwD | acme | 0 ms | 763bc036c96479891c9dfb98aaed5097d66d709d16c0fb4835a10ce5fb24e7cf | [2026-11-22T15:16:42.114Z] Successf",
+      "observed": "file ~/within-sdk.log: 1119 bytes, 7 lines from one connect, one tool call and its sends. Vendor data inside it: none. Rotation or size cap in logging.js: none (it only appends). Last lines: [2026-11-22T15:33:54.432Z] Successfully sent event evt_3MT5IAQpyqCzO9atHGkrySLpq7Q | mcp:initialize | session ses_3MT5IEBBfShDlOUTATH6o2tjZS4 | acme | 0 ms | 763bc036c96479891c9dfb98aaed5097d66d709d16c0fb4835a10ce5fb24e7cf | [2026-11-22T15:33:54.432Z] Successf",
       "evidence": {
         "bytes": 1119,
         "leaked": [],
@@ -828,6 +828,131 @@
           "zod",
           "_zod"
         ]
+      }
+    },
+    {
+      "id": "M1",
+      "title": "Vendor option: redactSensitiveInformation that cuts every string to 2,000 characters. Does it stop the freeze? (and does the size limit alone?)",
+      "basis": "README: 'redactSensitiveInformation: Apply an additional vendor-provided redaction function.' It runs before the package's own pattern (eventQueue.js line 46).",
+      "verdict": "pass",
+      "observed": "100,000 letters, event-loop stall in ms: no option 6214; redactSensitiveInformation cutting to 2,000 characters 24; privacy.maxFieldBytes set to 500 5806 (the size limit alone does not help, it is applied after the pattern).",
+      "evidence": {
+        "stock": {
+          "shape": "letters",
+          "n": 100000,
+          "callMs": 1,
+          "maxEventLoopStallMs": 6214
+        },
+        "cut": {
+          "shape": "letters",
+          "n": 100000,
+          "callMs": 2,
+          "maxEventLoopStallMs": 24
+        },
+        "limit": {
+          "shape": "letters",
+          "n": 100000,
+          "callMs": 1,
+          "maxEventLoopStallMs": 5806
+        }
+      }
+    },
+    {
+      "id": "M2",
+      "title": "Vendor option: a redaction function that masks digit runs, keys, URLs and IP addresses. What still leaves?",
+      "basis": "Same option. A pattern cannot find a name, so names are the expected leftover.",
+      "verdict": "pass",
+      "observed": "with the vendor's function, still unredacted in the sent arguments: name, address. Before, 9 kinds survived.",
+      "evidence": {
+        "survivors": [
+          "name",
+          "address"
+        ]
+      }
+    },
+    {
+      "id": "M3",
+      "title": "Vendor option: privacy.redactKeys with the identity-like names the defaults miss",
+      "basis": "README: 'privacy: ... additional keys to redact'.",
+      "verdict": "pass",
+      "observed": "argument names still sent as written with redactKeys set: session_id. (session_id was not in the list on purpose.)",
+      "evidence": {
+        "kept": [
+          "session_id"
+        ]
+      }
+    },
+    {
+      "id": "M4",
+      "title": "Vendor option: log callback. Does it keep the log file from being written, and what does it receive?",
+      "basis": "README: 'log: Replace the default local SDK log destination with a callback.'",
+      "verdict": "pass",
+      "observed": "lines delivered to the vendor's callback: 5; bytes added to ~/within-sdk.log: 0. First line: [2026-11-22T15:34:18.590Z] Within SDK setup started | vendor acme | server high-level",
+      "evidence": {
+        "lines": 5,
+        "grew": 0
+      }
+    },
+    {
+      "id": "M5",
+      "title": "Vendor option: a fetch with a time limit (an option named fetch exists in the code, not in the README table). Does it end the queue stall?",
+      "basis": "index.js line 47: fetchImpl: options.fetch ?? globalThis.fetch. Compare A1c.",
+      "verdict": "pass",
+      "observed": "with a 1.5 s limit on every request, 8 requests reached Within in the 15 s after it recovered (stock package: 0, check A1c). The stuck requests were abandoned and the later reports were sent.",
+      "evidence": {
+        "got": 8
+      }
+    },
+    {
+      "id": "M6",
+      "title": "Vendor option: the vendor's own SIGTERM handler that exits. Does the process stop on the first signal?",
+      "basis": "Vendor code, not a package option: process.on('SIGTERM', () => process.exit(0)).",
+      "verdict": "pass",
+      "observed": "with the vendor's own handler, the first SIGTERM ended the process in 6 ms (exit code 0).",
+      "evidence": {
+        "exited": true,
+        "code": 0,
+        "sig": null,
+        "ms": 6
+      }
+    },
+    {
+      "id": "M7",
+      "title": "Vendor option: enableToolCallContext false and enableReportMissing false together with the redaction function. Is the tool list the vendor wrote what customers see?",
+      "basis": "README Configuration table.",
+      "verdict": "pass",
+      "observed": "tools advertised: search_companies; inputs of search_companies: query; required: [\"query\"].",
+      "evidence": {
+        "tools": [
+          "search_companies"
+        ]
+      }
+    },
+    {
+      "id": "M8",
+      "title": "Vendor option: what a redaction function is handed. Does it see the API key and the address events go to, and what happens if it changes them?",
+      "basis": "Source: eventQueue.js line 46 applies the vendor's function to every string field of the event except a short protected list (redaction.js lines 6 to 16).",
+      "verdict": "gap",
+      "observed": "the function was handed the API key: true; the destination address: true. With a function that replaces every digit run, events reached the stand-in: 0 (against 2 with a function that changes nothing). The failure shows only as lines in the log file.",
+      "evidence": {
+        "sawKey": true,
+        "sawUrl": true,
+        "delivered1": 2,
+        "delivered2": 0
+      }
+    },
+    {
+      "id": "F6",
+      "title": "The docs' install line against npm: does the package it names exist?",
+      "basis": "Within's public docs page (getwith.in/docs), and the npm registry.",
+      "verdict": "fail",
+      "observed": "docs page answered 200; its install line names @getwithin/sdk; npm answers 404 for that name; npm serves within-sdk 1.0.4.",
+      "evidence": {
+        "docsStatus": 200,
+        "named": "@getwithin/sdk",
+        "npmStatus": 404,
+        "publicVersion": "1.0.4",
+        "fetchedAt": "2026-11-22 15:38 UTC"
       }
     }
   ]

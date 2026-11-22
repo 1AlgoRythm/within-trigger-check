@@ -1,3 +1,5 @@
+> **Note (2026-11-22).** This README describes the earlier work on `@getwithin/sdk` 0.3.0 and 0.4.0, which npm does not serve. The checks for the public package, `within-sdk` 1.0.4, are in [`v104/`](v104/), and the report is built by `build.mjs` from `findings.json`. See the [top-level README](../README.md).
+
 # Stress tests for `@getwithin/sdk` 0.3.0 (and 0.4.0)
 
 These tests try to break Within's SDK on a laptop. They never contact Within's real service: every request goes to a small stand-in server on `127.0.0.1`.

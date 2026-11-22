@@ -17,9 +17,12 @@ const { McpServer } = await import("@modelcontextprotocol/sdk/server/mcp.js");
 const { Client } = await import("@modelcontextprotocol/sdk/client/index.js");
 const { InMemoryTransport } = await import("@modelcontextprotocol/sdk/inMemory.js");
 const { z } = await import("zod");
-const within = await import("within-sdk");
+const PKG = process.env.WITHIN_PKG_DIR ? path.resolve(process.env.WITHIN_PKG_DIR) : new URL("./node_modules/within-sdk", import.meta.url).pathname;
+const PKG_ENTRY = "file://" + path.join(PKG, "dist/index.js");
+const PATCHED = Boolean(process.env.WITHIN_PKG_DIR);
+const within = await import(PKG_ENTRY);
 const { track } = within;
-const VERSION = JSON.parse(fs.readFileSync(new URL("./node_modules/within-sdk/package.json", import.meta.url))).version;
+const VERSION = JSON.parse(fs.readFileSync(path.join(PKG, "package.json"))).version;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const median = (a) => [...a].sort((x, y) => x - y)[Math.floor(a.length / 2)];
@@ -188,7 +191,7 @@ check("B5", "The client leaves `context` out (it is listed as required): does th
   const tools = (await client.listTools()).tools; const t = tools.find((x) => x.name === "search_companies");
   let r, err = null; try { r = (await call(client, "search_companies", { query: "acme corp" })).r; } catch (e) { err = String(e.message ?? e).slice(0, 200); }
   stub.close(); const rejected = err || r?.isError;
-  return [rejected ? "gap" : "pass", `required inputs now: ${JSON.stringify(t.inputSchema.required)}. A call without context: ${rejected ? "REJECTED: " + (err ?? JSON.stringify(r.content)).slice(0, 160) : "worked"}. In 0.x the field was optional.`, { required: t.inputSchema.required, err, r }];
+  return [rejected || t.inputSchema.required?.includes("context") ? "gap" : "pass", `required inputs now: ${JSON.stringify(t.inputSchema.required)}. A call without context: ${rejected ? "REJECTED: " + (err ?? JSON.stringify(r.content)).slice(0, 160) : "worked"}. In 0.x the field was optional.`, { required: t.inputSchema.required, err, r }];
 });
 check("B5b", "A vendor tool with no inputs: what does its contract become?", "Measurement.", async () => {
   const { client } = await boot({ tracked: true, setup: (s) => s.tool("ping", async () => ({ content: [{ type: "text", text: "pong" }] })) });
@@ -260,11 +263,11 @@ check("C8", "A long free-text argument: does redaction freeze the vendor's whole
     out.push(r.error?.code === "ETIMEDOUT" ? { shape, n, STUCK_OVER_MS: 30000 } : JSON.parse(r.stdout.trim()));
   }
   const worst = Math.max(...out.map((o) => o.maxEventLoopStallMs ?? 30000));
-  return [worst > 1000 ? "fail" : "pass", "event-loop stall per argument (ms): " + out.map((o) => `${o.shape} ${o.n} chars -> ${o.maxEventLoopStallMs ?? ">30000"}`).join("; ") + `. The vendor's own tool call returned in about ${Math.max(...out.map((o) => o.callMs ?? 0))} ms each time: the freeze comes after, while the event is cleaned, and blocks every customer on the process. Cause: the email pattern in privacy.js is applied to the whole string before it is cut to the 10,000-byte limit.`, { out }];
+  return [worst > 1000 ? "fail" : "pass", "event-loop stall per argument (ms): " + out.map((o) => `${o.shape} ${o.n} chars -> ${o.maxEventLoopStallMs ?? ">30000"}`).join("; ") + `. The vendor's own tool call returned in about ${Math.max(...out.map((o) => o.callMs ?? 0))} ms each time.${worst > 1000 ? " The freeze comes after, while the event is cleaned, and blocks every customer on the process. Cause: the email pattern in privacy.js is applied to the whole string before it is cut to the 10,000-byte limit." : " The stall does not grow with the length."}`, { out }];
 });
 check("Z3", "Does loading the SDK change how the vendor's process handles SIGTERM? (one signal, then a second one 3 s later)", "Source: eventQueue.js registers process.once handlers for SIGINT, SIGTERM and beforeExit.", async () => {
   const { spawn } = await import("node:child_process"); const here = new URL("./", import.meta.url).pathname;
-  const code = `process.env.HOME=require('os').tmpdir();(async()=>{const {McpServer}=await import('@modelcontextprotocol/sdk/server/mcp.js');const {track}=await import('within-sdk');const s=new McpServer({name:'a',version:'1'});track(s,'acme',{apiKey:'k',apiBaseUrl:'http://127.0.0.1:9'});console.log('ready');setInterval(()=>{},1000)})()`;
+  const code = `process.env.HOME=require('os').tmpdir();(async()=>{const {McpServer}=await import('@modelcontextprotocol/sdk/server/mcp.js');const {track}=await import(${JSON.stringify(PKG_ENTRY)});const s=new McpServer({name:'a',version:'1'});track(s,'acme',{apiKey:'k',apiBaseUrl:'http://127.0.0.1:9'});console.log('ready');setInterval(()=>{},1000)})()`;
   const run = (withSdk, secondAfterMs) => new Promise((resolve) => {
     const src = withSdk ? code : "console.log('ready');setInterval(()=>{},1000)";
     const c = spawn("node", ["-e", src], { cwd: here }); let t0;
@@ -276,7 +279,7 @@ check("Z3", "Does loading the SDK change how the vendor's process handles SIGTER
   return [one.exited && one.sig === "SIGTERM" ? "pass" : "gap", `SIGTERM to a plain Node process: exited after ${plain.ms} ms. To a process that called track(): ${one.exited ? "exited after " + one.ms + " ms" : "still running after 12 s (force-killed)"}. With a second SIGTERM sent 3 s after the first: ${two.exited ? `exited after ${two.ms} ms (signal ${two.sig})` : "still running after 12 s"}.`, { plain, one, two }];
 });
 check("C8b", "The email pattern on its own: time against input length (copy of the pattern, checked against the package file)", "Isolates the cause of the freeze measured in C8.", async () => {
-  const file = fs.readFileSync(new URL("./node_modules/within-sdk/dist/modules/privacy.js", import.meta.url), "utf8");
+  const file = fs.readFileSync(path.join(PKG, "dist/modules/privacy.js"), "utf8");
   const literal = "/[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}/gi"; const inFile = file.includes("const EMAIL_GLOBAL_RE = " + literal);
   const RE = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi; const time = (str) => { const t0 = performance.now(); str.replace(RE, "[redacted]"); return Math.round(performance.now() - t0); };
   const rows = [10000, 25000, 50000, 100000].map((n) => ({ chars: n, ms: time("a".repeat(n)) }));
@@ -285,6 +288,7 @@ check("C8b", "The email pattern on its own: time against input length (copy of t
   return ["info", `pattern found in privacy.js unchanged: ${inFile}. Letters with no @ (ms): ${rows.map((r) => r.chars + " -> " + r.ms).join(", ")}. Doubling the length multiplied the time by about ${ratio.toFixed(1)}. Ordinary words (100,000 chars): ${words} ms. The same 100,000 letters cut to 10,000 first: ${cutFirst} ms. An email in 100,000 spaces: ${normal} ms.`, { inFile, rows, words, cutFirst, normal }];
 });
 check("F2", "The README's install line and quickstart, run on a fresh project", "README: 'npm install within-sdk @modelcontextprotocol/sdk', then the Quickstart with WITHIN_VENDOR_SLUG and WITHIN_SDK_API_KEY set.", async () => {
+  if (PATCHED) return ["info", "skipped on a patched copy: this check installs the published package from npm", {}];
   const { spawnSync } = await import("node:child_process"); const dir = fs.mkdtempSync(path.join(os.tmpdir(), "within104-f2-"));
   const sh = (cmd, args, env = {}) => spawnSync(cmd, args, { cwd: dir, encoding: "utf8", timeout: 180000, env: { ...process.env, HOME, ...env } });
   sh("npm", ["init", "-y"]); const inst = sh("npm", ["install", "within-sdk", "@modelcontextprotocol/sdk", "--ignore-scripts", "--no-audit", "--no-fund"]);
@@ -324,7 +328,7 @@ check("C12", "Local log file: what does the SDK write to ~/within-sdk.log, and i
   const stub = await startStub(); const { client } = await boot({ stub, trackOpts: { identify: async () => ({ userId: "cust_12345", userName: "Jane Doe" }) } });
   await call(client, "search_companies", { query: `acme corp ${PII.email} ${PII.card}`, context: Q.context }); await stub.settle(1200); stub.close();
   const log = readLog(); const leaked = ["acme corp", PII.email, PII.card, "cust_12345", "Jane Doe", "found 3"].filter((v) => log.includes(v));
-  const src = fs.readFileSync(new URL("./node_modules/within-sdk/dist/modules/logging.js", import.meta.url), "utf8");
+  const src = fs.readFileSync(path.join(PKG, "dist/modules/logging.js"), "utf8");
   const capped = /rotate|maxLogSize|statSync|\.size\b/.test(src);
   return [leaked.length || !capped ? "gap" : "info", `file ${LOG.replace(HOME, "~")}: ${log.length} bytes, ${log.split("\n").filter(Boolean).length} lines from one connect, one tool call and its sends. Vendor data inside it: ${leaked.join(", ") || "none"}. Rotation or size cap in logging.js: ${capped ? "found" : "none (it only appends)"}. Last lines: ${log.split("\n").filter(Boolean).slice(-2).join(" | ").slice(0, 260)}`, { bytes: log.length, leaked, capped }];
 });
@@ -342,7 +346,7 @@ check("D4", "Vendor server instructions: unchanged? How much text does Within ad
   return [seen === text ? "pass" : "fail", `vendor wrote ${text.length} characters; the client sees ${seen?.length ?? 0}. Identical: ${seen === text}. The 0.x text Within added (about 2,901 characters) is gone.`, { seen }];
 });
 check("F1", "Does the SDK work with a Zod 4 schema (the 0.x problem), and what are its peer dependencies?", "README: Node 20+, MCP SDK 1.11+. No Zod requirement stated.", async () => {
-  const peers = JSON.parse(fs.readFileSync(new URL("./node_modules/within-sdk/package.json", import.meta.url))).peerDependencies;
+  const peers = JSON.parse(fs.readFileSync(path.join(PKG, "package.json"))).peerDependencies;
   let z4; try { z4 = await import("zod4"); } catch (e) { return ["info", "zod 4 alias not installed", {}]; }
   const stub = await startStub(); let r, err = null;
   try { const { client } = await boot({ stub, setup: (s) => s.tool("z4tool", { q: z4.z.string() }, async ({ q }) => ({ content: [{ type: "text", text: "z4 " + q }] })) });
@@ -352,7 +356,7 @@ check("F1", "Does the SDK work with a Zod 4 schema (the 0.x problem), and what a
   return [err ? "fail" : "pass", `peer dependencies: ${JSON.stringify(peers)}. Zod ${z4.z.version?.major ?? "4"} tool: ${err ? "ERROR " + err : JSON.stringify(r)}.`, { peers, r, err }];
 });
 check("F5", "Static: does the package contain a private-network address list (the 0.x identity lookups had two)?", "Static check of dist/.", async () => {
-  const dist = new URL("./node_modules/within-sdk/dist/", import.meta.url).pathname; let hits = [];
+  const dist = path.join(PKG, "dist") + "/"; let hits = [];
   const walk = (d) => { for (const f of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, f.name); if (f.isDirectory()) walk(p); else if (p.endsWith(".js") && /192\.168|169\.254|127\.0\.0\.1|localhost/.test(fs.readFileSync(p, "utf8"))) hits.push(p.replace(dist, "")); } };
   walk(dist);
   return ["info", `files mentioning private or loopback addresses: ${hits.join(", ") || "none"}.`, { hits }];
@@ -376,13 +380,81 @@ check("Z2b", "enableTracing false: does anything leave, and is the vendor's serv
 });
 
 check("S1", "Static: which words from the 0.x package appear anywhere in the 1.0.4 code? (counts of files and lines)", "Reading the package, not running it.", async () => {
-  const dist = new URL("./node_modules/within-sdk/dist/", import.meta.url).pathname; const files = [];
+  const dist = path.join(PKG, "dist") + "/"; const files = [];
   const walk = (d) => { for (const f of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, f.name); if (f.isDirectory()) walk(p); else if (p.endsWith(".js")) files.push(p); } }; walk(dist);
   const text = files.map((f) => fs.readFileSync(f, "utf8"));
   const words = ["report_void", "hub_card", "hubs", "doctor", "confirm_assistance", "get_vendor_answer", "assistance", "offer", "issuer", "auth0", "workos", "clerk", "userinfo", "user-agent", "banned", "nonce", "SupportBridge", "getwithin", "zod", "_zod"];
   const counts = Object.fromEntries(words.map((w) => [w, { files: text.filter((t) => t.toLowerCase().includes(w.toLowerCase())).length, lines: text.reduce((n, t) => n + t.split("\n").filter((l) => l.toLowerCase().includes(w.toLowerCase())).length, 0) }]));
   const absent = words.filter((w) => counts[w].files === 0), present = words.filter((w) => counts[w].files > 0);
   return ["info", `searched ${files.length} .js files. Not found anywhere: ${absent.join(", ")}. Found: ${present.map((w) => `${w} (${counts[w].files} files, ${counts[w].lines} lines)`).join(", ") || "none"}.`, { files: files.length, counts, absent, present }];
+});
+
+
+// ================= M: what a vendor can do today, with the package's own options =================
+check("M1", "Vendor option: redactSensitiveInformation that cuts every string to 2,000 characters. Does it stop the freeze? (and does the size limit alone?)", "README: 'redactSensitiveInformation: Apply an additional vendor-provided redaction function.' It runs before the package's own pattern (eventQueue.js line 46).", async () => {
+  const { spawnSync } = await import("node:child_process"); const scale = new URL("./scale.mjs", import.meta.url).pathname, cwd = new URL("./", import.meta.url).pathname;
+  const go = (env) => JSON.parse(spawnSync("node", [scale, "child", "letters", "100000"], { timeout: 60000, encoding: "utf8", cwd, env: { ...process.env, ...env } }).stdout.trim());
+  const stock = go({}), cut = go({ SCALE_TRUNCATE: "2000" }), limit = go({ SCALE_MAXFIELD: "500" });
+  const fixed = cut.maxEventLoopStallMs < 500;
+  return [fixed ? "pass" : "fail", `100,000 letters, event-loop stall in ms: no option ${stock.maxEventLoopStallMs}; redactSensitiveInformation cutting to 2,000 characters ${cut.maxEventLoopStallMs}; privacy.maxFieldBytes set to 500 ${limit.maxEventLoopStallMs} (the size limit alone does not help, it is applied after the pattern).`, { stock, cut, limit }];
+});
+check("M2", "Vendor option: a redaction function that masks digit runs, keys, URLs and IP addresses. What still leaves?", "Same option. A pattern cannot find a name, so names are the expected leftover.", async () => {
+  const mask = (str) => str.replace(/\d[\d ().\-]{6,}\d/g, "[redacted]").replace(/\b(?:sk|pk|api|key)[-_][A-Za-z0-9_-]{10,}/gi, "[redacted]").replace(/\bAKIA[0-9A-Z]{16}\b/g, "[redacted]").replace(/https?:\/\/\S+/g, "[redacted]").replace(/\b\d{1,3}(?:\.\d{1,3}){3}\b/g, "[redacted]");
+  const stub = await startStub(); const { client } = await boot({ stub, trackOpts: { redactSensitiveInformation: async (s) => (s === stub.url || s === "within_sk_test_123456" ? s : mask(s)) } }); // leaves the API key and the address alone, see M8
+  await call(client, "search_companies", { query: piiText, context: piiText }); await stub.settle(); const ev = stub.toolCalls("search_companies")[0]; stub.close();
+  const sent = JSON.stringify(ev.parameters.request.params.arguments); const s = survivors(sent);
+  return [s.length <= 2 && !s.includes("card") && !s.includes("ssn") ? "pass" : "gap", `with the vendor's function, still unredacted in the sent arguments: ${s.join(", ") || "none"}. Before, ${survivors(piiText).length ? "9 kinds" : ""} survived.`, { survivors: s }];
+});
+check("M3", "Vendor option: privacy.redactKeys with the identity-like names the defaults miss", "README: 'privacy: ... additional keys to redact'.", async () => {
+  const names = ["name", "address", "dob", "customer", "session_id", "ip", "city"]; const stub = await startStub();
+  const schema = Object.fromEntries(names.map((n) => [n, z.string().optional()]));
+  const { client } = await boot({ stub, trackOpts: { privacy: { redactKeys: ["name", "address", "dob", "customer", "ip", "city"] } }, setup: (s) => s.tool("kv", schema, async () => ({ content: [{ type: "text", text: "ok" }] })) });
+  await call(client, "kv", { ...Object.fromEntries(names.map((n) => [n, "VALUE_" + n])), context: Q.context }); await stub.settle(); const ev = stub.toolCalls("kv")[0]; stub.close();
+  const sent = ev.parameters.request.params.arguments; const kept = names.filter((n) => String(sent[n]) === "VALUE_" + n);
+  return [kept.filter((n) => n !== "session_id").length === 0 ? "pass" : "gap", `argument names still sent as written with redactKeys set: ${kept.join(", ") || "none"}. (session_id was not in the list on purpose.)`, { kept }];
+});
+check("M4", "Vendor option: log callback. Does it keep the log file from being written, and what does it receive?", "README: 'log: Replace the default local SDK log destination with a callback.'", async () => {
+  const lines = []; const before = readLog().length; const stub = await startStub();
+  const { client } = await boot({ stub, trackOpts: { log: (l) => lines.push(l) } }); await call(client, "search_companies", Q); await stub.settle(1000); stub.close();
+  const grew = readLog().length - before;
+  return [grew === 0 && lines.length > 0 ? "pass" : "gap", `lines delivered to the vendor's callback: ${lines.length}; bytes added to ~/within-sdk.log: ${grew}. First line: ${String(lines[0]).slice(0, 110)}`, { lines: lines.length, grew }];
+});
+check("M5", "Vendor option: a fetch with a time limit (an option named fetch exists in the code, not in the README table). Does it end the queue stall?", "index.js line 47: fetchImpl: options.fetch ?? globalThis.fetch. Compare A1c.", async () => {
+  const stub = await startStub({ kind: "hang" });
+  const { client } = await boot({ stub, trackOpts: { fetch: (u, init) => fetch(u, { ...init, signal: AbortSignal.timeout(1500) }) } });
+  for (let i = 0; i < 4; i++) await call(client, "search_companies", Q);
+  await sleep(500); stub.mode.kind = "ok"; const before = stub.posts.length;
+  for (let i = 0; i < 3; i++) await call(client, "search_companies", Q);
+  await sleep(15000); const got = stub.posts.length - before; stub.close();
+  return [got > 0 ? "pass" : "gap", `with a 1.5 s limit on every request, ${got} requests reached Within in the 15 s after it recovered (stock package: 0, check A1c). The stuck requests were abandoned and the later reports were sent.`, { got }];
+});
+check("M6", "Vendor option: the vendor's own SIGTERM handler that exits. Does the process stop on the first signal?", "Vendor code, not a package option: process.on('SIGTERM', () => process.exit(0)).", async () => {
+  const { spawn } = await import("node:child_process"); const cwd = new URL("./", import.meta.url).pathname;
+  const code = `process.env.HOME=require('os').tmpdir();(async()=>{const {McpServer}=await import('@modelcontextprotocol/sdk/server/mcp.js');const {track}=await import(${JSON.stringify(PKG_ENTRY)});const s=new McpServer({name:'a',version:'1'});track(s,'acme',{apiKey:'k',apiBaseUrl:'http://127.0.0.1:9'});process.on('SIGTERM',()=>process.exit(0));console.log('ready');setInterval(()=>{},1000)})()`;
+  const r = await new Promise((resolve) => { const c = spawn("node", ["-e", code], { cwd }); let t0; c.stdout.on("data", () => { if (!t0) { t0 = Date.now(); c.kill("SIGTERM"); } }); const g = setTimeout(() => { c.kill("SIGKILL"); resolve({ exited: false }); }, 12000); c.on("exit", (code, sig) => { clearTimeout(g); resolve({ exited: true, code, sig, ms: Date.now() - t0 }); }); });
+  return [r.exited ? "pass" : "gap", r.exited ? `with the vendor's own handler, the first SIGTERM ended the process in ${r.ms} ms (exit code ${r.code}).` : "still running after 12 s", r];
+});
+check("M7", "Vendor option: enableToolCallContext false and enableReportMissing false together with the redaction function. Is the tool list the vendor wrote what customers see?", "README Configuration table.", async () => {
+  const stub = await startStub(); const { client } = await boot({ stub, trackOpts: { enableToolCallContext: false, enableReportMissing: false } });
+  const tools = (await client.listTools()).tools; stub.close(); const t = tools[0];
+  return [tools.length === 1 && !t.inputSchema.properties.context && !t.inputSchema.required?.includes("context") ? "pass" : "gap", `tools advertised: ${tools.map((x) => x.name)}; inputs of search_companies: ${Object.keys(t.inputSchema.properties)}; required: ${JSON.stringify(t.inputSchema.required)}.`, { tools: tools.map((x) => x.name) }];
+});
+check("M8", "Vendor option: what a redaction function is handed. Does it see the API key and the address events go to, and what happens if it changes them?", "Source: eventQueue.js line 46 applies the vendor's function to every string field of the event except a short protected list (redaction.js lines 6 to 16).", async () => {
+  const seen = new Set(); const stub = await startStub(); const key = "within_sk_test_123456";
+  const a = await boot({ stub, trackOpts: { redactSensitiveInformation: (s) => (seen.add(s), s) } }); await call(a.client, "search_companies", Q); await stub.settle(1000);
+  const sawKey = seen.has(key), sawUrl = seen.has(stub.url), delivered1 = stub.events.length; stub.close();
+  const stub2 = await startStub(); const b = await boot({ stub: stub2, trackOpts: { redactSensitiveInformation: (s) => s.replace(/\d+/g, "N") } }); await call(b.client, "search_companies", Q); await stub2.settle(2500); const delivered2 = stub2.events.length; stub2.close();
+  return [sawKey && sawUrl && delivered2 === 0 ? "gap" : "info", `the function was handed the API key: ${sawKey}; the destination address: ${sawUrl}. With a function that replaces every digit run, events reached the stand-in: ${delivered2} (against ${delivered1} with a function that changes nothing). The failure shows only as lines in the log file.`, { sawKey, sawUrl, delivered1, delivered2 }];
+});
+check("F6", "The docs' install line against npm: does the package it names exist?", "Within's public docs page (getwith.in/docs), and the npm registry.", async () => {
+  if (PATCHED) return ["info", "skipped on a patched copy: it checks the docs page and npm, not the package", {}];
+  const get = async (u) => { try { const r = await fetch(u, { signal: AbortSignal.timeout(20000) }); return { status: r.status, text: r.status === 200 ? await r.text() : "" }; } catch (e) { return { status: 0, text: "", err: String(e.message) }; } };
+  const docs = await get("https://getwith.in/docs"); const named = /npm install ([@\w\/.-]+)/.exec(docs.text)?.[1] ?? null;
+  const reg = async (name) => (await get("https://registry.npmjs.org/" + name.replace("/", "%2f"))).status;
+  const npmStatus = named ? await reg(named) : null;
+  const pub = await get("https://registry.npmjs.org/within-sdk"); let publicVersion = null; try { publicVersion = JSON.parse(pub.text)["dist-tags"].latest; } catch {}
+  const bad = named && npmStatus === 404;
+  return [bad ? "fail" : docs.status === 200 && named ? "pass" : "info", `docs page answered ${docs.status}; its install line names ${named ?? "no package I could read"}; npm answers ${npmStatus} for that name; npm serves within-sdk ${publicVersion}.`, { docsStatus: docs.status, named, npmStatus, publicVersion, fetchedAt: new Date().toISOString().slice(0, 16).replace("T", " ") + " UTC" }];
 });
 
 // ---- run ----
@@ -395,6 +467,7 @@ for (const c of checks) {
 }
 const tally = results.reduce((a, r) => ((a[r.verdict] = (a[r.verdict] ?? 0) + 1), a), {});
 console.log("\nTALLY", JSON.stringify(tally));
-fs.mkdirSync(new URL("./out/", import.meta.url), { recursive: true });
-fs.writeFileSync(new URL(`./out/${only.length === 1 ? only[0] : "many"}.json`, import.meta.url), JSON.stringify({ sdk: "within-sdk", version: VERSION, node: process.version, ran: new Date().toISOString(), tally, results }, null, 2));
+const OUT = process.env.OUT_DIR ? path.resolve(process.env.OUT_DIR) : new URL("./out", import.meta.url).pathname;
+fs.mkdirSync(OUT, { recursive: true });
+fs.writeFileSync(path.join(OUT, `${only.length === 1 ? only[0] : "many"}.json`), JSON.stringify({ sdk: "within-sdk", version: VERSION, node: process.version, ran: new Date().toISOString(), tally, results }, null, 2));
 process.exit(0);

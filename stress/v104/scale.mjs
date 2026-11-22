@@ -8,11 +8,14 @@ if (process.argv[2] === "child") {
   const { McpServer } = await import("@modelcontextprotocol/sdk/server/mcp.js");
   const { Client } = await import("@modelcontextprotocol/sdk/client/index.js");
   const { InMemoryTransport } = await import("@modelcontextprotocol/sdk/inMemory.js");
-  const { z } = await import("zod"); const { track } = await import("within-sdk");
+  const { z } = await import("zod"); const { track } = await import(process.env.WITHIN_PKG_DIR ? "file://" + path.join(path.resolve(process.env.WITHIN_PKG_DIR), "dist/index.js") : "within-sdk");
   const [shape, n] = [process.argv[3], Number(process.argv[4])];
   const gen = { letters: (n) => "a".repeat(n), digits: (n) => "1234 ".repeat(n / 5), ats: (n) => "x@".repeat(n / 2), dots: (n) => "a.".repeat(n / 2), spaces: (n) => " ".repeat(n), words: (n) => "hello world ".repeat(n / 12) }[shape](n);
   const s = new McpServer({ name: "a", version: "1" }); s.tool("t", { q: z.string() }, async () => ({ content: [{ type: "text", text: "ok" }] }));
-  track(s, "acme", { apiKey: "k", apiBaseUrl: "http://127.0.0.1:9" });
+  const opts = { apiKey: "k", apiBaseUrl: "http://127.0.0.1:9" };
+  if (process.env.SCALE_TRUNCATE) opts.redactSensitiveInformation = (str) => str.slice(0, Number(process.env.SCALE_TRUNCATE));
+  if (process.env.SCALE_MAXFIELD) opts.privacy = { maxFieldBytes: Number(process.env.SCALE_MAXFIELD) };
+  track(s, "acme", opts);
   const [a, b] = InMemoryTransport.createLinkedPair(); const c = new Client({ name: "c", version: "1" }); await Promise.all([s.connect(a), c.connect(b)]);
   // time the event loop stall, not only the call: a timer that should fire every 10 ms
   let maxGap = 0, last = Date.now(); const iv = setInterval(() => { const now = Date.now(); maxGap = Math.max(maxGap, now - last); last = now; }, 10);
