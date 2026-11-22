@@ -56,9 +56,9 @@ Every step, with the result to expect, is in [REPRODUCE.md](REPRODUCE.md).
 | `stress/results/sdk-1.0.4.json`, `patched-1.0.4.json` | What was measured, on the stock and the patched package |
 | `docs/` | The live pages (GitHub Pages) |
 
-## Earlier work, not covered above
+## Earlier versions
 
-Before Within pointed to `within-sdk`, this repo tested `@getwithin/sdk` 0.3.0 and 0.4.0, a package that npm does not serve. It had a sales agent, a consent step and a `get_vendor_answer` tool that `within-sdk` does not contain. That work is still in the folders `app/`, `server/`, `experiments/`, `fixes/`, `runs/`, `results/` and in `stress/tests/`, `stress/model/` and `stress/patches/`. It does not describe the public package. The report and the interactive map for those versions are kept in the git tag [`archive-0.4.0`](https://github.com/1AlgoRythm/within-trigger-check/tree/archive-0.4.0).
+The report and interactive map for `@getwithin/sdk` 0.3.0 and 0.4.0, a package npm does not serve, were removed on 2026-11-22. The sales agent, consent step and `get_vendor_answer` tool they covered are not in `within-sdk`. They are kept in the git tag [`archive-0.4.0`](https://github.com/1AlgoRythm/within-trigger-check/tree/archive-0.4.0).
 
 ## Limits, stated plainly
 

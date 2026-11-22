@@ -1,6 +1,0 @@
-[
-  { "id": "x01", "expect": "within", "kind": "competitor", "text": "Is Acme better than Crunchbase for tracking seed rounds?" },
-  { "id": "x02", "expect": "within", "kind": "competitor", "text": "Why should we pick Acme over PitchBook?" },
-  { "id": "x03", "expect": "no", "kind": "compare data", "text": "Compare the fintech companies in Boston and New York." },
-  { "id": "x04", "expect": "no", "kind": "compare data", "text": "Which is further along, Medora or Carepath?" }
-]
