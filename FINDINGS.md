@@ -8,17 +8,17 @@ Everything ran on our own machine against the published package, version 1.0.4, 
 
 ## The short version
 
-- **In short.** 48 checks ran on Within's public package, version 1.0.4 (21 pass, 14 gap, 11 info, 2 fail). We found 11 problems: 2 High, 7 Medium and 2 Low.
+- **In short.** 48 checks ran on Within's public package, version 1.0.4 (22 pass, 14 gap, 10 info, 2 fail). We found 11 problems: 2 High, 7 Medium and 2 Low.
 - **The most serious.** One long piece of unbroken text in a customer's request freezes the company's whole AI server for about 5.8 seconds at 100,000 characters. The package's own size limit does not stop it. A vendor can avoid it today with its own redaction function, and Within can fix it by changing the order of two steps.
 - **Customer data.** The package sends what customers ask for, and what the company's tools answer, to Within by default. It hides only a short list of private details, and some only when they are the whole value.
 - **What a vendor can do.** 8 of the 11 problems have a fix that works today with the package's own options. 6 have a small change that Within could make, and we tested each one on a patched copy: P1 for W-01, P4 for W-04, P2 for W-05, P3 for W-06, P6 for W-07, P5 for W-10.
 - **What held up.** An outage at Within does not change or slow the company's own answers, a broken reply from Within does not hurt the company's tools, 40 customers at once do not mix their data, and the company's own instructions are left alone.
 
-Tested 2026-11-22 15:45 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `544faede7251`), Node v26.13.0, MCP SDK 1.32.2. Line numbers refer to that package's files, because Within's source repository is not public.
+Tested 2026-11-22 15:50 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `544faede7251`), Node v26.13.0, MCP SDK 1.32.2. Line numbers refer to that package's files, because Within's source repository is not public.
 
 ## At a glance
 
-11 findings: 2 High, 7 Medium, 2 Low. 48 checks on the stock package (21 pass, 14 gap, 11 info, 2 fail); the same checks on the patched copy (25 pass, 9 gap, 14 info, 0 fail).
+11 findings: 2 High, 7 Medium, 2 Low. 48 checks on the stock package (22 pass, 14 gap, 10 info, 2 fail); the same checks on the patched copy (26 pass, 9 gap, 13 info, 0 fail).
 
 | ID | Severity | What | A vendor can fix it today | Within's fix, tested |
 |---|---|---|---|---|
@@ -390,7 +390,7 @@ Tested 2026-11-22 15:45 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `54
 - A broken (non-JSON) reply from Within does not hurt the vendor's tool. (`A5`)
 - 40 customers at once with a slow Within overlap, and no customer's goal text is swapped with another's. (`A6`)
 - A vendor `identify` function that throws does not break the vendor's tool. (`A7`)
-- A vendor tool that already has an input called `context` keeps it: its handler gets the vendor's value. (`B3`)
+- A vendor tool that already has an input called `context` keeps it: its handler gets the vendor's value. The package then sends that value to Within as the goal text. (`B3`)
 - A goal text of 2,000 characters is accepted. (`B4`)
 - The raw user id and name are not sent: a hashed subject goes out instead. (`C11`)
 - The vendor's server instructions are left unchanged. (`D4`)
@@ -423,3 +423,7 @@ node patches.mjs                      # builds patched-sdk with fixes P1 to P6
 WITHIN_PKG_DIR=$PWD/patched-sdk OUT_DIR=$PWD/out-patched RESULTS_FILE=$PWD/../results/patched-1.0.4.json node run-all.mjs
 cd .. && npm run build:findings       # rebuilds this file and the web pages from the saved results
 ```
+
+## Back to the portfolio
+
+This stress test is one of Satyaa Sudarshan Guruswamy Sethuraman's projects. [satyaasudarshan.me](https://satyaasudarshan.me) has the rest.

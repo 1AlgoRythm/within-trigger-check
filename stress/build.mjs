@@ -93,14 +93,18 @@ L("## Method"); L(); for (const b of method) L(`- ${b}`); L();
 L("## Reproduce everything"); L();
 L("```bash"); L("cd stress/v104"); L("npm install --ignore-scripts          # within-sdk 1.0.4 from npm"); L("node run-all.mjs                      # the checks on the stock package, about 6 minutes"); L("node patches.mjs                      # builds patched-sdk with fixes P1 to P6");
 L("WITHIN_PKG_DIR=$PWD/patched-sdk OUT_DIR=$PWD/out-patched RESULTS_FILE=$PWD/../results/patched-1.0.4.json node run-all.mjs"); L("cd .. && npm run build:findings       # rebuilds this file and the web pages from the saved results"); L("```");
+L(); L("## Back to the portfolio"); L(); L("This stress test is one of Satyaa Sudarshan Guruswamy Sethuraman's projects. [satyaasudarshan.me](https://satyaasudarshan.me) has the rest.");
 fs.writeFileSync(path.join(root, "FINDINGS.md"), md.join("\n"));
 
 // ---- HTML
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const inline = (s) => esc(s).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>").replace(/\*([^*]+)\*/g, "<em>$1</em>");
 const css = fs.readFileSync(path.join(here, "report.css"), "utf8");
-const page = (title, body) => `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${esc(title)}</title><style>\n${css}</style></head><body><div class="wrap">\n${body}\n</div></body></html>`;
-const top = (other) => `<div class="top">${other} · <a href="https://github.com/1AlgoRythm/within-trigger-check">Source and tests on GitHub</a></div>`;
+// A small closing section that links back to the portfolio. The portfolio itself does not list this work.
+const PORTFOLIO = "https://satyaasudarshan.me";
+const foot = `<h2>Back to the portfolio</h2><p>This stress test is one of Satyaa Sudarshan Guruswamy Sethuraman's projects. <a href="${PORTFOLIO}">satyaasudarshan.me</a> has the rest.</p>`;
+const page = (title, body) => `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${esc(title)}</title><style>\n${css}</style></head><body><div class="wrap">\n${body}\n${foot}\n</div></body></html>`;
+const top = (other) => `<div class="top">${other} · <a href="https://github.com/1AlgoRythm/within-trigger-check">Source and tests on GitHub</a> · <a href="https://satyaasudarshan.me">Portfolio</a></div>`;
 const h = [], H = (s) => h.push(s);
 H(top('<a href="index.html">Summary</a>')); H(`<h1>${esc(src.title)}</h1>`);
 for (const p of intro) H(`<p>${inline(p)}</p>`);

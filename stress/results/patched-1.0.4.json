@@ -1,6 +1,6 @@
 {
   "meta": {
-    "ranAt": "2026-11-22T15:46:08.823Z",
+    "ranAt": "2026-11-22T15:51:00.588Z",
     "sdk": {
       "name": "within-sdk",
       "version": "1.0.4",
@@ -13,8 +13,8 @@
     "zod4": "4.6.7"
   },
   "tally": {
-    "pass": 25,
-    "info": 14,
+    "pass": 26,
+    "info": 13,
     "gap": 9
   },
   "results": [
@@ -154,12 +154,12 @@
     },
     {
       "id": "A6",
-      "title": "40 customers at once with a slow Within (300 ms): do calls overlap, and does each event keep its own context text?",
+      "title": "40 customers at once with a slow Within (300 ms): do the vendor's results stay correct, and does each event keep its own context text?",
       "basis": "Vendor expectation: concurrent customers must not slow each other or swap data.",
       "verdict": "pass",
-      "observed": "40 calls took 5 ms in total. Wrong results: 0. Events seen: 40. Events whose query and context disagree: 0.",
+      "observed": "40 calls took 11 ms in total. Wrong results: 0. Events seen: 40. Events whose query and context disagree: 0.",
       "evidence": {
-        "total": 5.366500000000002,
+        "total": 10.796625000000006,
         "wrong": 0,
         "swapped": 0,
         "seen": 40
@@ -170,8 +170,10 @@
       "title": "The identify callback throws: does the vendor's tool still return?",
       "basis": "README: identify is the vendor's callback.",
       "verdict": "pass",
-      "observed": "result: [{\"type\":\"text\",\"text\":\"found 3 for acme corp\"}] isError=undefined",
-      "evidence": {}
+      "observed": "identify was called 2 time(s) and threw each time. result: [{\"type\":\"text\",\"text\":\"found 3 for acme corp\"}] isError=undefined",
+      "evidence": {
+        "called": 2
+      }
     },
     {
       "id": "A8",
@@ -230,12 +232,13 @@
       "title": "A vendor tool that already has an input called `context`: does the handler still get the vendor's value?",
       "basis": "README does not mention a collision; the SDK source says it skips injection.",
       "verdict": "pass",
-      "observed": "handler received {\"context\":\"vendor value\",\"q\":\"x\"}. Advertised inputs: context,q; required: [\"context\",\"q\"]. The SDK skipped its own field, so Within gets no goal text for this tool. Log line: [2026-11-22T15:35:07.808Z] WARN: Tool \"retrieve\" already has 'context' parameter. Skipping context injection.",
+      "observed": "handler received {\"context\":\"vendor value\",\"q\":\"x\"}. Advertised inputs: context,q; required: [\"context\",\"q\"]. The SDK skipped its own field. The event's goal text (userIntent) is \"vendor value\". Log line: [2026-11-22T15:50:41.856Z] WARN: Tool \"retrieve\" already has 'context' parameter. Skipping context injection.",
       "evidence": {
         "got": {
           "context": "vendor value",
           "q": "x"
-        }
+        },
+        "userIntent": "vendor value"
       }
     },
     {
@@ -567,13 +570,17 @@
       "id": "C9",
       "title": "Customer session ids: stable within a connection, new per connection?",
       "basis": "Measurement.",
-      "verdict": "info",
-      "observed": "session ids per call: ses_3MT5X9jp, ses_3MT5X5Ub, ses_3MT5X9jp. Distinct: 2 (two connections, three calls).",
+      "verdict": "pass",
+      "observed": "session ids per call: ses_3MT7KzsL, ses_3MT7Kyzk, ses_3MT7KzsL. Distinct: 2; calls per session id: 1 and 2 (two connections, three calls; the one with two calls must have one id).",
       "evidence": {
         "ids": [
-          "ses_3MT5X9jpH7MZ8G6bPMgPfcHgL5v",
-          "ses_3MT5X5Ub5pS2Xk5eZzjVxf15QYl",
-          "ses_3MT5X9jpH7MZ8G6bPMgPfcHgL5v"
+          "ses_3MT7KzsLLmPCPKRIUPTEBdRDWP3",
+          "ses_3MT7Kyzk8wm8OC1MDDuy7qy8ylp",
+          "ses_3MT7KzsLLmPCPKRIUPTEBdRDWP3"
+        ],
+        "perSession": [
+          1,
+          2
         ]
       }
     },
@@ -891,7 +898,7 @@
       "title": "Vendor option: a fetch with a time limit (an option named fetch exists in the code, not in the README table). Does it end the queue stall?",
       "basis": "index.js line 47: fetchImpl: options.fetch ?? globalThis.fetch. Compare A1c.",
       "verdict": "pass",
-      "observed": "with a 1.5 s limit on every request, 8 requests reached Within in the 15 s after it recovered (stock package: 0, check A1c). The stuck requests were abandoned and the later reports were sent.",
+      "observed": "with a 1.5 s limit on every request, 8 requests reached Within in the 15 s after it recovered (compare A1c). The stuck requests were abandoned and the later reports were sent.",
       "evidence": {
         "got": 8
       }
@@ -911,7 +918,7 @@
     },
     {
       "id": "M7",
-      "title": "Vendor option: enableToolCallContext false and enableReportMissing false together with the redaction function. Is the tool list the vendor wrote what customers see?",
+      "title": "Vendor option: enableToolCallContext false and enableReportMissing false. Is the tool list the vendor wrote what customers see?",
       "basis": "README Configuration table.",
       "verdict": "pass",
       "observed": "tools advertised: search_companies; inputs of search_companies: query; required: [\"query\"].",

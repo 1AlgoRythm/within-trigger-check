@@ -49,7 +49,7 @@
   },
   {
    "test": "B3",
-   "text": "A vendor tool that already has an input called `context` keeps it: its handler gets the vendor's value."
+   "text": "A vendor tool that already has an input called `context` keeps it: its handler gets the vendor's value. The package then sends that value to Within as the goal text."
   },
   {
    "test": "B4",

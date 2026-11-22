@@ -130,7 +130,7 @@ check("A5", "Within sends a broken (non-JSON) reply: does the vendor's tool surv
   const { r } = await call(client, "search_companies", Q); await stub.settle(800); stub.close();
   return [!r.isError && r.content?.[0]?.text === "found 3 for acme corp" ? "pass" : "fail", `result: ${JSON.stringify(r.content)}`, {}];
 });
-check("A6", "40 customers at once with a slow Within (300 ms): do calls overlap, and does each event keep its own context text?", "Vendor expectation: concurrent customers must not slow each other or swap data.", async () => {
+check("A6", "40 customers at once with a slow Within (300 ms): do the vendor's results stay correct, and does each event keep its own context text?", "Vendor expectation: concurrent customers must not slow each other or swap data.", async () => {
   const stub = await startStub({ delay: 300 }); const { client } = await boot({ stub });
   const t0 = performance.now();
   const out = await Promise.all(Array.from({ length: 40 }, (_, i) => call(client, "search_companies", { query: `q${i}`, context: `Context number ${i} explaining in enough words why the tool is being called for this customer.` })));
@@ -141,14 +141,14 @@ check("A6", "40 customers at once with a slow Within (300 ms): do calls overlap,
   return [wrong === 0 && swapped === 0 && total < 3000 ? "pass" : "fail", `40 calls took ${Math.round(total)} ms in total. Wrong results: ${wrong}. Events seen: ${evs.length}. Events whose query and context disagree: ${swapped}.`, { total, wrong, swapped, seen: evs.length }];
 });
 check("A7", "The identify callback throws: does the vendor's tool still return?", "README: identify is the vendor's callback.", async () => {
-  const stub = await startStub(); const { client } = await boot({ stub, trackOpts: { identify: async () => { throw new Error("session store is down"); } } });
+  let called = 0; const stub = await startStub(); const { client } = await boot({ stub, trackOpts: { identify: async () => { called++; throw new Error("session store is down"); } } });
   const { r } = await call(client, "search_companies", Q); await stub.settle(); stub.close();
-  return [!r.isError && r.content?.[0]?.text === "found 3 for acme corp" ? "pass" : "fail", `result: ${JSON.stringify(r.content)} isError=${r.isError}`, {}];
+  return [called > 0 && !r.isError && r.content?.[0]?.text === "found 3 for acme corp" ? "pass" : "fail", `identify was called ${called} time(s) and threw each time. result: ${JSON.stringify(r.content)} isError=${r.isError}`, { called }];
 });
 check("A8", "How many requests does Within receive per vendor tool call (connect, list tools, one call)?", "Measurement.", async () => {
   const stub = await startStub(); const { client } = await boot({ stub }); await client.listTools(); await call(client, "search_companies", Q); await stub.settle(1500);
   const kinds = stub.events.map((e) => e.eventType); stub.close();
-  return ["info", `${stub.posts.length} POST requests carrying ${stub.events.length} events: ${kinds.join(", ")}. One request per event, no batching.`, { posts: stub.posts.length, kinds }];
+  return ["info", `${stub.posts.length} POST requests carrying ${stub.events.length} events: ${kinds.join(", ")}. ${stub.posts.length === stub.events.length ? "One request per event, no batching." : "Events are batched."}`, { posts: stub.posts.length, kinds }];
 });
 check("A8b", "How much time does the SDK add to one vendor tool call (Within answering in 0 ms and in 300 ms)?", "Measurement, median of 7.", async () => {
   const out = {};
@@ -178,7 +178,7 @@ check("B3", "A vendor tool that already has an input called `context`: does the 
   const { client } = await boot({ stub, setup: (s) => s.tool("retrieve", { context: z.string(), q: z.string() }, async (a) => { got = a; return { content: [{ type: "text", text: "ok" }] }; }) });
   const tools = (await client.listTools()).tools.find((t) => t.name === "retrieve");
   const { r } = await call(client, "retrieve", { context: "vendor value", q: "x" }); await stub.settle(); const ev = stub.toolCalls("retrieve")[0]; stub.close();
-  return [got?.context === "vendor value" && !r.isError ? "pass" : "fail", `handler received ${JSON.stringify(got)}. Advertised inputs: ${Object.keys(tools.inputSchema.properties)}; required: ${JSON.stringify(tools.inputSchema.required)}. The SDK skipped its own field, so Within gets no goal text for this tool. Log line: ${readLog().split("\n").filter((l) => /already has 'context'/.test(l)).pop()?.slice(0, 120)}`, { got }];
+  return [got?.context === "vendor value" && !r.isError ? "pass" : "fail", `handler received ${JSON.stringify(got)}. Advertised inputs: ${Object.keys(tools.inputSchema.properties)}; required: ${JSON.stringify(tools.inputSchema.required)}. The SDK skipped its own field. The event's goal text (userIntent) is ${JSON.stringify(ev?.userIntent)}. Log line: ${readLog().split("\n").filter((l) => /already has 'context'/.test(l)).pop()?.slice(0, 120)}`, { got, userIntent: ev?.userIntent ?? null }];
 });
 check("B4", "The model writes a context text longer than 300 characters (2,000 here): does the vendor's tool call still work, and what is sent?", "Models often write long text.", async () => {
   const stub = await startStub(); const { client } = await boot({ stub }); const long = "Because ".repeat(250);
@@ -221,7 +221,7 @@ const survivors = (blob) => Object.entries(PII).filter(([, v]) => blob.includes(
 check("C1", "Default settings: which fields of a tools/call event reach Within?", "README Privacy: identity-like fields removed or redacted; field and event limits.", async () => {
   const stub = await startStub(); const { client } = await boot({ stub }); await call(client, "search_companies", Q); await stub.settle(); const ev = stub.toolCalls("search_companies")[0]; stub.close();
   const hasArgs = JSON.stringify(ev).includes("acme corp"), hasResult = JSON.stringify(ev.response ?? {}).includes("found 3");
-  return ["gap", `top-level fields: ${Object.keys(ev).join(", ")}. The vendor's tool ARGUMENTS leave by default (the query 'acme corp' is in the event: ${hasArgs}) and so does the RESULT text (${hasResult}). The README names no switch to turn argument capture off.`, { fields: Object.keys(ev), hasArgs, hasResult }];
+  return [hasArgs || hasResult ? "gap" : "pass", `top-level fields: ${Object.keys(ev).join(", ")}. The vendor's tool ARGUMENTS leave by default (the query 'acme corp' is in the event: ${hasArgs}) and so does the RESULT text (${hasResult}). The README names no switch to turn argument capture off.`, { fields: Object.keys(ev), hasArgs, hasResult }];
 });
 check("C2", "The model-written context text holds private data: which kinds survive in what is sent?", "README: client-side redaction of identity-like fields; the rest relies on a server-side pass.", async () => {
   const stub = await startStub(); const { client } = await boot({ stub });
@@ -315,7 +315,8 @@ check("C9", "Customer session ids: stable within a connection, new per connectio
   await call(a.client, "search_companies", Q); await call(a.client, "search_companies", Q); await call(b.client, "search_companies", Q); await stub.settle();
   const ids = stub.toolCalls("search_companies").map((e) => e.sessionId); stub.close();
   const uniq = new Set(ids);
-  return [uniq.size === 2 && ids[0] === ids[1] ? "pass" : "info", `session ids per call: ${ids.map((i) => i.slice(0, 12)).join(", ")}. Distinct: ${uniq.size} (two connections, three calls).`, { ids }];
+  const perSession = [...uniq].map((id) => ids.filter((x) => x === id).length).sort(); const stable = perSession.length === 2 && perSession[0] === 1 && perSession[1] === 2;
+  return [stable ? "pass" : "info", `session ids per call: ${ids.map((i) => i.slice(0, 12)).join(", ")}. Distinct: ${uniq.size}; calls per session id: ${perSession.join(" and ")} (two connections, three calls; the one with two calls must have one id).`, { ids, perSession }];
 });
 check("C11", "identify returns a user id, name and email: what leaves the process? (README: hashed locally, raw never sent)", "README Privacy: 'Raw userId and userName are not sent to Within.'", async () => {
   const stub = await startStub(); const { client } = await boot({ stub, trackOpts: { identify: async () => ({ userId: "cust_12345", userName: "Jane Doe", userData: { plan: "pro", email: "jane.doe@example.com", note: "VIP, call 617-555-0142" } }) } });
@@ -353,7 +354,7 @@ check("F1", "Does the package work with a Zod 4 schema, and what are its peer de
     const t = (await client.listTools()).tools.find((x) => x.name === "z4tool"); r = { props: Object.keys(t.inputSchema.properties), required: t.inputSchema.required, res: (await call(client, "z4tool", { q: "x", context: "Calling a tool defined with Zod four to see whether context injection works." })).r.content };
   } catch (e) { err = String(e.message).slice(0, 200); }
   stub.close();
-  return [err ? "fail" : "pass", `peer dependencies: ${JSON.stringify(peers)}. Zod ${z4.z.version?.major ?? "4"} tool: ${err ? "ERROR " + err : JSON.stringify(r)}.`, { peers, r, err }];
+  return [err || !r?.props?.includes("context") ? "fail" : "pass", `peer dependencies: ${JSON.stringify(peers)}. Zod ${z4.z.version?.major ?? "4"} tool: ${err ? "ERROR " + err : JSON.stringify(r)}.`, { peers, r, err }];
 });
 check("F5", "Static: does the package contain a list of private-network addresses?", "Static check of dist/.", async () => {
   const dist = path.join(PKG, "dist") + "/"; let hits = [];
@@ -426,7 +427,7 @@ check("M5", "Vendor option: a fetch with a time limit (an option named fetch exi
   await sleep(500); stub.mode.kind = "ok"; const before = stub.posts.length;
   for (let i = 0; i < 3; i++) await call(client, "search_companies", Q);
   await sleep(15000); const got = stub.posts.length - before; stub.close();
-  return [got > 0 ? "pass" : "gap", `with a 1.5 s limit on every request, ${got} requests reached Within in the 15 s after it recovered (stock package: 0, check A1c). The stuck requests were abandoned and the later reports were sent.`, { got }];
+  return [got > 0 ? "pass" : "gap", `with a 1.5 s limit on every request, ${got} requests reached Within in the 15 s after it recovered (compare A1c). The stuck requests were abandoned and the later reports were sent.`, { got }];
 });
 check("M6", "Vendor option: the vendor's own SIGTERM handler that exits. Does the process stop on the first signal?", "Vendor code, not a package option: process.on('SIGTERM', () => process.exit(0)).", async () => {
   const { spawn } = await import("node:child_process"); const cwd = new URL("./", import.meta.url).pathname;
@@ -434,7 +435,7 @@ check("M6", "Vendor option: the vendor's own SIGTERM handler that exits. Does th
   const r = await new Promise((resolve) => { const c = spawn("node", ["-e", code], { cwd }); let t0; c.stdout.on("data", () => { if (!t0) { t0 = Date.now(); c.kill("SIGTERM"); } }); const g = setTimeout(() => { c.kill("SIGKILL"); resolve({ exited: false }); }, 12000); c.on("exit", (code, sig) => { clearTimeout(g); resolve({ exited: true, code, sig, ms: Date.now() - t0 }); }); });
   return [r.exited ? "pass" : "gap", r.exited ? `with the vendor's own handler, the first SIGTERM ended the process in ${r.ms} ms (exit code ${r.code}).` : "still running after 12 s", r];
 });
-check("M7", "Vendor option: enableToolCallContext false and enableReportMissing false together with the redaction function. Is the tool list the vendor wrote what customers see?", "README Configuration table.", async () => {
+check("M7", "Vendor option: enableToolCallContext false and enableReportMissing false. Is the tool list the vendor wrote what customers see?", "README Configuration table.", async () => {
   const stub = await startStub(); const { client } = await boot({ stub, trackOpts: { enableToolCallContext: false, enableReportMissing: false } });
   const tools = (await client.listTools()).tools; stub.close(); const t = tools[0];
   return [tools.length === 1 && !t.inputSchema.properties.context && !t.inputSchema.required?.includes("context") ? "pass" : "gap", `tools advertised: ${tools.map((x) => x.name)}; inputs of search_companies: ${Object.keys(t.inputSchema.properties)}; required: ${JSON.stringify(t.inputSchema.required)}.`, { tools: tools.map((x) => x.name) }];
