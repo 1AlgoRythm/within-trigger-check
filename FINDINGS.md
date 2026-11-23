@@ -6,19 +6,21 @@ This report lists what we found when we tried to break that package. Every findi
 
 Everything ran on our own machine against the published package, version 1.0.4, and a small stand-in for Within's server. We did not send load or attack traffic to Within's service, and we did not look at anything behind its login.
 
+**Update 2026-11-23.** The docs' install line no longer fails. On 2026-11-22 npm answered "not found" for `@getwithin/sdk`, the package the docs name, and the report listed that as finding W-11. On 2026-11-23 17:42 UTC npm answers 200 for it, so W-11 is removed. Why npm answered "not found" before and answers now is unknown. All 48 checks were run again the same day on the same package file (544faede7251), and no other verdict changed.
+
 ## The short version
 
-- **In short.** 48 checks ran on Within's public package, version 1.0.4 (22 pass, 14 gap, 10 info, 2 fail). We found 11 problems: 2 High, 7 Medium and 2 Low.
-- **The most serious.** One long piece of unbroken text in a customer's request freezes the company's whole AI server for about 5.8 seconds at 100,000 characters. The package's own size limit does not stop it. A vendor can avoid it today with its own redaction function, and Within can fix it by changing the order of two steps.
+- **In short.** 48 checks ran on Within's public package, version 1.0.4 (23 pass, 14 gap, 10 info, 1 fail). We found 10 problems: 2 High, 6 Medium and 2 Low.
+- **The most serious.** One long piece of unbroken text in a customer's request freezes the company's whole AI server for about 4.4 seconds at 100,000 characters. The package's own size limit does not stop it. A vendor can avoid it today with its own redaction function, and Within can fix it by changing the order of two steps.
 - **Customer data.** The package sends what customers ask for, and what the company's tools answer, to Within by default. It hides only a short list of private details, and some only when they are the whole value.
-- **What a vendor can do.** 8 of the 11 problems have a fix that works today with the package's own options. 6 have a small change that Within could make, and we tested each one on a patched copy: P1 for W-01, P4 for W-04, P2 for W-05, P3 for W-06, P6 for W-07, P5 for W-10.
+- **What a vendor can do.** 8 of the 10 problems have a fix that works today with the package's own options. 6 have a small change that Within could make, and we tested each one on a patched copy: P1 for W-01, P4 for W-04, P2 for W-05, P3 for W-06, P6 for W-07, P5 for W-10.
 - **What held up.** An outage at Within does not change or slow the company's own answers, a broken reply from Within does not hurt the company's tools, 40 customers at once do not mix their data, and the company's own instructions are left alone.
 
-Tested 2026-11-22 15:50 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `544faede7251`), Node v26.13.0, MCP SDK 1.32.2. Line numbers refer to that package's files, because Within's source repository is not public.
+Tested 2026-11-23 17:42 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `544faede7251`), Node v26.13.0, MCP SDK 1.32.2. Line numbers refer to that package's files, because Within's source repository is not public.
 
 ## At a glance
 
-11 findings: 2 High, 7 Medium, 2 Low. 48 checks on the stock package (22 pass, 14 gap, 10 info, 2 fail); the same checks on the patched copy (26 pass, 9 gap, 13 info, 0 fail).
+10 findings: 2 High, 6 Medium, 2 Low. 48 checks on the stock package (23 pass, 14 gap, 10 info, 1 fail); the same checks on the patched copy (26 pass, 9 gap, 13 info, 0 fail).
 
 | ID | Severity | What | A vendor can fix it today | Within's fix, tested |
 |---|---|---|---|---|
@@ -30,7 +32,6 @@ Tested 2026-11-22 15:50 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `54
 | [W-06](#w-06) | Medium | A server that loads the package ignores the first request to shut down | yes (`M6`) | yes (`P3`) |
 | [W-07](#w-07) | Medium | A vendor's redaction function is handed the API key and the address events go to, and changing them stops delivery silently | no | yes (`P6`) |
 | [W-08](#w-08) | Medium | Every tool call on the server is reported, and none can be left out | no | not patched |
-| [W-11](#w-11) | Medium | The docs' install line names a package that npm does not have | no | not patched |
 | [W-09](#w-09) | Low | A missing or rejected key shows only in a log file in the home folder, and the file only grows | yes (`M4`) | not patched |
 | [W-10](#w-10) | Low | Every vendor tool gets a required "context" input, and the model sees one extra tool | yes (`M7`) | yes (`P5`) |
 
@@ -57,14 +58,14 @@ Tested 2026-11-22 15:50 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `54
 
 **For a founder.** One customer pasting a very long, unbroken piece of text can freeze the company's whole AI server for several seconds, for every other customer too. It happens in the normal setup, and the package's own size limit does not stop it.
 
-**In plain words.** The package hides email addresses with a text pattern that gets much slower as the text gets longer, when the text has no spaces. It runs on every tool argument by default. We sent one argument of unbroken letters. At 10,000 letters the whole process stalled for 71 ms, at 50,000 for 1455 ms and at 100,000 for 5773 ms. Ordinary words of the same length took 15 ms. The vendor's own tool still answered in about 2 ms, so the stall shows nowhere in the vendor's code. The pattern alone gives the same curve (55, 321, 1287 and 5158 ms for 10,000, 25,000, 50,000 and 100,000 letters).
+**In plain words.** The package hides email addresses with a text pattern that gets much slower as the text gets longer, when the text has no spaces. It runs on every tool argument by default. We sent one argument of unbroken letters. At 10,000 letters the whole process stalled for 59 ms, at 50,000 for 1073 ms and at 100,000 for 4395 ms. Ordinary words of the same length took 17 ms. The vendor's own tool still answered in about 1 ms, so the stall shows nowhere in the vendor's code. The pattern alone gives the same curve (49, 295, 1152 and 4371 ms for 10,000, 25,000, 50,000 and 100,000 letters).
 
-**Why it matters.** While the process is stalled it cannot answer any customer. One customer pasting a long encoded string, or anyone trying to hurt the vendor, can stall the vendor's server for everyone else. The package runs inside the vendor's process, so its slowness is the vendor's slowness. The size limit of 10,000 bytes does not help, because it is applied after the pattern: with the limit set to 500 the stall was still 5806 ms.
+**Why it matters.** While the process is stalled it cannot answer any customer. One customer pasting a long encoded string, or anyone trying to hurt the vendor, can stall the vendor's server for everyone else. The package runs inside the vendor's process, so its slowness is the vendor's slowness. The size limit of 10,000 bytes does not help, because it is applied after the pattern: with the limit set to 500 the stall was still 4622 ms.
 
 **What we measured.**
 
-- `C8` (FAIL): A long free-text argument: does redaction freeze the vendor's whole process? (event-loop stall, 4 sizes, 2 shapes) event-loop stall per argument (ms): letters 10000 chars -> 71; letters 25000 chars -> 371; letters 50000 chars -> 1455; letters 100000 chars -> 5773; words 100000 chars -> 15; dots 50000 chars -> 1293. The vendor's own tool call returned in about 3 ms each time. The freeze comes after, while the event is cleaned, and blocks every customer on the process. Cause: the email pattern in privacy.js is applied to the whole string before it is cut to the 10,000-byte limit.
-- `C8b` (info): The email pattern on its own: time against input length (copy of the pattern, checked against the package file) pattern found in privacy.js unchanged: true. Letters with no @ (ms): 10000 -> 55, 25000 -> 321, 50000 -> 1287, 100000 -> 5158. Doubling the length multiplied the time by about 4.0. Ordinary words (100,000 chars): 1 ms. The same 100,000 letters cut to 10,000 first: 56 ms. An email in 100,000 spaces: 0 ms.
+- `C8` (FAIL): A long free-text argument: does redaction freeze the vendor's whole process? (event-loop stall, 4 sizes, 2 shapes) event-loop stall per argument (ms): letters 10000 chars -> 59; letters 25000 chars -> 313; letters 50000 chars -> 1073; letters 100000 chars -> 4395; words 100000 chars -> 17; dots 50000 chars -> 1310. The vendor's own tool call returned in about 1 ms each time. The freeze comes after, while the event is cleaned, and blocks every customer on the process. Cause: the email pattern in privacy.js is applied to the whole string before it is cut to the 10,000-byte limit.
+- `C8b` (info): The email pattern on its own: time against input length (copy of the pattern, checked against the package file) pattern found in privacy.js unchanged: true. Letters with no @ (ms): 10000 -> 49, 25000 -> 295, 50000 -> 1152, 100000 -> 4371. Doubling the length multiplied the time by about 3.8. Ordinary words (100,000 chars): 1 ms. The same 100,000 letters cut to 10,000 first: 49 ms. An email in 100,000 spaces: 0 ms.
 
 **Where in the code.**
 
@@ -76,7 +77,7 @@ Tested 2026-11-22 15:50 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `54
 - Cut the text to the field limit before any pattern runs (patch P1).
 - Or replace the pattern with one that does not rescan: it should take time in proportion to the length. Add a test with a 100,000-character input.
 
-**What a vendor can do today** (`M1`, pass). A redaction function that cuts every string to 2,000 characters brought the stall at 100,000 letters from 6214 ms to 24 ms, because the vendor's function runs before the package's pattern. Setting the field limit alone does not help.
+**What a vendor can do today** (`M1`, pass). A redaction function that cuts every string to 2,000 characters brought the stall at 100,000 letters from 4756 ms to 16 ms, because the vendor's function runs before the package's pattern. Setting the field limit alone does not help.
 
 **Within's fix, tested** (`P1`). With the cut moved before the pattern, the stall at 100,000 letters was 76 ms.
 
@@ -184,13 +185,13 @@ Tested 2026-11-22 15:50 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `54
 
 **For a founder.** If Within's service stops answering for a while, the add-on can stop reporting anything to Within, and nobody is told. The company's own customers do not notice. We watched for 15 seconds after Within came back and saw no report sent.
 
-**In plain words.** The package sends reports through one queue that runs at most five requests at a time, and a request has no time limit. We made the stand-in for Within accept requests and never answer. After 5 requests were stuck, reports for later tool calls waited behind them. Then the stand-in answered normally again. In the next 15 seconds, 0 of the 3 waiting reports were sent. The vendor's own calls were not slowed: five calls took 3, 0, 0, 0, 0 ms. We did not wait to find out when Node's own network code gives up a stuck request.
+**In plain words.** The package sends reports through one queue that runs at most five requests at a time, and a request has no time limit. We made the stand-in for Within accept requests and never answer. After 5 requests were stuck, reports for later tool calls waited behind them. Then the stand-in answered normally again. In the next 15 seconds, 0 of the 3 waiting reports were sent. The vendor's own calls were not slowed: five calls took 1, 0, 0, 0, 0 ms. We did not wait to find out when Node's own network code gives up a stuck request.
 
 **Why it matters.** A short outage at Within can silently remove the vendor's reports for later calls. The queue holds up to 10,000 reports and then drops the oldest. Nothing reaches the vendor's own code, and the only trace is the log file.
 
 **What we measured.**
 
-- `A1` (pass): Within hangs: how long does the vendor's tool wait, call after call? five calls with Within never answering took 3, 0, 0, 0, 0 ms. Worst 3 ms.
+- `A1` (pass): Within hangs: how long does the vendor's tool wait, call after call? five calls with Within never answering took 1, 0, 0, 0, 0 ms. Worst 1 ms.
 - `A1c` (gap): Within hangs for a while, then recovers: does telemetry resume without a restart? Within hung on 5 requests, then answered normally. In the next 15 s after recovery, requests reaching Within: 0 (3 later reports were waiting). The vendor's own calls stayed fast. The SDK code sets no timeout on these requests, so the stuck requests keep every later event waiting. I did not wait for Node's own default limit to see when they give up.
 
 **Where in the code.**
@@ -216,13 +217,13 @@ Tested 2026-11-22 15:50 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `54
 
 **For a founder.** A company server that uses the add-on does not stop the first time the hosting system asks it to. It needs a second request, which slows every update of the company's server.
 
-**In plain words.** When a hosting system wants a program to stop, it sends a signal called SIGTERM. A plain Node program exits at once (3 ms in our test). Once the package is loaded, its own handler catches the first SIGTERM, waits for its queue to empty, and does not end the program. The server was still running after 12 seconds. A second SIGTERM, sent 3 seconds after the first, ended it after 3007 ms.
+**In plain words.** When a hosting system wants a program to stop, it sends a signal called SIGTERM. A plain Node program exits at once (1 ms in our test). Once the package is loaded, its own handler catches the first SIGTERM, waits for its queue to empty, and does not end the program. The server was still running after 12 seconds. A second SIGTERM, sent 3 seconds after the first, ended it after 3007 ms.
 
 **Why it matters.** Hosting systems commonly send SIGTERM first and stop the program by force later if it is still running. A server that needs a second signal slows every deploy and restart.
 
 **What we measured.**
 
-- `Z3` (gap): Does loading the SDK change how the vendor's process handles SIGTERM? (one signal, then a second one 3 s later) SIGTERM to a plain Node process: exited after 3 ms. To a process that called track(): still running after 12 s (force-killed). With a second SIGTERM sent 3 s after the first: exited after 3007 ms (signal SIGTERM).
+- `Z3` (gap): Does loading the SDK change how the vendor's process handles SIGTERM? (one signal, then a second one 3 s later) SIGTERM to a plain Node process: exited after 1 ms. To a process that called track(): still running after 12 s (force-killed). With a second SIGTERM sent 3 s after the first: exited after 3007 ms (signal SIGTERM).
 
 **Where in the code.**
 
@@ -232,7 +233,7 @@ Tested 2026-11-22 15:50 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `54
 
 - After the queue is flushed, send the same signal again, or leave signal handling to the application (patch P3).
 
-**What a vendor can do today** (`M6`, pass). A vendor's own handler (`process.on('SIGTERM', () => process.exit(0))`) ended the process on the first signal in 6 ms.
+**What a vendor can do today** (`M6`, pass). A vendor's own handler (`process.on('SIGTERM', () => process.exit(0))`) ended the process on the first signal in 4 ms.
 
 **Within's fix, tested** (`P3`). With the patch, the first SIGTERM ended the process in 3 ms.
 
@@ -293,33 +294,6 @@ Tested 2026-11-22 15:50 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `54
 
 **Reproduce.** `cd stress/v104 && node checks.mjs B7 C1`
 
-### W-11
-
-**Medium: The docs' install line names a package that npm does not have**
-
-**For a founder.** The install instructions on Within's website name a software package that does not exist in the public package store. A company following them gets an error.
-
-**In plain words.** On 2026-11-22 the docs at getwith.in/docs told vendors to run `npm install @getwithin/sdk`. We asked npm for that package and it answered "not found" (404). The package Within points to as public is `within-sdk`, which npm serves (version 1.0.4). The README of `within-sdk` names `apidocs.getwith.in`, which did not answer. We could not check which page the docs mean to be current.
-
-**Why it matters.** A vendor who follows the docs' install line gets an error and no package.
-
-**What we measured.**
-
-- `F6` (FAIL): The docs' install line against npm: does the package it names exist? docs page answered 200; its install line names @getwithin/sdk; npm answers 404 for that name; npm serves within-sdk 1.0.4.
-- `F2` (pass): The README's install line and quickstart, run on a fresh project installed 1.0.4 with the README line; quickstart exit code 0; output [{"type":"text","text":"found x"}]; events that reached the stand-in through WITHIN_SDK_API_URL: 3. 
-
-**Where in the code.**
-
-- The docs page (getwith.in/docs, fetched 2026-11-22 15:38 UTC) and the npm registry (`registry.npmjs.org`).
-
-**What Within should change.**
-
-- Change the docs' install line to `npm install within-sdk @modelcontextprotocol/sdk`.
-
-*Earlier numbering: W-01 (the crash itself is gone).*
-
-**Reproduce.** `cd stress/v104 && node checks.mjs F6 F2`
-
 ### W-09
 
 **Low: A missing or rejected key shows only in a log file in the home folder, and the file only grows**
@@ -332,9 +306,9 @@ Tested 2026-11-22 15:50 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `54
 
 **What we measured.**
 
-- `A4` (info): Wrong API key (Within answers 401): does the vendor get any signal? vendor result ok=true. Lines about the failure in ~/within-sdk.log: 4. Nothing reaches the vendor's own code or console; first line: [2026-11-22T15:45:50.258Z] Failed to send event evt_3MT6kDgC0C5HBB1WGjAEQmXTGR3, retrying... [Error: {"stack":"Error: HTTP 401: {\"ok\":fals.
-- `A10` (gap): No API key and no exporter at start-up: does track() complain? track() threw: no. Warning only in the log file: [2026-11-22T15:32:49.488Z] Warning: No Within apiKey provided and no exporters configured. Events will not be sent anywhere.. The vendor's process starts normally and sends nothing.
-- `C12` (gap): Local log file: what does the SDK write to ~/within-sdk.log, and is it ever capped? file ~/within-sdk.log: 1119 bytes, 7 lines from one connect, one tool call and its sends. Vendor data inside it: none. Rotation or size cap in logging.js: none (it only appends). Last lines: [2026-11-22T15:33:54.432Z] Successfully sent event evt_3MT5IAQpyqCzO9atHGkrySLpq7Q | mcp:initialize | session ses_3MT5IEBBfShDlOUTATH6o2tjZS4 | acme | 0 ms | 763bc036c96479891c9dfb98aaed5097d66d709d16c0fb4835a10ce5fb24e7cf | [2026-11-22T15:33:54.432Z] Successf
+- `A4` (info): Wrong API key (Within answers 401): does the vendor get any signal? vendor result ok=true. Lines about the failure in ~/within-sdk.log: 4. Nothing reaches the vendor's own code or console; first line: [2026-11-23T17:40:43.995Z] Failed to send event evt_3MW9q5NO9bpOdiOuIFZa8kscJUQ, retrying... [Error: {"stack":"Error: HTTP 401: {\"ok\":fals.
+- `A10` (gap): No API key and no exporter at start-up: does track() complain? track() threw: no. Warning only in the log file: [2026-11-23T17:40:53.250Z] Warning: No Within apiKey provided and no exporters configured. Events will not be sent anywhere.. The vendor's process starts normally and sends nothing.
+- `C12` (gap): Local log file: what does the SDK write to ~/within-sdk.log, and is it ever capped? file ~/within-sdk.log: 1119 bytes, 7 lines from one connect, one tool call and its sends. Vendor data inside it: none. Rotation or size cap in logging.js: none (it only appends). Last lines: [2026-11-23T17:41:54.150Z] Successfully sent event evt_3MW9yzL2Kas3LZ9LPDBIdIF11Sn | mcp:initialize | session ses_3MW9yyKTlPpizpxMwy8i9LWgvjI | acme | 0 ms | 763bc036c96479891c9dfb98aaed5097d66d709d16c0fb4835a10ce5fb24e7cf | [2026-11-23T17:41:54.151Z] Successf
 
 **Where in the code.**
 
@@ -396,6 +370,7 @@ Tested 2026-11-22 15:50 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `54
 - The vendor's server instructions are left unchanged. (`D4`)
 - A tool written with Zod 4 is tracked and called without a crash. (`F1`)
 - The README's install line and quickstart run on a fresh project. (`F2`)
+- The docs' install line names a package that npm serves, as of 2026-11-23. (On 2026-11-22 it did not.) (`F6`)
 
 ## What we did not test
 

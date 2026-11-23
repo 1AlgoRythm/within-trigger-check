@@ -3,7 +3,8 @@
  "intro": [
   "Within sells analytics for AI tool calls. A company installs one npm package, `within-sdk`. It sits inside the company's MCP server, records every tool call, and sends a copy to Within. The package describes itself as \"MCP analytics, workflow intelligence, and qualified opportunities\".",
   "This report lists what we found when we tried to break that package. Every finding has a plain-words explanation, then the technical detail, then **what a vendor can do today** with the package's own options, and **what Within must change**, shown by a patched copy that we tested.",
-  "Everything ran on our own machine against the published package, version 1.0.4, and a small stand-in for Within's server. We did not send load or attack traffic to Within's service, and we did not look at anything behind its login."
+  "Everything ran on our own machine against the published package, version 1.0.4, and a small stand-in for Within's server. We did not send load or attack traffic to Within's service, and we did not look at anything behind its login.",
+  "**Update 2026-11-23.** The docs' install line no longer fails. On 2026-11-22 npm answered \"not found\" for `@getwithin/sdk`, the package the docs name, and the report listed that as finding W-11. On {{R:F6.evidence.fetchedAt}} npm answers {{R:F6.evidence.npmStatus}} for it, so W-11 is removed. Why npm answered \"not found\" before and answers now is unknown. All {{V:n}} checks were run again the same day on the same package file ({{V:fingerprint}}), and no other verdict changed."
  ],
  "severity": [
   {
@@ -70,6 +71,10 @@
   {
    "test": "F2",
    "text": "The README's install line and quickstart run on a fresh project."
+  },
+  {
+   "test": "F6",
+   "text": "The docs' install line names a package that npm serves, as of 2026-11-23. (On 2026-11-22 it did not.)"
   }
  ],
  "notTested": [
@@ -368,26 +373,6 @@
    },
    "earlier": "W-31 (new)",
    "repro": "cd stress/v104 && node checks.mjs B5 B5b Z1 Z2"
-  },
-  {
-   "id": "W-11",
-   "severity": "Medium",
-   "title": "The docs' install line names a package that npm does not have",
-   "plain": "On 2026-11-22 the docs at getwith.in/docs told vendors to run `npm install @getwithin/sdk`. We asked npm for that package and it answered \"not found\" ({{R:F6.evidence.npmStatus}}). The package Within points to as public is `within-sdk`, which npm serves (version {{R:F6.evidence.publicVersion}}). The README of `within-sdk` names `apidocs.getwith.in`, which did not answer. We could not check which page the docs mean to be current.",
-   "why": "A vendor who follows the docs' install line gets an error and no package.",
-   "tests": [
-    "F6",
-    "F2"
-   ],
-   "where": [
-    "The docs page (getwith.in/docs, fetched {{R:F6.evidence.fetchedAt}}) and the npm registry (`registry.npmjs.org`)."
-   ],
-   "fix": [
-    "Change the docs' install line to `npm install within-sdk @modelcontextprotocol/sdk`."
-   ],
-   "founder": "The install instructions on Within's website name a software package that does not exist in the public package store. A company following them gets an error.",
-   "earlier": "W-01 (the crash itself is gone)",
-   "repro": "cd stress/v104 && node checks.mjs F6 F2"
   }
  ]
 }

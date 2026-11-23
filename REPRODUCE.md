@@ -24,7 +24,7 @@ node run-all.mjs        # about 6 minutes
 
 Every check runs in its own process, because the package keeps one process-wide event queue: a check that hangs the stand-in would otherwise block every later check. To run only some: `node run-all.mjs C8 Z3` (it merges them with the saved output of the others).
 
-**Expect** (`stress/results/sdk-1.0.4.json`): `FAIL` on `C8` (the freeze) and on `F6` (the docs' install line names a package npm does not have), and on no other check; gaps on `A1c`, `A10`, `B5`, `C1` to `C6`, `C12`, `C13`, `M8` and `Z3`; passes on `M1` to `M7` (what a vendor can do today). `F6` reads Within's public docs page, so it can change if Within edits it.
+**Expect** (`stress/results/sdk-1.0.4.json`): `FAIL` on `C8` (the freeze) and on no other check (on 2026-11-22 `F6` also failed, because the docs' install line named a package npm answered "not found" for; on 2026-11-23 it passes); gaps on `A1c`, `A10`, `B5`, `C1` to `C6`, `C12`, `C13`, `M8` and `Z3`; passes on `M1` to `M7` (what a vendor can do today). `F6` reads Within's public docs page, so it can change if Within edits it.
 
 ## 2. The patched copy
 
