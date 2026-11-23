@@ -1,0 +1,24 @@
+{
+  "name": "within-trigger-check",
+  "version": "1.0.0",
+  "description": "Trigger check and fixes for Within's SDK 0.4.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app/server.mjs",
+    "fix": "node fixes/apply.mjs",
+    "unfix": "node fixes/apply.mjs --revert",
+    "check-fixes": "node fixes/check.mjs",
+    "repeat": "node app/repeat.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "private": "true",
+  "dependencies": {
+    "@getwithin/sdk": "0.4.0",
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^4.6.7"
+  }
+}

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>How within-sdk works, as a map you can click into</title>
+<title>How the Within SDK works, as a map you can click into</title>
 <style>
   :root { --ink:#1f2328; --mute:#59636e; --line:#d8dee4; --bg:#fbfaf6; --org:#f97316; --blu:#3b82f6; --grn:#10b981; --red:#ef4444; }
   * { box-sizing: border-box; }
@@ -37,8 +37,8 @@
 </head>
 <body>
 <header>
-  <h1>How <code>within-sdk</code> works, as a map you can click into</h1>
-  <p class="sub">Built from Within's README and the files of the published <code>within-sdk</code> {{VERSION}}, and tested on a laptop against a stand-in server. Click the orange <b>⤢</b> on a box, or double-click it, to go one level deeper. Every box with a W-number opens a hand-drawn sketch of that finding. Part of the <a href="findings.html">stress-test report</a> · <a href="index.html">summary</a> · <a href="https://satyaasudarshan.me">portfolio</a>.</p>
+  <h1>How the Within SDK works, as a map you can click into</h1>
+  <p class="sub">Built from Within's public docs and the published <code>@getwithin/sdk</code> {{VERSION}}, and tested on a laptop against a stand-in server and with real Claude. Click the orange <b>⤢</b> on a box, or double-click it, to go one level deeper. Every box with a W-number opens a hand-drawn sketch of that finding. Part of the <a href="findings.html">stress-test report</a> · <a href="https://satyaasudarshan.me">portfolio</a>.</p>
 </header>
 <nav class="crumbs" id="crumbs" aria-label="Where you are"></nav>
 <div class="note" id="note" hidden></div>
@@ -61,7 +61,7 @@ function go(path) { location.hash = path.join("/"); }
 
 function render() {
   const path = route(), id = path[path.length - 1], s = S[id];
-  document.title = s.title + " · How within-sdk works";
+  document.title = s.title + " · How the Within SDK works";
   // breadcrumbs
   const crumbs = document.getElementById("crumbs");
   crumbs.innerHTML = "";

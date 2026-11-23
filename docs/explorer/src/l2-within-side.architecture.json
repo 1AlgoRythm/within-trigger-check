@@ -1,0 +1,324 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Within's side: visible and not",
+    "output": "l2-within-side.html",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "from-sdk",
+        "label": "SDK calls",
+        "focus": [
+          "sdk",
+          "ans",
+          "act",
+          "off",
+          "hubsr"
+        ],
+        "note": "Four groups of /v1 calls, read from the published SDK source. The hubs group is only used when the hubs option is on."
+      },
+      {
+        "id": "extra-routes",
+        "label": "Extra routes",
+        "focus": [
+          "hubsr",
+          "checks",
+          "doctor",
+          "act"
+        ],
+        "note": "/v1/hubs/*, /v1/checks/ID, and the login token and host fields inside /v1/activity."
+      },
+      {
+        "id": "closed",
+        "label": "Closed part",
+        "focus": [
+          "server"
+        ],
+        "note": "Matching, storage and redaction run here. Within's server repo is not public."
+      },
+      {
+        "id": "console-side",
+        "label": "Team view",
+        "focus": [
+          "server",
+          "rules",
+          "moments",
+          "inbox"
+        ],
+        "note": "The console views are documented. Their internals are not visible."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "sdk",
+      "type": "backend",
+      "label": "Within SDK",
+      "sublabel": "@getwithin/sdk 0.4.0",
+      "pos": [
+        30,
+        224
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "ans",
+      "type": "cloud",
+      "label": "/v1/answers",
+      "sublabel": "the saved or written answer",
+      "pos": [
+        300,
+        40
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "act",
+      "type": "cloud",
+      "label": "/v1/activity",
+      "sublabel": "tool, goal, token · W-10, W-21",
+      "pos": [
+        300,
+        132
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "off",
+      "type": "cloud",
+      "label": "/v1/offers/*",
+      "sublabel": "deliver, accept, decline",
+      "pos": [
+        300,
+        224
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "server",
+      "type": "cloud",
+      "label": "Within server",
+      "sublabel": "closed source, not visible",
+      "pos": [
+        570,
+        224
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "rules",
+      "type": "frontend",
+      "label": "Revenue rules",
+      "sublabel": "saved answer per topic",
+      "pos": [
+        840,
+        132
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "moments",
+      "type": "frontend",
+      "label": "Revenue moments",
+      "sublabel": "beta, every buying question",
+      "pos": [
+        840,
+        224
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "inbox",
+      "type": "frontend",
+      "label": "Inbox and chats",
+      "sublabel": "notes, live conversations",
+      "pos": [
+        840,
+        316
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "hubsr",
+      "type": "cloud",
+      "label": "/v1/hubs/*",
+      "sublabel": "invite, open, send · W-24",
+      "pos": [
+        300,
+        316
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "checks",
+      "type": "cloud",
+      "label": "/v1/checks/ID",
+      "sublabel": "what the doctor asks · W-25",
+      "pos": [
+        300,
+        408
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "doctor",
+      "type": "external",
+      "label": "doctor command",
+      "sublabel": "getwithin-sdk",
+      "pos": [
+        30,
+        408
+      ],
+      "size": [
+        160,
+        64
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "The API surface, read from the SDK source",
+      "wraps": [
+        "ans",
+        "act",
+        "off",
+        "hubsr",
+        "checks"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "asks",
+      "from": "sdk",
+      "to": "ans",
+      "variant": "emphasis"
+    },
+    {
+      "id": "reports",
+      "from": "sdk",
+      "to": "act",
+      "variant": "emphasis"
+    },
+    {
+      "id": "awaits",
+      "from": "sdk",
+      "to": "off",
+      "variant": "emphasis"
+    },
+    {
+      "id": "r1",
+      "from": "ans",
+      "to": "server"
+    },
+    {
+      "id": "r2",
+      "from": "act",
+      "to": "server"
+    },
+    {
+      "id": "r3",
+      "from": "off",
+      "to": "server"
+    },
+    {
+      "id": "feeds",
+      "from": "rules",
+      "to": "server",
+      "label": "answers"
+    },
+    {
+      "id": "logs",
+      "from": "server",
+      "to": "moments"
+    },
+    {
+      "id": "files",
+      "from": "server",
+      "to": "inbox"
+    },
+    {
+      "id": "hubcall",
+      "from": "sdk",
+      "to": "hubsr",
+      "variant": "dashed"
+    },
+    {
+      "id": "r4",
+      "from": "hubsr",
+      "to": "server"
+    },
+    {
+      "id": "r5",
+      "from": "checks",
+      "to": "server"
+    },
+    {
+      "id": "docget",
+      "from": "doctor",
+      "to": "checks",
+      "label": "GET",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Visible",
+      "items": [
+        "The /v1 routes, read from the published SDK source (0.4.0)",
+        "The console sections, from Within's docs and site"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Not visible",
+      "items": [
+        "Within's server code: the repo is not public",
+        "How answers are matched and written, what is stored, what is redacted",
+        "Whether Within verifies the login token the SDK sends (doctor prints verified by Within)"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Why it matters",
+      "items": [
+        "Within's homepage says PII is redacted before storage",
+        "The tests can only show the goal text, and in 0.4.0 the login token, reaching the API (W-10, W-21)",
+        "Within's docs page does not describe /v1/hubs"
+      ]
+    }
+  ]
+}

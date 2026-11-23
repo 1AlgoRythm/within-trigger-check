@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="9 of 15 kinds of detail went out unredacted">
+<title>9 of 15 kinds of detail went out unredacted</title><defs><filter id="wob" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/></filter><style>
+.flow{stroke-dasharray:9 7;animation:dash 1.1s linear infinite}
+.slow{stroke-dasharray:9 7;animation:dash 2.4s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-32}}
+.pulse{transform-box:fill-box;transform-origin:center;animation:pulse 1.7s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.08);opacity:.6}}
+.grow{transform-box:fill-box;transform-origin:50% 100%;animation:grow 1.3s cubic-bezier(.2,.8,.2,1) both}
+@keyframes grow{from{transform:scaleY(.02)}to{transform:scaleY(1)}}
+.growx{transform-box:fill-box;transform-origin:0 50%;animation:growx 1.6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes growx{from{transform:scaleX(.02)}to{transform:scaleX(1)}}
+.bob{animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.blink{animation:blink 1.4s steps(2,start) infinite}
+@keyframes blink{50%{opacity:.15}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style></defs>
+<rect width="960" height="540" fill="#fffdf7"/>
+<g filter="url(#wob)">
+<path d="M40.1 105.8 Q480.3 103.5 920.4 104.3 Q917.7 128.3 918.7 151.8 Q478.8 153.2 40.9 152.2 Q40.8 129.2 40.1 105.8" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="56" y="126" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#1f2328"><tspan x="56" dy="0">By default the goal text is sent: &quot;wants fintech leads for a Boston fund&quot;</tspan></text>
+<text x="56" y="144" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#59636e"><tspan x="56" dy="0">We put 15 kinds of private detail into one goal text and read what arrived.</tspan></text>
+<text x="40" y="182" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#10b981" font-weight="700"><tspan x="40" dy="0">Hidden (6)</tspan></text>
+<text x="480" y="182" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#ef4444" font-weight="700"><tspan x="480" dy="0">Went out unredacted (9)</tspan></text>
+<rect x="40" y="196" width="50.0" height="20" rx="6" fill="#10b98122" stroke="#10b981" stroke-width="1.5"/>
+<text x="47" y="209" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">email</text>
+<rect x="98" y="196" width="172.4" height="20" rx="6" fill="#10b98122" stroke="#10b981" stroke-width="1.5"/>
+<text x="105" y="209" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">openai_style_key (sk-)</text>
+<rect x="271.6" y="196" width="129.2" height="20" rx="6" fill="#10b98122" stroke="#10b981" stroke-width="1.5"/>
+<text x="278.6" y="209" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">within_key (sb_)</text>
+<rect x="40" y="222" width="100.4" height="20" rx="6" fill="#10b98122" stroke="#10b981" stroke-width="1.5"/>
+<text x="47" y="235" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">bearer_token</text>
+<rect x="145.6" y="222" width="136.4" height="20" rx="6" fill="#10b98122" stroke="#10b981" stroke-width="1.5"/>
+<text x="152.6" y="235" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">card_number_valid</text>
+<rect x="285.2" y="222" width="42.8" height="20" rx="6" fill="#10b98122" stroke="#10b981" stroke-width="1.5"/>
+<text x="292.2" y="235" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">iban</text>
+<rect x="480" y="196" width="71.6" height="20" rx="6" fill="#ef444422" stroke="#ef4444" stroke-width="1.5"/>
+<text x="487" y="209" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">phone_us</text>
+<rect x="558.4" y="196" width="150.8" height="20" rx="6" fill="#ef444422" stroke="#ef4444" stroke-width="1.5"/>
+<text x="565.4" y="209" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">phone_international</text>
+<rect x="711.5999999999999" y="196" width="93.2" height="20" rx="6" fill="#ef444422" stroke="#ef4444" stroke-width="1.5"/>
+<text x="718.5999999999999" y="209" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">person_name</text>
+<rect x="480" y="222" width="208.4" height="20" rx="6" fill="#ef444422" stroke="#ef4444" stroke-width="1.5"/>
+<text x="487" y="235" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">stripe_style_key (sk_live_)</text>
+<rect x="687.6" y="222" width="114.8" height="20" rx="6" fill="#ef444422" stroke="#ef4444" stroke-width="1.5"/>
+<text x="694.6" y="235" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">aws_access_key</text>
+<rect x="806.8000000000001" y="222" width="100.4" height="20" rx="6" fill="#ef444422" stroke="#ef4444" stroke-width="1.5"/>
+<text x="813.8000000000001" y="235" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">github_token</text>
+<rect x="480" y="248" width="143.6" height="20" rx="6" fill="#ef444422" stroke="#ef4444" stroke-width="1.5"/>
+<text x="487" y="261" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">jwt_without_Bearer</text>
+<rect x="626.4" y="248" width="57.2" height="20" rx="6" fill="#ef444422" stroke="#ef4444" stroke-width="1.5"/>
+<text x="633.4" y="261" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">us_ssn</text>
+<rect x="691.1999999999999" y="248" width="114.8" height="20" rx="6" fill="#ef444422" stroke="#ef4444" stroke-width="1.5"/>
+<text x="698.1999999999999" y="261" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">street_address</text>
+<text x="40" y="400" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="40" dy="0">The docs table lists what the filter hides; the goal text itself is not listed as something that leaves.</tspan></text>
+</g>
+<text x="40" y="52" font-family="'Bradley Hand','Segoe Print','Marker Felt','Comic Sans MS',cursive" font-size="27" fill="#1f2328" font-weight="700"><tspan x="40" dy="0">The goal text goes out with private details in it</tspan></text>
+<rect x="840" y="30" width="97.8" height="22" rx="11" fill="#ef4444"/>
+<text x="888.9" y="45.32" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#fff">W-10 · High</text>
+<text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">The goal text the model writes goes to Within by default. The filter hides some details and lets the rest through.</tspan></text>
+<g filter="url(#wob)">
+<path d="M38.7 447.9 Q477.6 444.7 918.4 445.1 Q920.9 490.2 919.0 534.3 Q480.6 533.4 38.1 533.1 Q37.8 489.5 38.7 447.9" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="54" dy="0">What Within should change</tspan></text>
+<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328"><tspan x="54" dy="0">List the note in the docs table.</tspan></text>
+</g>
+</svg>

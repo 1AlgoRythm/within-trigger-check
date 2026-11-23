@@ -1,14 +1,22 @@
 {
   "name": "within-stress",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Builds the report on within-sdk 1.0.4 from findings.json and the saved results. The checks are in v104/.",
+  "description": "Stress tests for @getwithin/sdk 0.4.0, run against a local stand-in for Within's API",
   "scripts": {
-    "build:findings": "node build.mjs",
-    "test": "cd v104 && node run-all.mjs",
+    "test": "node run.mjs",
+    "test:model": "node model/run-model.mjs",
+    "patch": "node patches/apply.mjs",
+    "test:patched": "node patches/apply.mjs && WITHIN_SDK_ENTRY=$PWD/patched-sdk/dist/index.js node run.mjs",
     "build:sketches": "node sketches.mjs",
     "build:map": "node map.mjs",
+    "build:report": "node build.mjs",
     "build:all": "node sketches.mjs && node map.mjs && node build.mjs"
+  },
+  "dependencies": {
+    "@getwithin/sdk": "0.4.0",
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "zod": "3.25.76"
   }
 }

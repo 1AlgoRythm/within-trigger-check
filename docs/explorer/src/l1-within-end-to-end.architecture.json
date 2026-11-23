@@ -2,41 +2,51 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "within-sdk, end to end",
+    "title": "Within, end to end",
     "output": "l1-within-end-to-end.html",
     "quality_profile": "showcase",
     "views": [
       {
-        "id": "a-call",
-        "label": "A tool call",
+        "id": "buying-question",
+        "label": "A question",
         "focus": [
           "customer",
           "host",
-          "server",
           "sdk",
-          "api"
+          "api",
+          "card"
         ],
-        "note": "The customer asks, the model calls the vendor's tool, and within-sdk copies the call to Within."
+        "note": "The customer asks, the model calls Within, and Within answers with the vendor's saved text."
       },
       {
-        "id": "what-leaves",
+        "id": "leaves-the-server",
         "label": "What leaves",
         "focus": [
           "sdk",
-          "api",
-          "log"
+          "api"
         ],
-        "note": "Only within-sdk talks to Within. It sends each tool call, arguments and result included, and writes a log file at home."
+        "note": "Only the SDK talks to Within. It calls out and never listens."
       },
       {
-        "id": "findings",
-        "label": "Findings",
+        "id": "defects",
+        "label": "Defects",
+        "focus": [
+          "host",
+          "sdk",
+          "api",
+          "doctor"
+        ],
+        "note": "Most findings sit in the SDK. W-18 and W-19 are design questions, W-20 the model's choice."
+      },
+      {
+        "id": "newer-parts",
+        "label": "Newer parts",
         "focus": [
           "sdk",
-          "hosting",
-          "log"
+          "doctor",
+          "api"
         ],
-        "note": "All 10 findings sit in or around the package. Open the SDK box to see where."
+        "note": "A doctor command, optional hubs and identity lookup, a default report_void tool and extra report fields, drawn one level deeper."
       }
     ]
   },
@@ -45,7 +55,7 @@
       "id": "customer",
       "type": "external",
       "label": "Customer",
-      "sublabel": "asks inside chat",
+      "sublabel": "buys inside chat",
       "pos": [
         30,
         175
@@ -59,24 +69,24 @@
       "id": "host",
       "type": "external",
       "label": "Claude / ChatGPT",
-      "sublabel": "the model and its MCP client",
+      "sublabel": "model + MCP client · W-20",
       "pos": [
         250,
         175
       ],
       "size": [
-        160,
+        150,
         64
       ]
     },
     {
-      "id": "server",
-      "type": "backend",
-      "label": "Vendor's MCP server",
-      "sublabel": "the vendor's own tools",
+      "id": "card",
+      "type": "frontend",
+      "label": "Offer and chat card",
+      "sublabel": "MCP App in the chat",
       "pos": [
-        500,
-        175
+        250,
+        40
       ],
       "size": [
         170,
@@ -86,36 +96,50 @@
     {
       "id": "sdk",
       "type": "backend",
-      "label": "within-sdk",
-      "sublabel": "version 1.0.4 · 10 findings",
+      "label": "Within SDK",
+      "sublabel": "@getwithin/sdk 0.4.0",
       "pos": [
         500,
-        40
+        175
       ],
       "size": [
         170,
+        64
+      ]
+    },
+    {
+      "id": "tools",
+      "type": "backend",
+      "label": "Vendor's own tools",
+      "sublabel": "wrapped by the SDK",
+      "pos": [
+        500,
+        310
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "data",
+      "type": "database",
+      "label": "Vendor's data",
+      "sublabel": "the SDK never reads it",
+      "pos": [
+        250,
+        310
+      ],
+      "size": [
+        150,
         64
       ]
     },
     {
       "id": "api",
       "type": "cloud",
-      "label": "Within's service",
-      "sublabel": "closed, not tested",
-      "pos": [
-        780,
-        40
-      ],
-      "size": [
-        170,
-        64
-      ]
-    },
-    {
-      "id": "log",
-      "type": "database",
-      "label": "~/within-sdk.log",
-      "sublabel": "only grows · W-09",
+      "label": "Within API",
+      "sublabel": "app.getwith.in, closed",
       "pos": [
         780,
         175
@@ -126,12 +150,26 @@
       ]
     },
     {
-      "id": "hosting",
-      "type": "external",
-      "label": "Hosting system",
-      "sublabel": "sends SIGTERM · W-06",
+      "id": "console",
+      "type": "frontend",
+      "label": "Within console",
+      "sublabel": "reps set answers, join chats",
       "pos": [
-        500,
+        780,
+        40
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "doctor",
+      "type": "external",
+      "label": "doctor command",
+      "sublabel": "getwithin-sdk · W-25",
+      "pos": [
+        780,
         310
       ],
       "size": [
@@ -143,76 +181,112 @@
   "boundaries": [
     {
       "kind": "region",
-      "label": "One process, the vendor's",
+      "label": "The vendor's MCP server (one process)",
       "wraps": [
-        "server",
-        "sdk"
+        "sdk",
+        "tools"
       ]
     }
   ],
   "connections": [
     {
-      "id": "c1",
+      "id": "ask",
       "from": "customer",
       "to": "host",
-      "label": "asks"
-    },
-    {
-      "id": "c2",
-      "from": "host",
-      "to": "server",
-      "label": "calls a tool",
+      "label": "asks",
       "variant": "emphasis"
     },
     {
-      "id": "c3",
+      "id": "call",
+      "from": "host",
+      "to": "sdk",
+      "label": "tools/call",
+      "variant": "emphasis"
+    },
+    {
+      "id": "wrap",
       "from": "sdk",
-      "to": "server",
-      "label": "wraps every tool",
+      "to": "tools",
+      "label": "wraps tools",
       "fromSide": "bottom",
       "toSide": "top",
-      "labelAt": [
-        585,
-        138
-      ]
+      "labelDy": 36
     },
     {
-      "id": "c4",
+      "id": "query",
+      "from": "tools",
+      "to": "data",
+      "label": "queries"
+    },
+    {
+      "id": "report",
       "from": "sdk",
       "to": "api",
-      "label": "reports each call",
+      "label": "/v1, outbound",
       "variant": "emphasis"
     },
     {
-      "id": "c5",
-      "from": "server",
-      "to": "log",
-      "label": "writes lines"
+      "id": "offer",
+      "from": "sdk",
+      "to": "card",
+      "label": "offer card",
+      "variant": "dashed",
+      "fromSide": "top",
+      "toSide": "right"
     },
     {
-      "id": "c6",
-      "from": "hosting",
-      "to": "server",
-      "label": "asks it to stop"
+      "id": "manage",
+      "from": "console",
+      "to": "api",
+      "label": "reads and writes",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 40
+    },
+    {
+      "id": "doc1",
+      "from": "doctor",
+      "to": "tools",
+      "label": "calls a tool",
+      "variant": "dashed"
+    },
+    {
+      "id": "doc2",
+      "from": "doctor",
+      "to": "api",
+      "label": "asks what arrived",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "labelDy": -34
     }
   ],
   "cards": [
     {
-      "dot": "cyan",
-      "title": "What the package does",
+      "dot": "rose",
+      "title": "Fix first",
       "items": [
-        "Loaded once with track(server)",
-        "Adds a required context input and a get_more_tools tool",
-        "Copies every tool call, arguments and result, into an event",
-        "Sends the event to Within through a queue"
+        "W-02 an outage changes or breaks the vendor's answers",
+        "W-09 tools the vendor did not wrap still report",
+        "W-10 the AI's goal summary leaves with private details",
+        "W-21 the customer's login token is sent when the identity option is on",
+        "W-04 a vendor's own context input is lost"
       ]
     },
     {
       "dot": "amber",
-      "title": "What we could not see",
+      "title": "Not visible from outside",
       "items": [
-        "Within's own server: what it stores or redacts after the text arrives",
-        "The source repository, which is not public"
+        "Within's backend repo is not public",
+        "Matching, answer writing, storage and redaction run there",
+        "Whether Within verifies the login token the SDK sends"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Where this comes from",
+      "items": [
+        "24 findings, each with a reproduction command: FINDINGS.md",
+        "Tests ran on the published SDK, 0.4.0, and a local stand-in server"
       ]
     }
   ]

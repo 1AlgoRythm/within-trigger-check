@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="With an offer attached, the vendor's _meta came back as null">
+<title>With an offer attached, the vendor's _meta came back as null</title><defs><filter id="wob" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/></filter><style>
+.flow{stroke-dasharray:9 7;animation:dash 1.1s linear infinite}
+.slow{stroke-dasharray:9 7;animation:dash 2.4s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-32}}
+.pulse{transform-box:fill-box;transform-origin:center;animation:pulse 1.7s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.08);opacity:.6}}
+.grow{transform-box:fill-box;transform-origin:50% 100%;animation:grow 1.3s cubic-bezier(.2,.8,.2,1) both}
+@keyframes grow{from{transform:scaleY(.02)}to{transform:scaleY(1)}}
+.growx{transform-box:fill-box;transform-origin:0 50%;animation:growx 1.6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes growx{from{transform:scaleX(.02)}to{transform:scaleX(1)}}
+.bob{animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.blink{animation:blink 1.4s steps(2,start) infinite}
+@keyframes blink{50%{opacity:.15}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style></defs>
+<rect width="960" height="540" fill="#fffdf7"/>
+<g filter="url(#wob)">
+<path d="M38.4 130.6 Q226.0 132.2 418.2 131.2 Q417.7 185.0 419.0 239.2 Q227.1 237.8 39.4 240.7 Q39.2 185.7 38.4 130.6" fill="#f3faf6" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="154" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">The vendor's result</tspan></text>
+<text x="54" y="176" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">content: the answer</tspan></text>
+<text x="54" y="195" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">_meta: the vendor's own data</tspan></text>
+<path d="M422 185 Q468.2 188.8 520 185" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" class="flow"/>
+<path d="M509.9 191.5 L520 185 L509.1 180.0" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M524.4 131.0 Q721.1 128.4 919.7 130.6 Q917.9 186.4 919.7 240.8 Q724.1 243.8 524.4 242.0 Q523.9 185.5 524.4 131.0" fill="#fff1f0" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pulse"/>
+<text x="538" y="154" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="538" dy="0">With a rep's offer attached</tspan></text>
+<text x="538" y="176" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="538" dy="0">content: the answer + the offer</tspan></text>
+<text x="538" y="195" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="538" dy="0">_meta: null</tspan></text>
+<path d="M40.1 291.1 Q483.1 289.0 921.1 288.5 Q920.6 323.5 919.4 361.0 Q477.0 363.1 38.6 361.4 Q39.7 324.3 40.1 291.1" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="56" y="318" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#1f2328"><tspan x="56" dy="0">Check B2: assistance attached = true, _meta = null.</tspan></text>
+<text x="56" y="346" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="56" dy="0">We do not know why Within removes _meta. It may be to stop a second card from appearing.</tspan></text>
+</g>
+<text x="40" y="52" font-family="'Bradley Hand','Segoe Print','Marker Felt','Comic Sans MS',cursive" font-size="27" fill="#1f2328" font-weight="700"><tspan x="40" dy="0">The vendor's own _meta data is removed</tspan></text>
+<rect x="840" y="30" width="90.4" height="22" rx="11" fill="#3b82f6"/>
+<text x="885.2" y="45.32" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#fff">W-06 · Low</text>
+<text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">When a rep's offer is attached to a tool result, the vendor's own _meta field is replaced by null.</tspan></text>
+<g filter="url(#wob)">
+<path d="M38.0 445.1 Q481.2 446.9 920.6 446.2 Q922.5 490.7 921.3 532.6 Q479.1 533.6 38.8 534.6 Q38.1 491.6 38.0 445.1" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="54" dy="0">What Within should change</tspan></text>
+<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328"><tspan x="54" dy="0">Remove only the keys that mount the card, or explain in the docs why all of them go.</tspan></text>
+</g>
+</svg>

@@ -1,25 +1,25 @@
-// Draws the hand-drawn, animated sketches for within-sdk 1.0.4:
-//   ../docs/diagrams/01-... to 10-...   one sketch per finding
-//   ../docs/flow.svg                     the journey of one tool call, with every finding marked
-// Every number on a sketch is read from results/sdk-1.0.4.json or results/patched-1.0.4.json, and the script stops if one
-// is missing, if a sketch does not match a finding in findings.json, or if a line of text is wider than its box.
+// Draws the hand-drawn, animated sketches for @getwithin/sdk 0.4.0:
+//   ../docs/diagrams/NN-... one sketch per finding (24)
+//   ../docs/flow.svg         one tool call through the SDK, with every finding marked
+// Every number on a sketch is read from results/sdk-0.4.0.json, results/new-in-040.json or the saved real-Claude runs, and the
+// script stops if one is missing, if a sketch does not match a finding in findings.json, or if a line of text is wider than its box.
 //   node sketches.mjs
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { modelStats } from "./model-stats.mjs";
 
 const fail = (m) => { throw new Error(m); };
 const tooWide = [];
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "..");
 const rd = (p) => JSON.parse(fs.readFileSync(path.join(here, p), "utf8"));
-const stock = rd("results/sdk-1.0.4.json"), patched = rd("results/patched-1.0.4.json"), src = rd("findings.json");
-if (stock.meta.sdk.version !== "1.0.4" || patched.meta.sdk.version !== "1.0.4") fail("results are not for 1.0.4");
-const byId = (d) => Object.fromEntries(d.results.map((r) => [r.id, r]));
-const RS = byId(stock), RP = byId(patched);
+const src = rd("findings.json"), main = rd("results/sdk-0.4.0.json"), news = rd("results/new-in-040.json");
+if (main.meta.sdk.version !== "0.4.0" || news.meta.sdk.version !== "0.4.0") fail("results are not for 0.4.0");
+const R = Object.fromEntries([...main.results, ...news.results].map((r) => [r.id, r]));
 const dig = (o, p) => p.replace(/\[(\d+)\]/g, ".$1").split(".").filter(Boolean).reduce((a, k) => (a == null ? undefined : a[k]), o);
-const get = (set, id, p) => { const v = dig(set[id]?.evidence, p); if (v === undefined || v === null) fail(`missing evidence ${id}.${p}`); return v; };
-const S = (id, p) => get(RS, id, p), P = (id, p) => get(RP, id, p);
+const E = (id, p) => { const v = dig(R[id]?.evidence, p); if (v === undefined || v === null) fail(`missing evidence ${id}.${p}`); return v; };
+const U = modelStats();
 const fmt = (n) => n.toLocaleString("en-US");
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
@@ -119,301 +119,331 @@ function frame(pen, o) {
     fo.text(54, 482, wrap(o.vendor, 404, 12.5, pen.name), { size: 12.5 });
   }
   if (o.within) {
-    fo.rect(490, 446, 430, 88, { fill: "#f3f7fd", stroke: BLU, sw: 1.8 });
-    fo.text(504, 465, "What Within should change", { size: 12.5, weight: 700, color: BLU });
-    fo.text(504, 482, wrap(o.within, 404, 12.5, pen.name), { size: 12.5 });
+    const x0 = o.vendor ? 490 : 40, bw = o.vendor ? 430 : 880;
+    fo.rect(x0, 446, bw, 88, { fill: "#f3f7fd", stroke: BLU, sw: 1.8 });
+    fo.text(x0 + 14, 465, "What Within should change", { size: 12.5, weight: 700, color: BLU });
+    fo.text(x0 + 14, 482, wrap(o.within, bw - 26, 12.5, pen.name), { size: 12.5 });
   }
   return [...head, `<g filter="url(#wob)">`, pen.html(), `</g>`, t.html(), `<g filter="url(#wob)">`, fo.html(), `</g>`, `</svg>`].join("\n");
 }
 
+
+
+// ---- findings by id, so a sketch can never disagree with the report about severity or the fix
+const FIND = Object.fromEntries(src.findings.map((f) => [f.id, f]));
 const sketches = [];
-const sketch = (n, slug, id, sev, title, sub, alt, vendor, within, draw) => { const pen = new Pen(slug); draw(pen); sketches.push({ file: `${String(n).padStart(2, "0")}-${slug}.svg`, id, title, svg: frame(pen, { id, sev, title, sub, alt, vendor, within }) }); };
+const S = (n, slug, id, title, sub, alt, draw) => {
+  const f = FIND[id] ?? fail(`no finding ${id}`);
+  const pen = new Pen(slug); draw(pen);
+  sketches.push({ file: `${String(n).padStart(2, "0")}-${slug}.svg`, id, title, svg: frame(pen, { id, sev: f.severity, title, sub, alt, vendor: null, within: f.fix[0] }) });
+};
+const bx = (p, x, y, w, h, title, lines = [], o = {}) => {
+  p.rect(x, y, w, h, { fill: o.fill ?? "#fff", stroke: o.stroke ?? INK, sw: o.sw ?? 2, cls: o.cls });
+  p.text(x + 14, y + 24, title, { size: o.size ?? 14.5, weight: 700, color: o.color ?? INK, maxW: w - 24 });
+  (Array.isArray(lines) ? lines : [lines]).forEach((l, i) => p.text(x + 14, y + 46 + i * 19, l, { size: 12.5, color: o.sub ?? MUTE, maxW: w - 24 }));
+};
+const arr = (p, x1, y1, x2, y2, color = ORG, cls = "flow") => p.line(x1, y1, x2, y2, { arrow: true, color, cls });
+const stat = (p, x, y, text, color) => p.text(x, y, text, { size: 21, hand: true, weight: 700, color });
+const note = (p, x, y, lines, color = MUTE, size = 13) => p.text(x, y, lines, { size, color });
+const trunc = (s, n) => (s.length > n ? s.slice(0, n - 1) + "…" : s);
 
-// ============ 1 · W-01 the freeze
-{
-  const out = Array.from({ length: 6 }, (_, i) => S("C8", `out[${i}].maxEventLoopStallMs`)), call = S("C8", "out[3].callMs");
-  const sizes = [10000, 25000, 50000, 100000];
-  sketch(1, "freeze", "W-01", "High", "One long run of letters freezes the whole server",
-    `The vendor's tool answered in about ${call} ms. The freeze comes after, while the event is cleaned.`,
-    `A chart of how long the server froze for 10,000 to 100,000 unbroken letters, from ${fmt(out[0])} ms to ${fmt(out[3])} ms`,
-    `Own redaction function that cuts to 2,000 characters first: ${fmt(S("M1", "stock.maxEventLoopStallMs"))} ms down to ${S("M1", "cut.maxEventLoopStallMs")} ms.`,
-    `Cut the text before the email pattern runs (P1): ${P("C8", "out[3].maxEventLoopStallMs")} ms at 100,000 letters.`,
-    (p) => {
-      p.rect(40, 120, 250, 64, { fill: "#fff" }); p.text(56, 146, ["One argument:", "100,000 letters, no spaces"], { size: 14, maxW: 220 });
-      p.line(165, 186, 165, 232, { arrow: true, color: MUTE, cls: "flow" });
-      p.rect(40, 236, 250, 78, { fill: "#fff1f0", stroke: RED, sw: 2.4, cls: "pulse" });
-      p.text(56, 262, ["The email pattern scans", "the whole text first"], { size: 14, weight: 600, maxW: 220 });
-      p.text(56, 303, "then cuts it to the size limit", { size: 12, color: MUTE, maxW: 224 });
-      p.line(165, 316, 165, 362, { arrow: true, color: RED, cls: "flow" });
-      p.rect(40, 366, 250, 62, { fill: "#fff" }); p.text(56, 392, ["The whole process stops:", "no customer is answered"], { size: 14, maxW: 220 });
-      // chart
-      const base = 392, top = 150, max = out[3], bw = 74, xs = [380, 480, 580, 680];
-      p.line(360, base, 930, base, { color: INK, sw: 2.2 });
-      p.line(360, base, 360, top - 14, { color: INK, sw: 2.2 });
-      p.text(366, top - 22, "How long the server froze (ms)", { size: 13, color: MUTE, maxW: 300 });
-      xs.forEach((x, i) => {
-        const h = Math.max(4, ((base - top) * out[i]) / max);
-        p.rect(x, base - h, bw, h, { fill: i === 3 ? RED : ORG, stroke: INK, sw: 1.6, cls: "grow", style: `animation-delay:${i * 0.18}s` });
-        p.text(x + bw / 2, base - h - 8, fmt(out[i]), { size: 15, anchor: "middle", weight: 700 });
-        p.text(x + bw / 2, base + 20, fmt(sizes[i]), { size: 12.5, anchor: "middle", color: MUTE });
-      });
-      p.text(380, base + 38, "unbroken letters in one argument", { size: 12.5, color: MUTE });
-      const wh = Math.max(4, ((base - top) * out[4]) / max);
-      p.rect(800, base - wh, bw, wh, { fill: GRN, stroke: INK, sw: 1.6, cls: "grow", style: "animation-delay:.8s" });
-      p.text(837, base - wh - 8, fmt(out[4]), { size: 15, anchor: "middle", weight: 700 });
-      p.text(837, base + 20, "100,000", { size: 12.5, anchor: "middle", color: MUTE });
-      p.text(837, base + 36, "ordinary words", { size: 12.5, anchor: "middle", color: MUTE });
-      p.text(396, 196, "doubling the length", { size: 17, hand: true, color: RED });
-      p.text(396, 218, "about quadruples the time", { size: 17, hand: true, color: RED });
+// ============ Breaks the vendor's own product
+S(1, "outage-changes-the-answer", "W-02", "An outage at Within changes the vendor's answer",
+  "If Within cannot be reached, the vendor's text still comes back, but the SDK also writes its own status into the data.",
+  "A tool whose output format allows only shipped or pending fails when Within is down, because the SDK writes service_unreachable",
+  (p) => {
+    bx(p, 40, 120, 250, 96, "Within is up", ["the vendor's tool returns", `status: shipped or pending`], { stroke: GRN, fill: "#f3faf6" });
+    arr(p, 292, 168, 400, 168, GRN);
+    bx(p, 404, 120, 250, 96, "Call result", [], { stroke: GRN, fill: "#f3faf6" }); stat(p, 418, 192, E("A3b", "within_up_ok") ? "ok" : "error", GRN);
+    bx(p, 40, 250, 250, 110, "Within is down", ["the SDK writes", "status: \"service_unreachable\"", "into the vendor's data"], { stroke: RED, fill: "#fff1f0", cls: "pulse" });
+    arr(p, 292, 305, 400, 305, RED);
+    bx(p, 404, 250, 516, 110, "The tool declares status as shipped or pending", ["Check A3b: " + (E("A3b", "within_down_ok") ? "ok" : "the call fails with an output validation error"), `\"${trunc(E("A3b", "within_down_message").replace(/^MCP error -32602: /, ""), 62)}\"`], { stroke: RED, fill: "#fff1f0" });
+    note(p, 40, 392, `The extra line of text does arrive (check A2, ${E("A2", "tookMs")} ms). The harm is in the vendor's structured data.`, MUTE, 13.5);
+  });
+S(2, "every-call-waits", "W-03", "A hung Within adds five seconds to every call",
+  "After a wrapped tool call, the SDK waits up to five seconds for Within's reply. Every call pays that.",
+  `Three calls with Within hanging took ${E("A1b", "timesMs").join(", ")} ms each`,
+  (p) => {
+    const t = E("A1b", "timesMs"), max = Math.max(...t), base = 384, top = 176, bw = 110;
+    p.line(100, base, 640, base, { color: INK, sw: 2.2 }); p.line(100, base, 100, top - 10, { color: INK, sw: 2.2 });
+    p.text(106, 128, "How long the vendor's tool call took (ms), Within not answering", { size: 13, color: MUTE, maxW: 520 });
+    t.forEach((v, i) => { const h = ((base - top) * v) / max, x = 150 + i * 160; p.rect(x, base - h, bw, h, { fill: RED, stroke: INK, sw: 1.6, cls: "grow", style: `animation-delay:${i * 0.2}s` }); p.text(x + bw / 2, base - h - 8, fmt(v), { size: 15, anchor: "middle", weight: 700 }); p.text(x + bw / 2, base + 20, `call ${i + 1}`, { size: 12.5, anchor: "middle", color: MUTE }); });
+    bx(p, 690, 140, 230, 112, "With Within up", [`${E("A8b", "wrapped_0ms")} ms of extra wait`], { stroke: GRN, fill: "#f3faf6" });
+    bx(p, 690, 272, 230, 112, "Within slow by 300 ms", [`wrapped: ${E("A8b", "wrapped_300ms")} ms`, `unwrapped: ${E("A8b", "unwrapped_300ms")} ms`], { stroke: BLU, fill: "#eef4fb" });
+  });
+S(3, "context-input-lost", "W-04", "A vendor tool's own context input is swallowed",
+  "If a vendor tool has its own input called context, the SDK takes it. The vendor's code never sees the value.",
+  "The vendor tool's own context value never reaches its handler and goes to Within as the goal text",
+  (p) => {
+    bx(p, 40, 120, 270, 100, "The model's call", ["question: How do refunds work?", "context: Customer Priya Raman, …"], { size: 14 });
+    arr(p, 312, 170, 420, 170, ORG);
+    bx(p, 424, 100, 250, 140, "The SDK", ["takes context away", "from the vendor's input"], { stroke: ORG, fill: "#fff7ed", cls: "pulse" });
+    arr(p, 676, 140, 770, 120, ORG); arr(p, 676, 200, 770, 232, RED);
+    bx(p, 774, 90, 146, 70, "Vendor's code", ["gets question"], { size: 13.5 });
+    bx(p, 774, 200, 146, 70, "Within", ["gets it as goal"], { size: 13.5, stroke: RED, fill: "#fff1f0" });
+    p.rect(40, 300, 880, 70, { fill: "#fff" });
+    p.text(56, 326, `The vendor's handler received: ${JSON.stringify(E("B3", "handlerArgs"))}`, { size: 13.5, maxW: 840 });
+    p.text(56, 350, `Within received: "${E("B3", "mcpIntentSentToWithin")}"`, { size: 13.5, color: RED, maxW: 840 });
+  });
+S(4, "goal-longer-than-300", "W-05", "A goal longer than 300 characters rejects the call",
+  "The SDK adds a context input limited to 300 characters. A longer text from the model fails the whole call.",
+  `A 300-character goal worked: ${E("B4", "at300")}. A 375-character goal was rejected: ${!E("B4", "at375")}`,
+  (p) => {
+    bx(p, 40, 130, 400, 120, "A 300-character goal", ["the tool call goes through"], { stroke: GRN, fill: "#f3faf6" }); stat(p, 56, 230, E("B4", "at300") ? "accepted" : "rejected", GRN);
+    bx(p, 520, 130, 400, 120, "A 375-character goal", ["the whole tool call is rejected"], { stroke: RED, fill: "#fff1f0", cls: "pulse" }); stat(p, 536, 230, E("B4", "at375") ? "accepted" : "rejected", RED);
+    p.rect(40, 290, 880, 90, { fill: "#fff" });
+    p.text(56, 318, "The error the model gets:", { size: 13.5, weight: 700 });
+    p.text(56, 344, trunc(E("B4", "message"), 110), { size: 13, color: RED, maxW: 840 });
+    note(p, 56, 366, "The SDK already cuts the goal to 300 characters itself, so the limit on the input is not needed.", MUTE, 12.5);
+  });
+S(5, "meta-removed", "W-06", "The vendor's own _meta data is removed",
+  "When a rep's offer is attached to a tool result, the vendor's own _meta field is replaced by null.",
+  `With an offer attached, the vendor's _meta came back as ${String(R.B2.evidence._meta)}`,
+  (p) => {
+    bx(p, 40, 130, 380, 110, "The vendor's result", ["content: the answer", "_meta: the vendor's own data"], { stroke: GRN, fill: "#f3faf6" });
+    arr(p, 422, 185, 520, 185, ORG);
+    bx(p, 524, 130, 396, 110, "With a rep's offer attached", ["content: the answer + the offer", `_meta: ${String(R.B2.evidence._meta)}`], { stroke: RED, fill: "#fff1f0", cls: "pulse" });
+    p.rect(40, 290, 880, 70, { fill: "#fff" }); p.text(56, 318, `Check B2: assistance attached = ${E("B2", "assistanceAttached")}, _meta = ${String(R.B2.evidence._meta)}.`, { size: 14, maxW: 840 });
+    note(p, 56, 346, "We do not know why Within removes _meta. It may be to stop a second card from appearing.", MUTE, 12.5);
+  });
+S(6, "identify-throws", "W-07", "A throwing identity function fails the customer's call",
+  "The SDK asks the vendor's own function who the customer is. If it throws, the customer's call suffers.",
+  `The identity function threw "${E("A7", "message")}" and the vendor's handler ran: ${E("A7", "vendorHandlerRan")}`,
+  (p) => {
+    bx(p, 40, 130, 270, 100, "The vendor's function", ["who is this customer?"], { size: 14 });
+    arr(p, 312, 180, 420, 180, RED);
+    bx(p, 424, 130, 250, 100, "It throws", [`\"${E("A7", "message")}\"`], { stroke: RED, fill: "#fff1f0", cls: "pulse" });
+    arr(p, 676, 180, 770, 180, RED);
+    bx(p, 774, 130, 146, 100, "The call", ["is affected"], { stroke: RED, fill: "#fff1f0" });
+    p.rect(40, 270, 880, 80, { fill: "#fff" });
+    p.text(56, 298, `Check A7 (${R.A7.verdict}): vendor handler ran = ${E("A7", "vendorHandlerRan")}.`, { size: 14, maxW: 840 });
+    note(p, 56, 324, "A failure in the vendor's own helper should not become the customer's failure.", MUTE, 13);
+  });
+S(7, "long-text-freeze", "W-08", "Very long text without spaces freezes the server",
+  "The email pattern in the privacy filter slows down fast on unbroken text. While it runs, nobody is answered.",
+  `Letters: ${fmt(E("C8", "rows[0].medianMs"))} ms at 20,000, ${fmt(E("C8", "rows[1].medianMs"))} ms at 40,000, ${fmt(E("C8", "rows[2].medianMs"))} ms at 80,000`,
+  (p) => {
+    const rows = [0, 1, 2].map((i) => E("C8", `rows[${i}]`)), max = rows[2].medianMs, base = 384, top = 176, bw = 90, xs = [150, 280, 410];
+    p.line(110, base, 600, base, { color: INK, sw: 2.2 }); p.line(110, base, 110, top - 10, { color: INK, sw: 2.2 });
+    p.text(116, 128, "How long the server froze (ms, median of three runs)", { size: 13, color: MUTE, maxW: 480 });
+    rows.forEach((r, i) => { const h = ((base - top) * r.medianMs) / max; p.rect(xs[i], base - h, bw, h, { fill: i === 2 ? RED : ORG, stroke: INK, sw: 1.6, cls: "grow", style: `animation-delay:${i * 0.2}s` }); p.text(xs[i] + bw / 2, base - h - 8, fmt(r.medianMs), { size: 15, weight: 700, anchor: "middle" }); p.text(xs[i] + bw / 2, base + 20, fmt(r.size), { size: 12.5, anchor: "middle", color: MUTE }); });
+    p.text(150, base + 38, "unbroken letters in one argument", { size: 12.5, color: MUTE });
+    bx(p, 650, 130, 270, 96, "Digits and spaces, 80,000", [`${E("C8", "rows[4].medianMs")} ms`], { stroke: GRN, fill: "#f3faf6" });
+    bx(p, 650, 244, 270, 112, "An error, default settings", [`${fmt(E("C8", "rows[5].medianMs"))} ms at 20,000 letters`, `${fmt(E("C8", "rows[6].medianMs"))} ms at 40,000`], { stroke: ORG, fill: "#fff7ed" });
+  });
+S(8, "hub-text-in-result", "W-24", "Within's text is added to the vendor's tool result",
+  "With the hubs option on, a sentence written on Within's side is added to the vendor's own result, and the AI repeats it.",
+  `Real Claude repeated the sentence in ${U.hubRelayed} of ${U.hubRuns} runs and opened the hub ${U.hubOpened} times`,
+  (p) => {
+    const on = E("N8", "on.content");
+    bx(p, 40, 120, 400, 110, "Hubs off", [`the result: "${E("N8", "off.content[0]")}"`], { stroke: GRN, fill: "#f3faf6" });
+    bx(p, 480, 120, 440, 130, "Hubs on", [`"${on[0]}"`, `"${on[1]}"`], { stroke: RED, fill: "#fff1f0", cls: "pulse" });
+    p.text(498, 224, "← written on Within's side", { size: 15, hand: true, color: RED, weight: 700 });
+    p.rect(40, 290, 880, 96, { fill: "#fff" });
+    p.text(56, 318, `Real Claude (Haiku and Sonnet), hubs on, ${U.hubRuns} runs:`, { size: 14, weight: 700 });
+    p.text(56, 344, `repeated the sentence to the customer: ${U.hubRelayed} of ${U.hubRuns}, including ${U.hubRelayedH2} of ${U.hubRunsH2} where told not to`, { size: 13.5, maxW: 840 });
+    p.text(56, 368, `opened the hub by itself: ${U.hubOpened} of ${U.hubRuns}. These runs were made on 2026-11-21.`, { size: 13.5, maxW: 840 });
+  });
+
+// ============ What leaves the vendor's server
+S(9, "unwrapped-tool-reports", "W-09", "A tool the vendor did not wrap still reports",
+  "The docs say to wrap the tools Within should see. The SDK hooks every tool and reports one when a goal is filled in.",
+  `Without a goal text ${E("C7", "reportsWithoutGoal")} reports left; with a goal text ${E("C7", "reportsWithGoal")} did`,
+  (p) => {
+    bx(p, 40, 120, 380, 100, "An unwrapped tool", ["the vendor did not wrap it, as the docs allow"], { size: 14.5 });
+    arr(p, 150, 222, 150, 280, GRN); arr(p, 310, 222, 400, 280, RED);
+    bx(p, 40, 284, 250, 90, "No goal text", [`${E("C7", "reportsWithoutGoal")} reports to Within`], { stroke: GRN, fill: "#f3faf6" });
+    bx(p, 330, 284, 280, 90, "A model-written goal text", [`${E("C7", "reportsWithGoal")} report to Within`], { stroke: RED, fill: "#fff1f0", cls: "pulse" });
+    bx(p, 650, 120, 270, 254, "What can go with it", [`argument preview:`, `"${trunc(E("C7", "argumentPreviewForUnwrapped"), 30)}"`, "(with argument capture on)"], { stroke: RED, fill: "#fff1f0", size: 14 });
+  });
+S(10, "goal-text-gap", "W-10", "The goal text goes out with private details in it",
+  "The goal text the model writes goes to Within by default. The filter hides some details and lets the rest through.",
+  `${R.C2.evidence.table.filter((t) => t.survived).length} of ${R.C2.evidence.table.length} kinds of detail went out unredacted`,
+  (p) => {
+    const t = E("C2", "table"), kept = t.filter((x) => !x.survived), out = t.filter((x) => x.survived);
+    p.rect(40, 106, 880, 46, { fill: "#fff" }); p.text(56, 126, `By default the goal text is sent: "${trunc(E("C1", "mcpIntent"), 60)}"`, { size: 14, maxW: 840 }); p.text(56, 144, `We put ${t.length} kinds of private detail into one goal text and read what arrived.`, { size: 12, color: MUTE });
+    p.text(40, 182, `Hidden (${kept.length})`, { size: 14.5, weight: 700, color: GRN }); p.text(480, 182, `Went out unredacted (${out.length})`, { size: 14.5, weight: 700, color: RED });
+    let x = 40, y = 196; kept.forEach((k) => { const w = k.kind.length * 6.8 + 16; if (x + w > 450) { x = 40; y += 26; } p.chip(x, y, k.kind, GRN, { size: 12 }); x += w + 8; });
+    x = 480; y = 196; out.forEach((k) => { const w = k.kind.length * 6.8 + 16; if (x + w > 920) { x = 480; y += 26; } p.chip(x, y, k.kind, RED, { size: 12 }); x += w + 8; });
+    note(p, 40, 400, "The docs table lists what the filter hides; the goal text itself is not listed as something that leaves.", MUTE, 12.5);
+  });
+S(11, "whole-question-sent", "W-11", "The customer's whole question goes to Within",
+  "When the customer asks Within a question, the full text is sent. The filter that hides emails elsewhere does not run.",
+  `A question with a name, phone number, email and card: all four reached Within as typed`,
+  (p) => {
+    p.rect(40, 110, 880, 70, { fill: "#fff" }); p.text(56, 136, `"${trunc(E("C10", "question"), 100)}"`, { size: 13.5, hand: true, maxW: 840 }); p.text(56, 160, `fields in the request to Within: ${E("C10", "keys").join(", ")}`, { size: 12.5, color: MUTE, maxW: 840 });
+    arr(p, 480, 182, 480, 232, RED);
+    const ks = [["name", "nameSurvived"], ["phone", "phoneSurvived"], ["email", "emailSurvived"], ["card", "cardSurvived"]];
+    ks.forEach(([n, k], i) => bx(p, 40 + i * 224, 238, 208, 90, n, [E("C10", k) ? "arrived as typed" : "hidden"], { stroke: E("C10", k) ? RED : GRN, fill: E("C10", k) ? "#fff1f0" : "#f3faf6" }));
+    note(p, 40, 362, "Check C10. The question is sent so a rep can answer it; the docs do not say it is sent unredacted.", MUTE, 13);
+  });
+S(12, "errors-carry-details", "W-12", "Error messages carry private details to Within",
+  "With default settings, the text of an error the vendor's tool throws or returns is reported. Only the email is hidden.",
+  `In the thrown and in the returned error, the phone number and the name arrived; the email was hidden`,
+  (p) => {
+    [["A thrown error", "thrown"], ["A returned error (isError)", "returned"]].forEach(([title, k], i) => {
+      const e = E("C3", k), x = 40 + i * 450;
+      bx(p, x, 120, 430, 230, title, [`sent as: "${trunc(e.error, 44)}"`], { size: 14.5 });
+      p.chip(x + 14, 200, "phone: " + (e.phone ? "arrived" : "hidden"), e.phone ? RED : GRN, { size: 13 }); p.chip(x + 14, 232, "name: " + (e.name ? "arrived" : "hidden"), e.name ? RED : GRN, { size: 13 }); p.chip(x + 14, 264, "email: " + (e.email ? "arrived" : "hidden"), e.email ? RED : GRN, { size: 13 });
     });
-}
+    note(p, 40, 392, `Check C3, with argument capture ${E("C3", "captureArguments") ? "on" : "off"}.`, MUTE, 13);
+  });
+S(13, "results-and-secrets", "W-13", "Tool results leave too, and some secrets slip through",
+  "With argument capture on, tool results go to Within, and the filter's list of secret argument names misses several.",
+  `${E("C6", "leaked").length} of ${E("C6", "tested").length} secret-looking argument names reached Within`,
+  (p) => {
+    bx(p, 40, 120, 420, 120, "The tool's result is reported", [`"${trunc(E("C4", "resultText"), 48)}"`, `argument preview: "${trunc(E("C4", "argumentPreview"), 40)}"`], { stroke: RED, fill: "#fff1f0", size: 14 });
+    p.text(500, 140, `Argument names tested: ${E("C6", "tested").length}`, { size: 14.5, weight: 700 });
+    p.text(500, 162, `Values that reached Within (${E("C6", "leaked").length}):`, { size: 13.5, color: RED, weight: 700 });
+    let x = 500, y = 174; E("C6", "leaked").forEach((k) => { const w = k.length * 7.2 + 16; if (x + w > 920) { x = 500; y += 26; } p.chip(x, y, k, RED, { size: 12.5 }); x += w + 8; });
+    note(p, 40, 300, "Checks C4 and C6, with argument capture on. Names like password and token were hidden; these were not.", MUTE, 13);
+  });
+S(14, "login-token-sent", "W-21", "The customer's login token is sent to Within",
+  "With the new identity option on, the signed login token of the customer travels to Within with every tool call.",
+  `With the option on the token was sent: ${E("N1", "withIdentity.authTokenSent")}. By default: ${E("N1", "byDefault.authTokenSent")}`,
+  (p) => {
+    bx(p, 40, 120, 250, 100, "The customer's call", ["carries a signed login token"], { size: 14 });
+    arr(p, 292, 170, 400, 170, ORG);
+    bx(p, 404, 100, 270, 140, "identity option on", [`fields sent: ${E("N1", "withIdentity.fieldsSent").length}`, `authToken: ${E("N1", "withIdentity.authTokenSent") ? "yes, as received" : "no"}`], { stroke: RED, fill: "#fff1f0", cls: "pulse" });
+    arr(p, 676, 170, 770, 170, RED);
+    bx(p, 774, 130, 146, 80, "Within", ["holds a token"], { size: 14 });
+    bx(p, 404, 270, 270, 90, "identity option off", [`authToken sent: ${E("N1", "byDefault.authTokenSent")}`], { stroke: GRN, fill: "#f3faf6" });
+    note(p, 40, 392, "Within's docs list the raw bearer token under what stays on the vendor's server. Whether Within's server verifies it is not visible.", MUTE, 12.5);
+  });
+S(15, "report-void-default", "W-22", "report_void is on and sends the customer's words",
+  "Every install adds a tool, report_void, for the AI to use when it cannot help. What the AI writes goes out unredacted.",
+  `In our test the phone, name and email all arrived; real Claude wrote ${U.allNames} names, ${U.allPhones} phones and ${U.allEmails} emails in ${U.allVoidCalls} calls`,
+  (p) => {
+    bx(p, 40, 120, 270, 110, "report_void", [`listed to the AI by default: ${E("N5", "toolListedByDefault")}`], { stroke: ORG, fill: "#fff7ed" });
+    arr(p, 312, 175, 420, 175, RED);
+    bx(p, 424, 100, 496, 150, "In the check (N5), what the AI wrote", [`"${trunc(E("N5", "voidAsked"), 62)}"`, `phone: ${E("N5", "leaked.phone") ? "arrived" : "hidden"}   name: ${E("N5", "leaked.name") ? "arrived" : "hidden"}   email: ${E("N5", "leaked.email") ? "arrived" : "hidden"}`], { stroke: RED, fill: "#fff1f0" });
+    p.rect(40, 290, 880, 86, { fill: "#fff" });
+    p.text(56, 318, "Real Claude (Haiku and Sonnet), questions that held a name, a phone number and an email:", { size: 13.5, weight: 700, maxW: 840 });
+    p.text(56, 344, `${U.allVoidCalls} calls; the name appeared in ${U.allNames}, the phone in ${U.allPhones}, the email in ${U.allEmails}. Every phrase was a short topic.`, { size: 13.5, maxW: 840 });
+    p.text(56, 366, `The tool was used in ${U.voidRuns} of ${U.totalRuns} ordinary Haiku runs and ${U.sVoidRuns} of ${U.sTotalRuns} Sonnet runs.`, { size: 13, color: MUTE, maxW: 840 });
+  });
+S(16, "app-name-fallback", "W-23", "A browser's user-agent text is sent as the app name",
+  "If the AI app does not report its name, the SDK sends the first 80 characters of the user-agent text as its name.",
+  `The app named itself "${E("N4", "viaInit.hostName")}" in one run; in the other, ${E("N4", "viaUa.hostName").length} characters of user-agent text were sent`,
+  (p) => {
+    bx(p, 40, 120, 420, 120, "The app reports itself", [`hostName: "${E("N4", "viaInit.hostName")}"`, `detected by: ${E("N4", "viaInit.hostDetectedBy")}`], { stroke: GRN, fill: "#f3faf6" });
+    bx(p, 500, 120, 420, 150, "Only a browser's user-agent text", [`hostName: "${trunc(E("N4", "viaUa.hostName"), 38)}"`, `${E("N4", "viaUa.hostName").length} characters, copied from the header`], { stroke: RED, fill: "#fff1f0", cls: "pulse" });
+    note(p, 40, 320, "Check N4. The user-agent text can carry the visitor's operating system and browser version.", MUTE, 13);
+  });
 
-// ============ 2 · W-02 details inside a sentence
-{
-  const cols = [["goal text", S("C2", "survivors")], ["a free-text argument", S("C5", "survivors")], ["an error message", S("C3", "survivors")], ["the tool's result", S("C4", "survivors")]];
-  const hiddenGoal = (S("C2", "ctx").match(/\[redacted\]/g) ?? []).length;
-  sketch(2, "details-inside-a-sentence", "W-02", "High", "Private details inside a sentence are not hidden",
-    "One sentence held an email, phone, card, keys, addresses and a name. These kinds went out as written.",
-    `Four columns showing which kinds of private detail went to Within as written: goal text ${cols[0][1].length}, argument ${cols[1][1].length}, error message ${cols[2][1].length}, tool result ${cols[3][1].length}`,
-    `Own redaction function for digit runs, keys, web and IP addresses: ${S("M2", "survivors").join(" and ")} still go out.`,
-    "Find phone, social security and card numbers inside text, not only as the whole value.",
-    (p) => {
-      p.rect(40, 100, 880, 52, { fill: "#fff" });
-      p.text(56, 122, "\"Customer … email … phone … ssn … card … key … page … host … lives at …\"", { size: 14, hand: true, maxW: 840 });
-      p.text(56, 142, "one customer sentence, sent through the vendor's tool", { size: 12, color: MUTE });
-      cols.forEach(([name, kinds], c) => {
-        const x = 40 + c * 224, w = 208;
-        p.line(x + w / 2, 154, x + w / 2, 176, { arrow: true, color: MUTE });
-        p.rect(x, 180, w, 44, { fill: "#fff1f0", stroke: RED, sw: 2 });
-        p.text(x + 12, 200, name, { size: 14, weight: 700, maxW: w - 20 });
-        p.text(x + 12, 216, `${kinds.length} kinds went out as written`, { size: 12, color: RED, maxW: w - 20 });
-        kinds.forEach((k, i) => p.chip(x + 6, 230 + i * 20, k, RED, { size: 11 }));
-        if (c === 1) { p.chip(x + 6, 230 + kinds.length * 20 + 8, "email, bearer: hidden", GRN, { size: 11 }); }
-        if (c === 0) { p.chip(x + 6, 230 + kinds.length * 20 + 8, `${hiddenGoal} details hidden`, GRN, { size: 11 }); }
-      });
-    });
-}
+// ============ Docs say one thing, the package does another
+S(17, "instructions-replaced", "W-15", "A banned phrase replaces all the vendor's instructions",
+  "The docs say a banned phrase replaces one paragraph. The code replaces all of the vendor's instructions.",
+  `Both vendor paragraphs were gone; the result equals Within's ${fmt(E("D1", "length"))}-character text`,
+  (p) => {
+    bx(p, 40, 120, 250, 100, "The vendor's instructions", ["paragraph 1", "paragraph 2 (banned phrase)"], { size: 14 });
+    arr(p, 292, 170, 400, 170, RED);
+    bx(p, 404, 110, 516, 120, "What the model sees", [`paragraph 1 kept: ${E("D1", "paragraph1Kept")}`, `paragraph 2 kept: ${E("D1", "paragraph2Kept")}`, `equals Within's text (${fmt(E("D1", "length"))} characters): ${E("D1", "equalsWithinText")}`], { stroke: RED, fill: "#fff1f0", cls: "pulse" });
+    p.text(40, 270, "Phrases that trigger the replacement, all confirmed:", { size: 13.5, weight: 700 });
+    let x = 40; E("D2", "rows").forEach((r) => { const w = r.phrase.length * 6.6 + 16; p.chip(x, 282, r.phrase, r.replaced ? RED : GRN, { size: 11.5 }); x += w + 6; });
+    note(p, 40, 340, "Checks D1 to D3. Normal vendor instructions stay first when no banned phrase is present.", MUTE, 13);
+  });
+S(18, "silent-failures", "W-16", "A wrong key or a missing address fails silently",
+  "With a rejected key or a blank setting, the server runs and nothing tells the vendor that Within gets nothing.",
+  `A wrong key left ${E("A4", "logLines").length} log lines; a key of only spaces was accepted`,
+  (p) => {
+    bx(p, 40, 120, 280, 110, "A wrong key", [`requests made: ${E("A4", "requests")}`, `log lines written: ${E("A4", "logLines").length}`], { stroke: RED, fill: "#fff1f0" });
+    bx(p, 340, 120, 280, 110, "No key, or an empty key", [`missing: ${E("A10", "missing").replace("threw ", "threw ")}`, `empty: ${E("A10", "empty")}`], { stroke: GRN, fill: "#f3faf6" });
+    bx(p, 640, 120, 280, 110, "A key of only spaces", [E("A10", "spaces")], { stroke: RED, fill: "#fff1f0", cls: "pulse" });
+    bx(p, 40, 262, 880, 90, "Which addresses the SDK contacted", [E("A9", "urlsContacted").join("   "), `log lines: ${E("A9", "logLines")}`], { size: 14, stroke: INK });
+    note(p, 40, 384, "Checks A4, A9 and A10. A missing key stops start-up with an error; the other cases do not.", MUTE, 13);
+  });
+S(19, "unused-address-lists", "W-17", "Two lists of private addresses are never used",
+  "The SDK builds lists of private-network addresses, as if to refuse them, and then never checks an address against them.",
+  `Lists defined: ${E("F5", "defined")}; lists used: ${E("F5", "used")}`,
+  (p) => {
+    bx(p, 40, 130, 400, 120, "Defined in the code", [`${E("F5", "defined")} lists of private-network addresses`], { stroke: BLU, fill: "#eef4fb" }); stat(p, 56, 232, `${E("F5", "defined")} defined`, BLU);
+    bx(p, 520, 130, 400, 120, "Checked against", ["the address of any request"], { stroke: RED, fill: "#fff1f0" }); stat(p, 536, 232, `${E("F5", "used")} used`, RED);
+    note(p, 40, 300, "Check F5. A list that is built and never read gives a reader the wrong idea about what is blocked.", MUTE, 13.5);
+  });
 
-// ============ 3 · W-03 sent by default
-{
-  const fields = S("C1", "fields"), n0 = S("Z2b", "n"), nboth = S("Z2", "n");
-  sketch(3, "sent-by-default", "W-03", "Medium", "Arguments and results go to Within by default",
-    "Every tool call is reported with what was asked and what the tool answered. The only off switch stops all reporting.",
-    `One reported event with ${fields.length} fields, and two switches: tracing off sends ${n0} events, the other two switches off still send ${nboth}`,
-    "Mask what leaves with `redactSensitiveInformation`, or set `enableTracing` to false (stops everything).",
-    "Make argument and result capture opt-in, and say in the README what leaves by default.",
-    (p) => {
-      p.rect(40, 120, 190, 70, { fill: "#fff" }); p.text(54, 146, ["The vendor's tool", "search_companies"], { size: 14, maxW: 165 });
-      p.text(54, 180, "query: \"acme corp\"", { size: 12, color: MUTE, maxW: 165 });
-      p.line(232, 156, 330, 156, { arrow: true, color: ORG, cls: "flow" });
-      p.rect(334, 108, 330, 236, { fill: "#fff", stroke: ORG, sw: 2.2 });
-      p.text(348, 130, `One event: ${fields.length} fields`, { size: 14, weight: 700, maxW: 300 });
-      let x = 346, y = 142;
-      fields.forEach((f) => { const hot = ["parameters", "response", "userIntent"].includes(f), w = f.length * 7 + 14; if (x + w > 656) { x = 346; y += 28; } p.chip(x, y, f, hot ? RED : "#8b949e", { size: 12 }); x += w + 6; });
-      p.text(348, 330, "red: what was asked and answered", { size: 12, color: RED, maxW: 306 });
-      p.line(666, 216, 770, 216, { arrow: true, color: ORG, cls: "flow" });
-      p.rect(774, 180, 146, 74, { fill: "#eef4fb", stroke: BLU, sw: 2 }); p.text(790, 212, "Within", { size: 18, weight: 700 }); p.text(790, 234, "gets all of it", { size: 12.5, color: MUTE });
-      // switches
-      p.rect(40, 360, 400, 78, { fill: "#fff" });
-      p.text(54, 381, "enableTracing: false", { size: 15, weight: 700, maxW: 370 });
-      p.text(54, 404, `events sent: ${n0}`, { size: 18, hand: true, color: GRN, maxW: 370 });
-      p.text(54, 424, "everything stops, the analytics too", { size: 12.5, color: MUTE, maxW: 370 });
-      p.rect(480, 360, 440, 78, { fill: "#fff" });
-      p.text(494, 381, "the two context switches off", { size: 15, weight: 700, maxW: 410 });
-      p.text(494, 404, `events sent: ${nboth}`, { size: 18, hand: true, color: RED, maxW: 410 });
-      p.text(494, 424, "arguments and results still leave", { size: 12.5, color: MUTE, maxW: 410 });
-    });
-}
+// ============ Design questions for Within's team
+S(20, "consent-rests-on-the-ai", "W-18", "Consent rests on the AI, not on the SDK",
+  "The SDK forwards an accept without checking that the customer chose it, so everything depends on what the model decides.",
+  `An accept with only a session id was ${E("E1", "status")}; an offer never shown was still forwarded`,
+  (p) => {
+    bx(p, 40, 120, 280, 120, "An accept call", [`body: ${Object.keys(E("E1", "acceptBody")).join(", ")}`, `status: ${E("E1", "status")}`], { stroke: RED, fill: "#fff1f0" });
+    bx(p, 340, 120, 280, 120, "confirm_assistance", [`listed to the AI: ${E("E2", "confirm_assistance.listedToModel")}`], { stroke: ORG, fill: "#fff7ed" });
+    bx(p, 640, 120, 280, 120, "An offer never shown", [`forwarded: ${E("E3", "forwarded")}`, trunc(E("E3", "path"), 36)], { stroke: RED, fill: "#fff1f0" });
+    p.rect(40, 270, 880, 100, { fill: "#fff" });
+    p.text(56, 296, `Real Claude, ${U.consHaikuRuns + U.consSonnetRuns} runs with an offer waiting: the accept tool was called ${U.consHaikuConfirm + U.consSonnetConfirm} times.`, { size: 14, weight: 700, maxW: 840 });
+    p.text(56, 322, "So in practice the model declined. The SDK itself does not stop it from accepting.", { size: 13.5, maxW: 840 });
+    note(p, 56, 348, "Checks E1 to E3, and real-Claude runs from 2026-11-21.", MUTE, 12.5);
+  });
+S(21, "no-session-no-offer", "W-19", "Without sessions, an offer cannot find the customer",
+  "The SDK keeps one id per connection. A server that opens a new one per request cannot be found again by a rep.",
+  `Inside one connection the id stayed the same: ${E("C9", "sameInsideConnection")}; across connections it was different ${E("C9", "distinctAcrossConnections")} times`,
+  (p) => {
+    bx(p, 40, 120, 400, 120, "Inside one connection", [`same id every call: ${E("C9", "sameInsideConnection")}`], { stroke: GRN, fill: "#f3faf6" });
+    bx(p, 480, 120, 440, 120, "Three separate connections", [`${E("C9", "distinctAcrossConnections")} different ids`], { stroke: RED, fill: "#fff1f0", cls: "pulse" });
+    for (let i = 0; i < 3; i++) p.chip(500 + i * 130, 198, `id ${i + 1}`, RED, { size: 13 });
+    note(p, 40, 290, "Check C9. A stateless server, which opens a connection for each request, gets a new id each time.", MUTE, 13.5);
+  });
+S(22, "doctor-misses-w04", "W-25", "The doctor command misses a removed context input",
+  "The doctor command says the tools carry the context field, even when the SDK removed the vendor's own context input.",
+  `The doctor exited with ${E("N7", "exit")} and printed that Within is installed`,
+  (p) => {
+    bx(p, 40, 110, 880, 150, "What the doctor command printed", E("N7", "output").split("\n").filter((l) => l.trim()).slice(0, 5).map((l) => trunc(l, 108)), { size: 14, stroke: ORG, fill: "#fff7ed" });
+    bx(p, 40, 290, 880, 80, "What it does not check", ["whether a tool's own context input was removed by the SDK (finding W-04)"], { stroke: RED, fill: "#fff1f0" });
+  });
+S(23, "hub-card-app-only", "W-26", "hub_card is app-only by label, not by lock",
+  "The hub_card tool is hidden from the AI only by a label. Any client that sends a call to it directly gets through.",
+  `hub_card visibility: ${E("N9", "hubCardVisibility").join(", ")}; a direct call reached the send route: ${E("N9", "sendReached")}`,
+  (p) => {
+    bx(p, 40, 120, 400, 120, "hub_card", [`visibility: ${E("N9", "hubCardVisibility").join(", ")}`, "meant for the app, not the AI"], { stroke: BLU, fill: "#eef4fb" });
+    bx(p, 480, 120, 440, 120, "open_hub", [`visibility: ${E("N9", "openHubVisibility").join(", ")}`], { stroke: GRN, fill: "#f3faf6" });
+    bx(p, 40, 270, 880, 90, "A direct call to hub_card", [`reached the send route: ${E("N9", "sendReached")}; body fields: ${E("N9", "sendBodyFields").join(", ")}`, `Real Claude called hub_card ${U.hubCardCalls} times in ${U.hubRuns} runs.`], { stroke: RED, fill: "#fff1f0", size: 14 });
+  });
 
-// ============ 4 · W-04 key names
-{
-  const kept = S("C6", "kept"), dropped = S("C6", "dropped"), keptP = P("C6", "kept");
-  sketch(4, "argument-names", "W-04", "Medium", "Names like name, address and dob are sent as written",
-    `We sent ${kept.length + dropped.length} differently named arguments. The package hides a value only when the name holds one of its 31 listed words.`,
-    `${dropped.length} argument names were hidden and ${kept.length} were sent as written: ${kept.join(", ")}`,
-    `The documented \`privacy.redactKeys\` option: with the six names listed, only ${S("M3", "kept").join(", ")} was still sent as written.`,
-    `Add address, dob and birth to the list (P4): still sent as written, ${keptP.join(", ")}.`,
-    (p) => {
-      p.rect(40, 110, 420, 40, { fill: "#f3faf6", stroke: GRN, sw: 2 }); p.text(54, 136, `Hidden or removed: ${dropped.length}`, { size: 15, weight: 700, color: GRN });
-      p.rect(500, 110, 420, 40, { fill: "#fff1f0", stroke: RED, sw: 2.4, cls: "pulse" }); p.text(514, 136, `Sent with the value as written: ${kept.length}`, { size: 15, weight: 700, color: RED });
-      const place = (arr, x0, color, wide) => { let x = x0, y = 166; arr.forEach((k) => { const w = k.length * 7.2 + 18; if (x + w > x0 + wide) { x = x0; y += 36; } p.chip(x, y, k, color, { size: 14 }); x += w + 8; }); };
-      place(dropped, 44, GRN, 410); place(kept, 504, RED, 410);
-      p.text(500, 300, "The README says identity-like fields in parameters", { size: 15, hand: true, color: INK, maxW: 420 });
-      p.text(500, 322, "are removed or redacted. These are identity-like:", { size: 15, hand: true, color: INK, maxW: 420 });
-      p.text(500, 346, "name, address, dob, ip, customer", { size: 15, hand: true, color: RED, weight: 700, maxW: 420 });
-      p.text(44, 300, "password, token, api_key, secret, email, ssn, phone …", { size: 13, color: MUTE, maxW: 420 });
-      p.text(44, 320, "the words on the list: the value is replaced.", { size: 13, color: MUTE, maxW: 420 });
-    });
-}
+// ============ How the AI behaves
+S(24, "comparison-false-alarm", "W-20", "A small model treats a comparison as a sales question",
+  `The trigger list says "a competitive comparison". Asked to compare two of its records, Haiku sometimes called Within.`,
+  `Haiku sent the comparison to Within in ${U.x1New} runs; with one clarifying phrase, ${U.x1Patched}; Sonnet, ${U.x1SonnetNew}`,
+  (p) => {
+    const w = 360, n = U.x1NewC / U.x1NewN, q = U.x1PatchedC / U.x1PatchedN;
+    p.text(40, 128, "How often Haiku sent \"Compare Ledgerly and Paywise\" to Within", { size: 14.5, weight: 700 });
+    p.rect(40, 150, w + 2, 36, { fill: "#fff" }); p.rect(41, 151, Math.max(3, w * n), 34, { fill: RED, stroke: "none", sw: 0, cls: "growx" }); p.text(40 + w + 14, 175, `unpatched wording: ${U.x1New}`, { size: 15, hand: true, weight: 700, color: RED });
+    p.rect(40, 200, w + 2, 36, { fill: "#fff" }); p.rect(41, 201, Math.max(3, w * q), 34, { fill: GRN, stroke: "none", sw: 0, cls: "growx" }); p.text(40 + w + 14, 225, `with the clarifying phrase (P11): ${U.x1Patched}`, { size: 15, hand: true, weight: 700, color: GRN });
+    p.text(40, 266, `Real competitor questions with the phrase added: ${U.x2Patched} still went to Within. Sonnet, unpatched: ${U.x1SonnetNew}.`, { size: 13.5, maxW: 880 });
+    p.rect(40, 296, 880, 70, { fill: "#fff" }); p.text(56, 322, `Fisher exact p = ${U.x1PatchedP} for patched against unpatched. Three same-day batches of 10 runs.`, { size: 13.5, maxW: 840 });
+    p.text(56, 346, "Haiku and Sonnet runs from 2026-11-20 and 2026-11-21, on the file npm serves today.", { size: 12.5, color: MUTE, maxW: 840 });
+  });
 
-// ============ 5 · W-05 stuck queue
-{
-  const hung = S("A1c", "hungPosts"), waiting = S("A1c", "waiting"), ok = S("A1c", "okPosts"), mit = S("M5", "got"), pat = P("A1c", "okPosts");
-  sketch(5, "stuck-queue", "W-05", "Medium", "A hung Within blocks every later report",
-    "One queue, five requests at a time, and no time limit on a request. We watched 15 seconds after Within recovered.",
-    `${hung} stuck requests fill the queue, ${waiting} later reports wait, and ${ok} requests reach Within in the next 15 seconds; with a 1.5 second limit ${mit} do`,
-    `A \`fetch\` option with a 1.5-second limit: ${mit} requests got through after Within recovered.`,
-    `A 5-second limit on every request inside the package (P2): ${pat} requests got through.`,
-    (p) => {
-      p.text(40, 118, "The queue: five lanes, no time limit", { size: 15, weight: 700 });
-      for (let i = 0; i < hung; i++) { p.rect(40, 130 + i * 40, 330, 32, { fill: "#fff1f0", stroke: RED, sw: 1.8 }); p.text(54, 151 + i * 40, `request ${i + 1}: Within never answers`, { size: 13, maxW: 300 }); p.line(300, 146 + i * 40, 360, 146 + i * 40, { color: RED, cls: "slow", sw: 2 }); }
-      p.text(40, 346, `${waiting} later reports wait behind them`, { size: 15, weight: 700, color: ORG });
-      for (let i = 0; i < waiting; i++) p.rect(40 + i * 74, 358, 64, 34, { fill: "#fff7ed", stroke: ORG, sw: 1.8, cls: "bob", style: `animation-delay:${i * 0.3}s` });
-      p.text(40, 414, "report", { size: 12, color: MUTE }); p.text(114, 414, "report", { size: 12, color: MUTE }); p.text(188, 414, "report", { size: 12, color: MUTE });
-      // timeline right
-      p.line(430, 150, 920, 150, { color: INK, sw: 2.2, arrow: true });
-      p.text(430, 138, "time", { size: 13, color: MUTE });
-      p.rect(430, 164, 130, 40, { fill: "#fff1f0", stroke: RED, sw: 1.8 }); p.text(442, 189, "Within hangs", { size: 13.5, weight: 600 });
-      p.rect(600, 164, 150, 40, { fill: "#f3faf6", stroke: GRN, sw: 1.8 }); p.text(612, 189, "Within recovers", { size: 13.5, weight: 600 });
-      p.text(600, 232, "the next 15 seconds:", { size: 13.5, color: MUTE });
-      p.rect(430, 250, 490, 56, { fill: "#fff" }); p.text(446, 274, `requests that reach Within: ${ok}`, { size: 22, hand: true, color: RED, weight: 700 }); p.text(446, 296, `${waiting} later reports were waiting; the stuck ones are never abandoned`, { size: 12.5, color: MUTE, maxW: 460 });
-      p.rect(430, 322, 490, 44, { fill: "#f3faf6", stroke: GRN, sw: 1.8 }); p.text(446, 350, `with a time limit on each request: ${mit} reach Within`, { size: 17, hand: true, color: GRN, weight: 700, maxW: 460 });
-      p.text(430, 394, "The vendor's own calls stay fast the whole time.", { size: 13, color: MUTE });
-    });
-}
-
-// ============ 6 · W-06 shutdown
-{
-  const plain = S("Z3", "plain.ms"), one = S("Z3", "one.ms"), two = S("Z3", "two.ms"), vend = S("M6", "ms"), pat = P("Z3", "one.ms");
-  const sec = Math.round(one / 1000);
-  sketch(6, "first-shutdown-ignored", "W-06", "Medium", "The first request to shut down is ignored",
-    "A hosting system stops a program with the signal SIGTERM. Plain Node exits at once; with the package it does not.",
-    `Plain Node exits after ${plain} ms, a server with the package was still running after ${sec} seconds, and a second signal ended it after ${fmt(two)} ms`,
-    `Own handler, \`process.on('SIGTERM', () => process.exit(0))\`: the first signal ended it in ${vend} ms.`,
-    `After the queue is flushed, send the signal again (P3): the first SIGTERM ended it in ${pat} ms.`,
-    (p) => {
-      const x0 = 200, scale = (920 - x0) / 12;
-      const row = (y, label, w, color, note, noteColor) => { p.text(40, y + 22, label, { size: 14, weight: 600, maxW: 150 }); p.rect(x0, y, Math.max(8, w), 34, { fill: `${color}33`, stroke: color, sw: 2, cls: "growx" }); const nx = x0 + Math.max(8, w) + 10, inside = nx > 640; p.text(inside ? x0 + 12 : nx, y + 23, note, { size: 15, hand: true, color: noteColor, weight: 700, maxW: 700 }); };
-      p.line(x0, 130, 920, 130, { color: MUTE, sw: 1.6, arrow: true }); p.text(x0, 120, "seconds after SIGTERM", { size: 12.5, color: MUTE });
-      [0, 3, 6, 9, 12].forEach((s) => { p.line(x0 + s * scale, 126, x0 + s * scale, 136, { color: MUTE, sw: 1.4 }); p.text(x0 + s * scale, 152, String(s), { size: 12, color: MUTE, anchor: "middle" }); });
-      row(172, "Plain Node", plain * scale / 1000, GRN, `exits after ${plain} ms`, GRN);
-      row(232, "With the package", one * scale / 1000, RED, `still running after ${sec} seconds, force-killed`, RED);
-      row(292, "A second signal", two * scale / 1000, ORG, `sent at 3 seconds: ends after ${fmt(two)} ms`, ORG);
-      p.rect(40, 352, 880, 74, { fill: "#fff" });
-      p.text(56, 378, "The package's own handler catches the first SIGTERM, waits for its queue to empty,", { size: 14.5, maxW: 840 });
-      p.text(56, 400, "and does not end the program. Every update of the company's server waits for a second signal.", { size: 14.5, maxW: 840 });
-    });
-}
-
-// ============ 7 · W-07 redaction function gets the key
-{
-  const sawKey = S("M8", "sawKey"), sawUrl = S("M8", "sawUrl"), d1 = S("M8", "delivered1"), d2 = S("M8", "delivered2"), pd = P("M8", "delivered2");
-  sketch(7, "redaction-function-gets-the-key", "W-07", "Medium", "The hiding function is handed the API key and address",
-    "The redaction function runs on every string except a short protected list. The key and address are not on it.",
-    `The function saw the API key: ${sawKey}, and the address: ${sawUrl}. A function that replaces digit runs changed the address and ${d2} events arrived, against ${d1}`,
-    "No clean vendor fix: this is the hazard of the fixes for W-01 to W-04.",
-    `Protect \`apiKey\`, \`ingestBaseUrl\` and \`vendorSlug\` (P6): with a digit-replacing function, ${pd} events arrived.`,
-    (p) => {
-      p.rect(40, 120, 250, 150, { fill: "#fff" }); p.text(54, 144, "One event, before sending", { size: 14, weight: 700 });
-      p.chip(54, 156, "apiKey", RED, { size: 13 }); p.chip(54, 186, "address events go to", RED, { size: 13 }); p.chip(54, 216, "the customer's text", "#8b949e", { size: 13 });
-      p.text(54, 256, "neither red one is on the list", { size: 12, color: MUTE, maxW: 224 });
-      p.line(292, 195, 372, 195, { arrow: true, color: ORG, cls: "flow" });
-      p.rect(376, 130, 250, 130, { fill: "#fff7ed", stroke: ORG, sw: 2.2 }); p.text(392, 156, "The vendor's hiding", { size: 14.5, weight: 700 }); p.text(392, 176, "function", { size: 14.5, weight: 700 });
-      p.text(392, 204, "replaces every digit run", { size: 13, color: MUTE }); p.text(392, 224, "(a natural way to hide phones)", { size: 13, color: MUTE });
-      p.line(628, 195, 700, 195, { arrow: true, color: RED, cls: "flow" });
-      p.rect(704, 120, 216, 150, { fill: "#fff1f0", stroke: RED, sw: 2.2 }); p.text(718, 146, "The address becomes", { size: 13, weight: 600 }); p.text(718, 170, "http://127.0.0.1:PORT", { size: 12.5, color: MUTE, maxW: 190 }); p.text(718, 192, "→ http://N.N.N.N:N", { size: 14, color: RED, weight: 700, maxW: 190 }); p.text(718, 226, "every send fails", { size: 17, hand: true, color: RED, weight: 700 }); p.text(718, 250, "and nobody is told", { size: 14, color: MUTE });
-      p.rect(40, 296, 420, 120, { fill: "#fff" }); p.text(54, 322, "A function that changes nothing", { size: 14.5, weight: 700 }); p.text(54, 364, `${d1} events arrive`, { size: 24, hand: true, color: GRN, weight: 700 });
-      p.rect(500, 296, 420, 120, { fill: "#fff" }); p.text(514, 322, "A function that replaces digit runs", { size: 14.5, weight: 700 }); p.text(514, 364, `${d2} events arrive`, { size: 24, hand: true, color: RED, weight: 700 });
-      p.text(514, 396, "the failure shows only in a log file", { size: 12.5, color: MUTE });
-    });
-}
-
-// ============ 8 · W-08 every tool reported
-{
-  const reported = S("B7", "reported");
-  sketch(8, "every-tool-reported", "W-08", "Medium", "Every tool call is reported, and none can be left out",
-    "track() wraps the whole server. A tool registered after track() was reported too, and no option leaves a tool out.",
-    `Example: a server with three tools, one registered late. The test had one late tool, and its ${reported} call was reported to Within`,
-    "No vendor option leaves one tool out. A vendor can only strip what leaves (W-02, W-03).",
-    "Offer an option to leave named tools out, and say in the README that every tool is reported.",
-    (p) => {
-      p.rect(40, 116, 560, 300, { fill: "#eef4fb", stroke: BLU, sw: 2, dash: "8 6" }); p.text(56, 140, "The vendor's server (an example with three tools)", { size: 14.5, weight: 700, color: BLU, maxW: 530 });
-      const tools = [["search_companies", "before track()"], ["get_company", "before track()"], ["export_report", "registered after track()"]];
-      tools.forEach(([n, w], i) => {
-        const y = 156 + i * 80;
-        p.rect(60, y, 250, 62, { fill: "#fff" }); p.text(74, y + 26, n, { size: 14.5, weight: 600 }); p.text(74, y + 48, w, { size: 12, color: MUTE });
-        p.line(312, y + 31, 420, y + 31, { arrow: true, color: ORG, cls: "flow" });
-        p.rect(424, y + 8, 160, 46, { fill: "#fff7ed", stroke: ORG, sw: 1.8 }); p.text(438, y + 36, "reported", { size: 15, hand: true, color: ORG, weight: 700 });
-      });
-      p.line(602, 266, 700, 266, { arrow: true, color: ORG, cls: "flow" });
-      p.rect(704, 216, 216, 100, { fill: "#eef4fb", stroke: BLU, sw: 2 }); p.text(722, 252, "Within", { size: 20, weight: 700 }); p.text(722, 278, "gets all three", { size: 13, color: MUTE });
-      p.rect(640, 340, 280, 76, { fill: "#fff1f0", stroke: RED, sw: 1.8 }); p.text(654, 366, "an option to leave one out?", { size: 13.5, weight: 600, maxW: 250 }); p.text(654, 392, "none in the code or the types", { size: 15, hand: true, color: RED, weight: 700, maxW: 250 });
-    });
-}
-
-// ============ 9 · W-09 silent key failure and growing log
-{
-  const count = S("A4", "count"), bytes = S("C12", "bytes"), lines = S("M4", "lines"), grew = S("M4", "grew");
-  sketch(9, "silent-key-and-growing-log", "W-09", "Low", "A bad key shows only in a log file that only grows",
-    "With no key, track() writes one warning to a file in the home folder. A rejected key gives the vendor's code no signal.",
-    `A wrong key left ${count} lines in the log file and nothing in the vendor's code; the file only appends, ${fmt(bytes)} bytes from one connection and one call`,
-    `The \`log\` option takes a callback: ${lines} lines went to the vendor's own code and ${grew} bytes were added to the file.`,
-    "Fail loudly at start-up when no key and no exporter are set, or log to the console.",
-    (p) => {
-      p.rect(40, 120, 200, 72, { fill: "#fff" }); p.text(54, 146, "The vendor's code", { size: 14.5, weight: 700 }); p.text(54, 170, "result: ok, no error", { size: 13, color: GRN });
-      p.rect(40, 250, 200, 72, { fill: "#fff1f0", stroke: RED, sw: 2 }); p.text(54, 276, "A wrong key", { size: 14.5, weight: 700 }); p.text(54, 300, "Within answers HTTP 401", { size: 13, color: RED });
-      p.line(242, 286, 340, 250, { arrow: true, color: RED, cls: "flow" });
-      p.line(142, 194, 142, 246, { color: MUTE, dash: "5 6" }); p.text(150, 224, "nothing comes back", { size: 13, hand: true, color: MUTE });
-      p.rect(344, 130, 576, 190, { fill: "#fff", stroke: INK, sw: 2 }); p.text(360, 154, "~/within-sdk.log", { size: 15, weight: 700 });
-      for (let i = 0; i < 6; i++) p.rect(360, 168 + i * 24, 540 - (i % 3) * 60, 16, { fill: i < count ? "#fecaca" : "#e5e7eb", stroke: "none", sw: 0, cls: "growx", style: `animation-delay:${i * 0.15}s` });
-      p.text(360, 336, `${count} lines about the failed send`, { size: 14, color: RED, weight: 600 });
-      p.rect(40, 360, 430, 64, { fill: "#fff" }); p.text(54, 386, "No key at all", { size: 14.5, weight: 700 }); p.text(54, 408, "one warning, the server starts and sends nothing", { size: 12.5, color: MUTE, maxW: 400 });
-      p.rect(490, 360, 430, 64, { fill: "#fff7ed", stroke: ORG, sw: 1.8 }); p.text(504, 386, "The file is never rotated or capped", { size: 14.5, weight: 700 }); p.text(504, 408, `${fmt(bytes)} bytes from one connection and one call`, { size: 12.5, color: MUTE, maxW: 400 });
-    });
-}
-
-// ============ 10 · W-10 required context input
-{
-  const req = S("B5", "required"), reqP = P("B5", "required");
-  sketch(10, "required-context-input", "W-10", "Low", "Every tool gets a required context input, plus one tool",
-    "After track(), each tool gains a required text, context, that asks the model for 15 to 25 words. One more tool appears.",
-    `A tool's required inputs go from query to ${req.join(" and ")}; the model also sees get_more_tools; a call without context still worked`,
-    "Two documented switches, `enableToolCallContext` and `enableReportMissing`, set to false leave the tool list as written.",
-    `Do not mark context as required, because the server does not enforce it (P5): required becomes ${reqP.join(", ")}.`,
-    (p) => {
-      p.rect(40, 120, 400, 150, { fill: "#fff" }); p.text(54, 146, "The vendor's tool, as written", { size: 14.5, weight: 700 }); p.text(54, 176, "search_companies", { size: 15, weight: 600 }); p.chip(54, 192, "query  (required)", GRN, { size: 13.5 });
-      p.line(442, 195, 520, 195, { arrow: true, color: ORG, cls: "flow" });
-      p.rect(524, 120, 396, 150, { fill: "#fff7ed", stroke: ORG, sw: 2.2 }); p.text(538, 146, "After track()", { size: 14.5, weight: 700 }); p.text(538, 176, "search_companies", { size: 15, weight: 600 }); p.chip(538, 192, "query  (required)", GRN, { size: 13.5 }); p.chip(538, 222, "context  (required, 15 to 25 words)", RED, { size: 13.5 });
-      p.rect(40, 296, 400, 120, { fill: "#fff" }); p.text(54, 322, "The model also sees one more tool", { size: 14.5, weight: 700 }); p.text(54, 350, "get_more_tools", { size: 15, weight: 600 }); p.text(54, 374, "\"check for additional tools whenever your", { size: 12.5, color: MUTE, maxW: 370 }); p.text(54, 392, "task might benefit from specialized capabilities\"", { size: 12.5, color: MUTE, maxW: 370 });
-      p.rect(480, 296, 440, 120, { fill: "#fff" }); p.text(494, 322, "A call without context", { size: 14.5, weight: 700 }); p.text(494, 366, "still worked", { size: 26, hand: true, color: ORG, weight: 700 }); p.text(494, 392, "so \"required\" asks for more than the server enforces", { size: 12.5, color: MUTE, maxW: 410 });
-    });
-}
-
-// ============ the journey of one tool call, with every finding marked
+// ============ one tool call through the SDK, with every finding marked
 {
   const pen = new Pen("flow");
   const sevOf = Object.fromEntries(src.findings.map((f) => [f.id, f.severity]));
-  const mark = (x, y, id) => { pen.pill(x, y, id, SEV[sevOf[id] ?? fail(`unknown finding ${id}`)], { size: 11 }); };
-  const step = (y, n, title, line, ids) => {
-    pen.rect(404, y, 420, 62, { fill: "#fff" }); pen.text(416, y + 24, `${n}  ${title}`, { size: 14, weight: 700, maxW: 260 }); pen.text(416, y + 46, line, { size: 12, color: MUTE, maxW: 396 });
-    ids.forEach((id, i) => mark(744 - i * 64, y + 8, id));
-  };
+  const mark = (x, y, id) => pen.pill(x, y, id, SEV[sevOf[id] ?? fail(`unknown finding ${id}`)], { size: 11 });
+  const step = (y, n, title, line, ids) => { pen.rect(404, y, 420, 62, { fill: "#fff" }); pen.text(416, y + 24, `${n}  ${title}`, { size: 14, weight: 700, maxW: 250 }); pen.text(416, y + 46, line, { size: 12, color: MUTE, maxW: 396 }); ids.forEach((id, i) => mark(744 - i * 64, y + 8, id)); };
   pen.rect(24, 150, 150, 70, { fill: "#fff" }); pen.text(36, 180, ["Customer's AI", "assistant"], { size: 14, weight: 600 });
   pen.rect(214, 150, 150, 70, { fill: "#fff" }); pen.text(226, 180, ["Vendor's MCP", "server and tool"], { size: 14, weight: 600 });
   pen.line(176, 185, 212, 185, { arrow: true, color: MUTE });
-  pen.rect(392, 40, 444, 478, { fill: "#eef4fb", stroke: BLU, sw: 2, dash: "8 6" }); pen.text(408, 64, "within-sdk, loaded inside the vendor's server", { size: 14, weight: 700, color: BLU });
-  step(78, "1", "Tool list", "adds a required context input and a get_more_tools tool", ["W-10"]);
-  step(152, "2", "Reporter", "copies each tool call, arguments and result, into an event", ["W-08", "W-03"]);
-  step(226, "3", "Vendor's redaction function", "is handed every string, even the API key and the address", ["W-07"]);
-  step(300, "4", "Privacy filter", "name list, whole-value patterns, email pattern on all text", ["W-04", "W-02", "W-01"]);
-  step(374, "5", "Queue", "5 requests at a time, no time limit on a request", ["W-05"]);
-  pen.rect(404, 450, 200, 54, { fill: "#fff" }); pen.text(414, 472, "Log file", { size: 13, weight: 700 }); pen.text(414, 490, "~/within-sdk.log, only grows", { size: 11, color: MUTE, maxW: 184 }); mark(540, 456, "W-09");
-  pen.rect(620, 450, 204, 54, { fill: "#fff" }); pen.text(630, 472, "Shutdown handler", { size: 13, weight: 700 }); pen.text(630, 490, "swallows the first SIGTERM", { size: 11, color: MUTE, maxW: 186 }); mark(760, 456, "W-06");
+  pen.rect(392, 40, 444, 478, { fill: "#eef4fb", stroke: BLU, sw: 2, dash: "8 6" }); pen.text(408, 64, "@getwithin/sdk 0.4.0, loaded inside the vendor's server", { size: 14, weight: 700, color: BLU });
+  step(78, "1", "Start-up", "instructions, tools, report_void, hubs, patched tools", ["W-15", "W-22", "W-04"]);
+  step(152, "2", "The call", "the vendor's tool runs; unwrapped tools still report", ["W-05", "W-09"]);
+  step(226, "3", "The report", "goal text, arguments, results, identity, host name", ["W-10", "W-21", "W-23"]);
+  step(300, "4", "The filter", "name list, whole-value patterns, email pattern", ["W-13", "W-12", "W-08"]);
+  step(374, "5", "Within's reply", "waits up to 5 s; adds offer, text, status to the result", ["W-24", "W-03", "W-02"]);
+  pen.rect(404, 450, 200, 54, { fill: "#fff" }); pen.text(414, 472, "Offers and consent", { size: 13, weight: 700 }); pen.text(414, 490, "accept, confirm, hub_card", { size: 11, color: MUTE, maxW: 184 }); mark(530, 456, "W-18");
+  pen.rect(620, 450, 204, 54, { fill: "#fff" }); pen.text(630, 472, "Start-up checks", { size: 13, weight: 700 }); pen.text(630, 490, "keys, address, doctor", { size: 11, color: MUTE, maxW: 186 }); mark(760, 456, "W-16");
   pen.rect(870, 180, 80, 110, { fill: "#fff", stroke: BLU, sw: 2 }); pen.text(910, 228, "Within's", { size: 13, anchor: "middle", weight: 700 }); pen.text(910, 246, "service", { size: 13, anchor: "middle", weight: 700 });
   pen.line(826, 411, 910, 411, { arrow: true, color: ORG, cls: "flow" }); pen.line(910, 408, 910, 294, { arrow: true, color: ORG, cls: "flow" });
-  pen.text(24, 300, ["The vendor's tool still", "answers at once while step 4", "freezes the process: the", "freeze comes after, when", "the event is cleaned."], { size: 13, hand: true, color: RED });
+  pen.text(24, 300, ["Ten more findings sit", "elsewhere: see the map", "and the report."], { size: 13, hand: true, color: RED });
   pen.text(24, 470, "Colour of a W-number = severity:", { size: 12, color: MUTE });
   [["High", RED], ["Medium", ORG], ["Low", BLU]].forEach(([n, c], i) => pen.pill(24 + i * 78, 482, n, c, { size: 11 }));
-  const svg = [`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 540" role="img" aria-label="A tool call's journey through within-sdk, with the ten findings marked">`,
-    `<title>A tool call's journey through within-sdk, with the ten findings marked</title><defs>${FILTER}<style>${CSS}</style></defs>`,
+  const svg = [`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 540" role="img" aria-label="One tool call through the Within SDK, with some findings marked">`,
+    `<title>One tool call through the Within SDK, with some findings marked</title><defs>${FILTER}<style>${CSS}</style></defs>`,
     `<rect width="980" height="540" fill="${PAPER}"/>`, `<g filter="url(#wob)">`, pen.html(), `</g>`, `</svg>`].join("\n");
   fs.writeFileSync(path.join(root, "docs", "flow.svg"), svg);
 }
 
 if (tooWide.length) fail(`text wider than its box:\n${tooWide.join("\n")}`);
-// ---- guards: one sketch per finding, in order
-const ids = src.findings.map((f) => f.id).sort();
-const got = sketches.map((s) => s.id).sort();
+const ids = src.findings.map((f) => f.id).sort(), got = sketches.map((s) => s.id).sort();
 if (JSON.stringify(ids) !== JSON.stringify(got)) fail(`sketches ${got.join(",")} do not match findings ${ids.join(",")}`);
 const dir = path.join(root, "docs", "diagrams");
 fs.mkdirSync(dir, { recursive: true });

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="In our test the phone, name and email all arrived; real Claude wrote 0 names, 0 phones and 0 emails in 37 calls">
+<title>In our test the phone, name and email all arrived; real Claude wrote 0 names, 0 phones and 0 emails in 37 calls</title><defs><filter id="wob" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/></filter><style>
+.flow{stroke-dasharray:9 7;animation:dash 1.1s linear infinite}
+.slow{stroke-dasharray:9 7;animation:dash 2.4s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-32}}
+.pulse{transform-box:fill-box;transform-origin:center;animation:pulse 1.7s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.08);opacity:.6}}
+.grow{transform-box:fill-box;transform-origin:50% 100%;animation:grow 1.3s cubic-bezier(.2,.8,.2,1) both}
+@keyframes grow{from{transform:scaleY(.02)}to{transform:scaleY(1)}}
+.growx{transform-box:fill-box;transform-origin:0 50%;animation:growx 1.6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes growx{from{transform:scaleX(.02)}to{transform:scaleX(1)}}
+.bob{animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.blink{animation:blink 1.4s steps(2,start) infinite}
+@keyframes blink{50%{opacity:.15}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style></defs>
+<rect width="960" height="540" fill="#fffdf7"/>
+<g filter="url(#wob)">
+<path d="M41.8 120.5 Q175.9 123.1 310.1 121.6 Q311.5 172.8 310.9 228.1 Q175.6 232.2 38.2 232.0 Q41.0 175.6 41.8 120.5" fill="#fff7ed" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="144" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">report_void</tspan></text>
+<text x="54" y="166" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">listed to the AI by default: true</tspan></text>
+<path d="M312 175 Q366.4 178.9 420 175" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" class="flow"/>
+<path d="M409.9 181.5 L420 175 L409.1 170.0" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M425.7 98.9 Q673.3 100.9 919.1 100.5 Q920.5 173.6 920.4 249.9 Q669.9 248.7 422.1 249.5 Q422.1 173.9 425.7 98.9" fill="#fff1f0" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="438" y="124" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="438" dy="0">In the check (N5), what the AI wrote</tspan></text>
+<text x="438" y="146" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="438" dy="0">&quot;find Priya Raman, call her on 617 555 0142 or email priya.ram…&quot;</tspan></text>
+<text x="438" y="165" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="438" dy="0">phone: arrived   name: arrived   email: arrived</tspan></text>
+<path d="M40.6 290.6 Q478.6 291.2 919.9 288.5 Q919.0 331.1 919.8 376.1 Q480.9 376.4 38.4 376.7 Q41.5 335.0 40.6 290.6" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="56" y="318" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13.5" fill="#1f2328" font-weight="700"><tspan x="56" dy="0">Real Claude (Haiku and Sonnet), questions that held a name, a phone number and an email:</tspan></text>
+<text x="56" y="344" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13.5" fill="#1f2328"><tspan x="56" dy="0">37 calls; the name appeared in 0, the phone in 0, the email in 0. Every phrase was a short topic.</tspan></text>
+<text x="56" y="366" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="56" dy="0">The tool was used in 24 of 87 ordinary Haiku runs and 28 of 57 Sonnet runs.</tspan></text>
+</g>
+<text x="40" y="52" font-family="'Bradley Hand','Segoe Print','Marker Felt','Comic Sans MS',cursive" font-size="27" fill="#1f2328" font-weight="700"><tspan x="40" dy="0">report_void is on and sends the customer's words</tspan></text>
+<rect x="840" y="30" width="112.7" height="22" rx="11" fill="#f97316"/>
+<text x="896.4" y="45.32" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#fff">W-22 · Medium</text>
+<text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">Every install adds a tool, report_void, for the AI to use when it cannot help. What the AI writes goes out unredacted.</tspan></text>
+<g filter="url(#wob)">
+<path d="M40.9 445.1 Q481.2 442.5 919.0 444.3 Q918.9 487.5 920.5 534.4 Q478.1 534.0 38.5 534.7 Q38.9 487.8 40.9 445.1" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="54" dy="0">What Within should change</tspan></text>
+<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328"><tspan x="54" dy="0">Run `asked` through the same redaction as the goal note, widened to phone numbers, and cap its length.</tspan></text>
+</g>
+</svg>

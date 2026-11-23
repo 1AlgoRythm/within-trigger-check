@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="Inside one connection the id stayed the same: true; across connections it was different 3 times">
+<title>Inside one connection the id stayed the same: true; across connections it was different 3 times</title><defs><filter id="wob" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/></filter><style>
+.flow{stroke-dasharray:9 7;animation:dash 1.1s linear infinite}
+.slow{stroke-dasharray:9 7;animation:dash 2.4s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-32}}
+.pulse{transform-box:fill-box;transform-origin:center;animation:pulse 1.7s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.08);opacity:.6}}
+.grow{transform-box:fill-box;transform-origin:50% 100%;animation:grow 1.3s cubic-bezier(.2,.8,.2,1) both}
+@keyframes grow{from{transform:scaleY(.02)}to{transform:scaleY(1)}}
+.growx{transform-box:fill-box;transform-origin:0 50%;animation:growx 1.6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes growx{from{transform:scaleX(.02)}to{transform:scaleX(1)}}
+.bob{animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.blink{animation:blink 1.4s steps(2,start) infinite}
+@keyframes blink{50%{opacity:.15}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style></defs>
+<rect width="960" height="540" fill="#fffdf7"/>
+<g filter="url(#wob)">
+<path d="M39.5 118.8 Q237.5 120.9 438.7 120.5 Q439.7 181.4 438.8 239.3 Q240.9 238.5 38.1 239.9 Q40.2 178.2 39.5 118.8" fill="#f3faf6" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="144" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">Inside one connection</tspan></text>
+<text x="54" y="166" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">same id every call: true</tspan></text>
+<path d="M480.9 118.7 Q701.3 122.7 920.6 121.8 Q921.1 181.9 918.0 239.9 Q700.7 240.2 479.8 241.0 Q478.7 177.5 480.9 118.7" fill="#fff1f0" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pulse"/>
+<text x="494" y="144" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="494" dy="0">Three separate connections</tspan></text>
+<text x="494" y="166" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="494" dy="0">3 different ids</tspan></text>
+<rect x="500" y="198" width="45.2" height="21" rx="6" fill="#ef444422" stroke="#ef4444" stroke-width="1.5"/>
+<text x="507" y="212" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#1f2328">id 1</text>
+<rect x="630" y="198" width="45.2" height="21" rx="6" fill="#ef444422" stroke="#ef4444" stroke-width="1.5"/>
+<text x="637" y="212" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#1f2328">id 2</text>
+<rect x="760" y="198" width="45.2" height="21" rx="6" fill="#ef444422" stroke="#ef4444" stroke-width="1.5"/>
+<text x="767" y="212" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#1f2328">id 3</text>
+<text x="40" y="290" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13.5" fill="#59636e"><tspan x="40" dy="0">Check C9. A stateless server, which opens a connection for each request, gets a new id each time.</tspan></text>
+</g>
+<text x="40" y="52" font-family="'Bradley Hand','Segoe Print','Marker Felt','Comic Sans MS',cursive" font-size="27" fill="#1f2328" font-weight="700"><tspan x="40" dy="0">Without sessions, an offer cannot find the customer</tspan></text>
+<rect x="840" y="30" width="112.7" height="22" rx="11" fill="#f97316"/>
+<text x="896.4" y="45.32" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#fff">W-19 · Medium</text>
+<text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">The SDK keeps one id per connection. A server that opens a new one per request cannot be found again by a rep.</tspan></text>
+<g filter="url(#wob)">
+<path d="M40.8 447.7 Q482.2 448.6 920.7 445.2 Q922.3 487.1 921.6 533.2 Q482.7 533.1 39.3 535.0 Q41.3 492.6 40.8 447.7" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="54" dy="0">What Within should change</tspan></text>
+<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328"><tspan x="54" dy="0">Key offers on a verified user id.</tspan></text>
+</g>
+</svg>

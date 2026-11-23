@@ -1,50 +1,76 @@
 # Reproduce this: every step, with the result to expect
 
-This page takes you from an empty folder to every number, finding and page in this repo. Nothing here contacts Within: every request goes to a stand-in on `127.0.0.1` or to a stubbed `fetch`, and the package's log file goes to a throwaway home folder. Nothing here spends model usage.
+This takes you from an empty folder to every number, finding, sketch and map page in this repo. Nothing here contacts Within's real service: every request goes to a stand-in server on `127.0.0.1`. Steps 1 to 3 are free. Step 4 spends your Claude Code usage.
 
-Last verified: 2026-11-22, macOS, Node 26, npm 11. Timings depend on the machine, so compare verdicts, not milliseconds.
+Last verified: 2026-11-23, macOS, Node 26, npm 11. Timings depend on the machine, so compare verdicts, not milliseconds.
 
 ## 0. What you need
 
-Node 20 or later, npm, `curl`. Check `F6` reads Within's public docs page and asks npm about two package names; check `F2` runs `npm install` on a fresh project.
+- Node and npm (we used Node v26.13.0), `curl`, `openssl`, `tar`, `python3`.
+- For step 4: Claude Code (`claude -p` must work). It uses Haiku and Sonnet.
+- For step 5: the Archify skill (`~/.claude/skills/archify`, version 2.17.0-dev.1) and Google Chrome.
 
 ```bash
 git clone https://github.com/1AlgoRythm/within-trigger-check.git
-cd within-trigger-check/stress/v104
-npm install --ignore-scripts
+cd within-trigger-check/stress
+npm install
 ```
 
-**Expect:** `node -p "require('./node_modules/within-sdk/package.json').version"` prints `1.0.4`. Read the package before running it: it is third-party code.
+## 1. The package
 
-## 1. The checks on the stock package
+`@getwithin/sdk` 0.4.0 is on npm (checked 2026-11-23). The script downloads the file, checks its hash, and unpacks it into `stress/sdk-0.4.0`.
 
 ```bash
-node run-all.mjs        # about 6 minutes
+scripts/fetch-040.sh
 ```
 
-Every check runs in its own process, because the package keeps one process-wide event queue: a check that hangs the stand-in would otherwise block every later check. To run only some: `node run-all.mjs C8 Z3` (it merges them with the saved output of the others).
+**Expect:** `MATCH sha512-Kle6l4ZAo0GRF136R4d/GfsNySc0By4nR+gKBHtSnb/MUMQaEOGoERRXfS1/Yk09mzwYLr/M9hn97E31rEJYYA==`, then the SHA-256 of `dist/index.js`: `56be6b34c9d7851fa9defcd34f283205674daa0a7a7f13b323e223271009b455`. The script stops on a mismatch. Read the package before running it: it is third-party code.
 
-**Expect** (`stress/results/sdk-1.0.4.json`): `FAIL` on `C8` (the freeze) and on no other check; gaps on `A1c`, `A10`, `B5`, `C1` to `C6`, `C12`, `C13`, `M8` and `Z3`; passes on `M1` to `M7` (what a vendor can do today). `F6` reads Within's public docs page, so it can change if Within edits it.
-
-## 2. The patched copy
+## 2. The checks, without any AI
 
 ```bash
-node patches.mjs        # builds ./patched-sdk; stops if any patch no longer matches exactly once
-WITHIN_PKG_DIR=$PWD/patched-sdk OUT_DIR=$PWD/out-patched RESULTS_FILE=$PWD/../results/patched-1.0.4.json node run-all.mjs
+scripts/deterministic-040.sh
 ```
 
-**Expect:** `C8`, `A1c`, `Z3`, `C6`, `B5` and `M8` no longer fail or gap. `F2` and `F6` are skipped, because they test the published package.
+**Expect:**
 
-## 3. The report and the pages
+| File written | Result |
+|---|---|
+| `results/sdk-0.4.0.json` | the 43 checks: pass 11, gap 14, fail 8, info 10 |
+| `results/new-in-040.json` | the nine checks N1 to N9: fail 1 (N1, the login token), pass 2 (N2, N6), info 1 (N3), gap 5 (N4, N5, N7, N8, N9) |
+| `results/patched-0.4.0.json` | the same 43 checks on a patched copy: pass 19, gap 12, info 11, fail 1. Every prototype patch matches except P3 |
+
+## 3. The report, the sketches and the map
 
 ```bash
-cd .. && npm run build:all
+npm run build:all
 ```
 
-It redraws the ten sketches and the call-journey picture (`docs/diagrams/`, `docs/flow.svg`), rebuilds the interactive map (`docs/map.html`, `docs/explorer/`; the three diagrams need the Archify skill, set `ARCHIFY_DIR` if it is not in `~/.claude/skills/archify`), and then rewrites `FINDINGS.md`, `docs/findings.html`, `docs/index.html` and the summary block in `README.md` from `stress/findings.json` and the two results files. It stops if a placeholder cannot be resolved, if a finding has no failing check behind it, if a vendor-side fix does not pass, or if a patch does not turn its checks green.
+It redraws the 24 sketches and the call picture (`docs/diagrams/`, `docs/flow.svg`), rebuilds the interactive map (`docs/index.html`, `docs/explorer/`; the five diagrams need the Archify skill, set `ARCHIFY_DIR` if it is not in `~/.claude/skills/archify`), and rewrites `FINDINGS.md`, `docs/findings.html` and the summary block in `README.md` from `stress/findings.json` and the saved results. It stops if a placeholder cannot be resolved, if a finding has no check that is a gap or a fail (one finding is allowed an info check, and says why), if a sketch is missing, or if founder-level text uses jargon.
 
-## 4. What you cannot reproduce from here
+## 4. Real Claude (spends usage)
+
+```bash
+scripts/model-040.sh haiku     # about 250 short headless runs
+scripts/model-040.sh sonnet    # about 120
+```
+
+This writes `results/model-<model>-*.json`. The saved runs in this repo are from 2026-11-20 and 2026-11-21, on the same package file. Real-Claude numbers move from day to day, so compare only runs made on the same day.
+
+**Expect, on 2026-11-21** (yours will differ a little; the pattern is what matters):
+
+| Question | Haiku | Sonnet |
+|---|---|---|
+| Buying questions that reached Within (5 scenarios x 3) | 15 of 15 | 15 of 15 |
+| Accept tool called in the 4 consent scenarios | 0 of 12 | 0 of 12 |
+| Comparison question sent to Within (W-20) | 11 of 30 | 0 of 10 |
+| Wording patch P11, comparison question | 0 of 30 (real competitor questions: 30 of 30) | not run |
+| `report_void` used in ordinary runs | 24 of 87 | 28 of 57 |
+| Name, phone or email copied into `report_void` | 0 of 37 calls (both models together) | |
+| Hubs on: the AI repeated Within's line to the customer | 40 of 40 runs, both models together, including 20 of 20 where told not to | |
+| Hubs on: the AI opened the hub, or called `hub_card` | 0 of 40, and 0 of 40 | |
+
+## 5. What you cannot reproduce from here
 
 - Within's hosted service, and what it does with what it receives.
 - A real MCP host (Claude, ChatGPT) and a real deployment.
-- How long Node's own network code waits before it gives up a stuck request (finding W-05): we watched for 15 seconds.

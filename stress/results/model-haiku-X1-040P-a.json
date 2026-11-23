@@ -1,0 +1,119 @@
+{
+  "meta": {
+    "sdkPatched": true,
+    "sdkEntry": "alternate package via WITHIN_SDK_ENTRY",
+    "ranAt": "2026-11-21T07:01:48.769Z",
+    "model": "haiku",
+    "times": 10,
+    "scenariosRun": [
+      "X1",
+      "X2"
+    ],
+    "claudeCode": "headless `claude -p`, flags as in the Claude Code CLI reference",
+    "note": "Local stand-in only. Nothing was sent to Within's service."
+  },
+  "results": [
+    {
+      "id": "X1",
+      "kind": "compare",
+      "note": "two companies in the vendor's own data (should NOT go to Within)",
+      "prompt": "Compare Ledgerly and Paywise.",
+      "model": "claude-haiku-5-5",
+      "runs": 10,
+      "completed": 10,
+      "calledGetVendorAnswer": 0,
+      "calledConfirmAssistance": 0,
+      "offerAcceptedAtStandIn": 0,
+      "toolSequences": [
+        "get_company > get_company",
+        "get_company > get_company",
+        "get_company > get_company",
+        "get_company > get_company",
+        "get_company > get_company",
+        "get_company > get_company",
+        "get_company > get_company",
+        "get_company > get_company",
+        "get_company > get_company",
+        "get_company > get_company"
+      ],
+      "voidInputs": [],
+      "replies": [
+        "Here's how the two companies compare, based on their Acme profiles:\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| City | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing tools | Payment links |\n\n**Key differences:**\n- **Stage:",
+        "Both companies are in Acme's database, but the profiles are short, so this comparison is limited.\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| HQ | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing tools | Payment links |\n\n**K",
+        "Here's how the two companies compare, based on their Acme profiles:\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| City | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing tools | Payment links |\n\n**Key differences:**\n- **Stage:",
+        "Here's how the two companies compare, based on their Acme profiles:\n\n| | Ledgerly | Paywise |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| City | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing tools | Payment links |\n\n**Key differences:**\n- **Stage:** Ledge",
+        "Both companies are in Acme's database, but the profiles are brief, so this comparison is limited.\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| Location | New York | Boston |\n| Stage | Series A | Seed |\n| What it does | Builds invoicing tools | ",
+        "Both companies are in the Acme database, and both are fintech companies. Here's how they compare:\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| City | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing tools | Payment links |\n\n*",
+        "Both companies are in the Acme database, but the profiles are thin, so this comparison is limited to what they list.\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| City | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing tools |",
+        "Both companies are in Acme's database, and the records are brief:\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| City | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing tools | Payment links |\n\nBoth operate in fintech but addre",
+        "Here's how the two companies compare, based on their Acme profiles:\n\n| | **Ledgerly** | **Paywise** |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| City | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing tools | Payment links |\n\n**Key differences:**\n- **Produc",
+        "Both are fintech companies, but the Acme database has only a short profile for each, so this comparison is thin.\n\n| | Ledgerly | Paywise |\n|---|---|---|\n| Sector | Fintech | Fintech |\n| City | New York | Boston |\n| Stage | Series A | Seed |\n| Focus | Invoicing tools | Payment lin"
+      ],
+      "errors": []
+    },
+    {
+      "id": "X2",
+      "kind": "compare",
+      "note": "a real competitor question (should go to Within)",
+      "prompt": "Is Acme better than Crunchbase for tracking seed rounds?",
+      "model": "claude-haiku-5-5",
+      "runs": 10,
+      "completed": 10,
+      "calledGetVendorAnswer": 10,
+      "calledConfirmAssistance": 0,
+      "offerAcceptedAtStandIn": 0,
+      "toolSequences": [
+        "get_vendor_answer > report_void",
+        "get_vendor_answer > report_void",
+        "get_vendor_answer",
+        "get_vendor_answer",
+        "get_vendor_answer",
+        "get_vendor_answer > report_void",
+        "get_vendor_answer > report_void",
+        "get_vendor_answer",
+        "get_vendor_answer",
+        "get_vendor_answer > report_void"
+      ],
+      "voidInputs": [
+        {
+          "tool": "get_vendor_answer",
+          "asked": "Is Acme better than Crunchbase for tracking seed rounds?",
+          "context": "Competitive comparison question; the tool returned only Acme's seat price instead of a comparison."
+        },
+        {
+          "tool": "get_vendor_answer",
+          "asked": "Is Acme better than Crunchbase for tracking seed rounds?",
+          "context": "Competitive comparison question; the tool returned only the Team seat price."
+        },
+        {
+          "tool": "get_vendor_answer",
+          "asked": "Is Acme better than Crunchbase for tracking seed rounds?",
+          "context": "Competitive comparison question; the tool returned only Acme's per-seat price instead of a comparison."
+        },
+        {
+          "tool": "get_vendor_answer",
+          "asked": "Is Acme better than Crunchbase for tracking seed rounds?",
+          "context": "Competitive comparison question returned only a seat price instead of an answer."
+        },
+        {
+          "tool": "get_vendor_answer",
+          "asked": "Is Acme better than Crunchbase for tracking seed rounds?",
+          "context": "Competitive comparison question; the tool returned only Acme's per-seat price instead of a comparison."
+        }
+      ],
+      "replies": [
+        "I couldn't get a real comparison. Acme's answer to your question was its price, \"Acme Team is $18 per seat a month,\" which doesn't address Acme versus Crunchbase for seed rounds. I'd rather not guess at a verdict, so I can't say which is better for your needs.\n\nHere's what I can ",
+        "I couldn't get a real comparison from Acme. The answer that came back was only a price: \"Acme Team is $18 per seat a month.\" That doesn't address Crunchbase or seed-round tracking, so I can't tell you from Acme's side whether it beats Crunchbase for this.\n\nSome things that would ",
+        "The Acme answer I got doesn't address the comparison. It only says that Acme Team is $18 per seat a month, so I can't tell you from this whether Acme beats Crunchbase for seed rounds.\n\nAcme is a database of private companies, and I can search it by sector, city, or company name t",
+        "The Acme answer I got back doesn't address the comparison. It only says that Acme Team is $18 per seat a month, so I can't tell you from it whether Acme beats Crunchbase for seed rounds.\n\nI can tell you what Acme does from its tools: it's a database of private companies that you ",
+        "I couldn't get a real comparison from Acme. The only answer it returned was that Acme Team costs $18 per seat a month, which doesn't address how Acme and Crunchbase compare for seed rounds.\n\nAcme is a database of private companies, and I can search it for companies by sector, cit",
+        "I couldn't get a real comparison from Acme. The answer I received only said that Acme Team costs $18 per seat a month, which doesn't address Crunchbase or seed-round tracking. So I can't tell you from Acme's side whether it's better for this.\n\nHere's how I'd decide:\n\n- **Crunchba",
+        "I couldn't get a real comparison from Acme. The only answer returned was \"Acme Team is $18 per seat a month,\" which is pricing and doesn't address Acme against Crunchbase or seed-round tracking.\n\nHere's what I can tell you:\n\n- **What Acme offers here:** It's a database of private",
+        "I can't give you a fair verdict on Acme versus Crunchbase from what I have. The Acme answer I got back only states that the Acme Team plan is $18 per seat a month, and it doesn't address seed-round tracking or compare the two products.\n\nTo judge it yourself, you could check:\n\n- *",
+        "I can't give you a fair comparison from what I have. The Acme answer I got back covered pricing only: the Team plan is $18 per seat a month. It didn't address Acme against Crunchbase or how either handles seed rounds.\n\nHere's what I can see about Acme: it's a database of private ",
+        "I couldn't get a real comparison from Acme. The only answer the connector returned was \"Acme Team is $18 per seat a month,\" which is pricing and doesn't address Crunchbase or seed-round tracking. I also tried to log that gap, but the system rejected it.\n\nSo I can't tell you from "
+      ],
+      "errors": []
+    }
+  ]
+}

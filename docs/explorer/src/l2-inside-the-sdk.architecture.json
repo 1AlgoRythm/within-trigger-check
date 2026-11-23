@@ -2,171 +2,173 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "Inside within-sdk",
+    "title": "Inside the Within SDK",
     "output": "l2-inside-the-sdk.html",
     "quality_profile": "showcase",
     "views": [
       {
-        "id": "start",
+        "id": "startup",
         "label": "At start-up",
         "focus": [
-          "setup",
-          "toollist"
+          "install",
+          "instr",
+          "tools3",
+          "patch"
         ],
-        "note": "track(server) runs once and changes the tool list the model sees."
+        "note": "One install call does the setup. report_void is registered by default."
       },
       {
         "id": "each-call",
         "label": "On every tool call",
         "focus": [
-          "reporter",
-          "redact",
-          "privacy",
-          "queue",
+          "patch",
+          "wrap",
+          "ctx",
+          "handler",
+          "http",
           "api"
         ],
-        "note": "Five steps turn one tool call into one event sent to Within."
+        "note": "The patched registerTool adds a goal field. Wrapped tools always report; others report when the goal is filled in."
       },
       {
         "id": "defects",
-        "label": "Where the findings sit",
+        "label": "Where the defects sit",
         "focus": [
-          "toollist",
-          "reporter",
-          "redact",
-          "privacy",
-          "queue",
-          "log",
-          "shutdown"
+          "instr",
+          "ctx",
+          "wrap",
+          "patch",
+          "http",
+          "tools3"
         ],
-        "note": "Each box with a W-number opens a hand-drawn sketch."
+        "note": "Each tagged box has a hand-drawn diagram one click deeper. The newer parts are on their own screen."
       }
     ]
   },
   "components": [
     {
-      "id": "setup",
+      "id": "install",
       "type": "backend",
-      "label": "track(server)",
+      "label": "install()",
       "sublabel": "called once at start-up",
       "pos": [
         30,
         40
       ],
       "size": [
-        170,
+        160,
         64
       ]
     },
     {
-      "id": "toollist",
+      "id": "instr",
       "type": "backend",
-      "label": "1  Tool list",
-      "sublabel": "context input + get_more_tools · W-10",
+      "label": "Server instructions",
+      "sublabel": "~2,900 chars · W-15",
       "pos": [
-        270,
+        300,
         40
       ],
       "size": [
-        190,
+        160,
         64
       ]
     },
     {
-      "id": "reporter",
+      "id": "tools3",
       "type": "backend",
-      "label": "2  Reporter",
-      "sublabel": "copies each call · W-03 · W-08",
+      "label": "Within's 4 tools",
+      "sublabel": "incl. report_void · W-22",
       "pos": [
-        520,
+        570,
         40
       ],
       "size": [
-        190,
+        160,
         64
       ]
     },
     {
-      "id": "redact",
+      "id": "patch",
       "type": "backend",
-      "label": "3  Vendor's function",
-      "sublabel": "handed every string · W-07",
+      "label": "registerTool patch",
+      "sublabel": "every tool · W-09",
       "pos": [
-        770,
+        840,
         40
       ],
       "size": [
-        190,
+        160,
         64
       ]
     },
     {
-      "id": "privacy",
+      "id": "handler",
       "type": "backend",
-      "label": "4  Privacy filter",
-      "sublabel": "W-04 · W-02 · W-01",
+      "label": "Vendor's handler",
+      "sublabel": "the real tool code",
       "pos": [
-        770,
+        30,
         175
       ],
       "size": [
-        190,
+        160,
         64
       ]
     },
     {
-      "id": "queue",
+      "id": "wrap",
       "type": "backend",
-      "label": "5  Queue",
-      "sublabel": "5 at a time, no time limit · W-05",
+      "label": "Call wrapper",
+      "sublabel": "reports each call · W-03",
       "pos": [
-        520,
+        570,
         175
       ],
       "size": [
-        190,
+        160,
+        64
+      ]
+    },
+    {
+      "id": "ctx",
+      "type": "backend",
+      "label": "Context field",
+      "sublabel": "goal text · W-04/05/10",
+      "pos": [
+        840,
+        175
+      ],
+      "size": [
+        160,
         64
       ]
     },
     {
       "id": "api",
       "type": "cloud",
-      "label": "Within's service",
-      "sublabel": "receives the event",
+      "label": "Within API",
+      "sublabel": "/v1/activity, offers, hubs",
       "pos": [
-        270,
-        175
+        30,
+        310
       ],
       "size": [
-        190,
+        160,
         64
       ]
     },
     {
-      "id": "log",
-      "type": "database",
-      "label": "Log file",
-      "sublabel": "~/within-sdk.log · W-09",
+      "id": "http",
+      "type": "cloud",
+      "label": "HTTP client",
+      "sublabel": "5 s cap · W-02",
       "pos": [
-        520,
+        570,
         310
       ],
       "size": [
-        190,
-        64
-      ]
-    },
-    {
-      "id": "shutdown",
-      "type": "backend",
-      "label": "Shutdown handler",
-      "sublabel": "swallows the first SIGTERM · W-06",
-      "pos": [
-        770,
-        310
-      ],
-      "size": [
-        190,
+        160,
         64
       ]
     }
@@ -176,106 +178,114 @@
       "kind": "region",
       "label": "Once, at start-up",
       "wraps": [
-        "setup",
-        "toollist"
+        "install",
+        "instr",
+        "tools3",
+        "patch"
       ]
     },
     {
       "kind": "region",
       "label": "On every tool call",
       "wraps": [
-        "reporter",
-        "redact",
-        "privacy",
-        "queue"
+        "wrap",
+        "ctx",
+        "http"
       ]
     }
   ],
   "connections": [
     {
       "id": "s1",
-      "from": "setup",
-      "to": "toollist",
-      "label": "adds fields",
-      "variant": "emphasis",
-      "labelAt": [
-        235,
-        118
-      ]
+      "from": "install",
+      "to": "instr",
+      "label": "appends",
+      "variant": "emphasis"
     },
     {
       "id": "s2",
-      "from": "toollist",
-      "to": "reporter",
-      "label": "tools are wrapped",
-      "labelAt": [
-        490,
-        118
-      ]
+      "from": "instr",
+      "to": "tools3",
+      "label": "registers",
+      "variant": "emphasis"
     },
     {
       "id": "s3",
-      "from": "reporter",
-      "to": "redact",
-      "label": "event",
+      "from": "tools3",
+      "to": "patch",
+      "label": "patches",
       "variant": "emphasis"
     },
     {
-      "id": "s4",
-      "from": "redact",
-      "to": "privacy",
-      "label": "strings",
+      "id": "adds",
+      "from": "patch",
+      "to": "ctx",
+      "label": "adds field",
       "fromSide": "bottom",
       "toSide": "top",
-      "labelAt": [
-        865,
-        138
-      ]
+      "labelDy": 36
     },
     {
-      "id": "s5",
-      "from": "privacy",
-      "to": "queue",
-      "label": "event",
-      "variant": "emphasis"
+      "id": "goal",
+      "from": "ctx",
+      "to": "wrap",
+      "label": "goal text"
     },
     {
-      "id": "s6",
-      "from": "queue",
+      "id": "runs",
+      "from": "wrap",
+      "to": "handler",
+      "label": "runs"
+    },
+    {
+      "id": "twice",
+      "from": "wrap",
+      "to": "http",
+      "label": "calls",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 36
+    },
+    {
+      "id": "out",
+      "from": "http",
       "to": "api",
-      "label": "sends",
+      "label": "/v1",
       "variant": "emphasis"
-    },
-    {
-      "id": "s7",
-      "from": "queue",
-      "to": "log",
-      "label": "writes lines",
-      "fromSide": "bottom",
-      "toSide": "top",
-      "labelAt": [
-        615,
-        275
-      ]
     }
   ],
   "cards": [
     {
       "dot": "cyan",
-      "title": "The five steps",
+      "title": "install() does these things",
       "items": [
-        "1  The tool list gains a required context text and one extra tool",
-        "2  Every tool call is copied into an event, with arguments and result",
-        "3  The vendor's own redaction function, if any, runs on every string",
-        "4  The package's filter hides some values, by name or by pattern",
-        "5  A queue sends the events, five requests at a time"
+        "Appends its note (~2,900 chars) to the server instructions",
+        "Replaces ALL vendor text if a banned phrase is in it",
+        "Registers 4 tools and 2 card pages (open_hub and hub_card too, if hubs is on)",
+        "Patches registerTool",
+        "Pings /v1/install, now with the hubs flag"
       ]
     },
     {
       "dot": "amber",
-      "title": "Why step 4 matters most",
+      "title": "Every successful wrapped call, two network calls",
       "items": [
-        "The email pattern runs on the whole text before it is cut to the size limit. W-01 is the freeze."
+        "Runs the vendor's handler, sends /v1/activity",
+        "Then waits on /v1/offers/deliver for a rep's offer (a third call, /v1/hubs/invite, if hubs is on)",
+        "Each wait is capped at 5 seconds"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Findings in this view",
+      "items": [
+        "W-02 outage alters the vendor's data",
+        "W-03 a hung Within slows every successful wrapped call",
+        "W-04, W-05 the goal input",
+        "W-09 unwrapped tools report",
+        "W-10 goal text unredacted",
+        "W-15 vendor instructions replaced",
+        "W-22 report_void is on by default"
       ]
     }
   ]

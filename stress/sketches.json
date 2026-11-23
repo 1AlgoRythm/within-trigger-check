@@ -1,42 +1,98 @@
 {
- "W-01": {
-  "file": "diagrams/01-freeze.svg",
-  "title": "One long run of letters freezes the whole server"
- },
  "W-02": {
-  "file": "diagrams/02-details-inside-a-sentence.svg",
-  "title": "Private details inside a sentence are not hidden"
+  "file": "diagrams/01-outage-changes-the-answer.svg",
+  "title": "An outage at Within changes the vendor's answer"
  },
  "W-03": {
-  "file": "diagrams/03-sent-by-default.svg",
-  "title": "Arguments and results go to Within by default"
+  "file": "diagrams/02-every-call-waits.svg",
+  "title": "A hung Within adds five seconds to every call"
  },
  "W-04": {
-  "file": "diagrams/04-argument-names.svg",
-  "title": "Names like name, address and dob are sent as written"
+  "file": "diagrams/03-context-input-lost.svg",
+  "title": "A vendor tool's own context input is swallowed"
  },
  "W-05": {
-  "file": "diagrams/05-stuck-queue.svg",
-  "title": "A hung Within blocks every later report"
+  "file": "diagrams/04-goal-longer-than-300.svg",
+  "title": "A goal longer than 300 characters rejects the call"
  },
  "W-06": {
-  "file": "diagrams/06-first-shutdown-ignored.svg",
-  "title": "The first request to shut down is ignored"
+  "file": "diagrams/05-meta-removed.svg",
+  "title": "The vendor's own _meta data is removed"
  },
  "W-07": {
-  "file": "diagrams/07-redaction-function-gets-the-key.svg",
-  "title": "The hiding function is handed the API key and address"
+  "file": "diagrams/06-identify-throws.svg",
+  "title": "A throwing identity function fails the customer's call"
  },
  "W-08": {
-  "file": "diagrams/08-every-tool-reported.svg",
-  "title": "Every tool call is reported, and none can be left out"
+  "file": "diagrams/07-long-text-freeze.svg",
+  "title": "Very long text without spaces freezes the server"
+ },
+ "W-24": {
+  "file": "diagrams/08-hub-text-in-result.svg",
+  "title": "Within's text is added to the vendor's tool result"
  },
  "W-09": {
-  "file": "diagrams/09-silent-key-and-growing-log.svg",
-  "title": "A bad key shows only in a log file that only grows"
+  "file": "diagrams/09-unwrapped-tool-reports.svg",
+  "title": "A tool the vendor did not wrap still reports"
  },
  "W-10": {
-  "file": "diagrams/10-required-context-input.svg",
-  "title": "Every tool gets a required context input, plus one tool"
+  "file": "diagrams/10-goal-text-gap.svg",
+  "title": "The goal text goes out with private details in it"
+ },
+ "W-11": {
+  "file": "diagrams/11-whole-question-sent.svg",
+  "title": "The customer's whole question goes to Within"
+ },
+ "W-12": {
+  "file": "diagrams/12-errors-carry-details.svg",
+  "title": "Error messages carry private details to Within"
+ },
+ "W-13": {
+  "file": "diagrams/13-results-and-secrets.svg",
+  "title": "Tool results leave too, and some secrets slip through"
+ },
+ "W-21": {
+  "file": "diagrams/14-login-token-sent.svg",
+  "title": "The customer's login token is sent to Within"
+ },
+ "W-22": {
+  "file": "diagrams/15-report-void-default.svg",
+  "title": "report_void is on and sends the customer's words"
+ },
+ "W-23": {
+  "file": "diagrams/16-app-name-fallback.svg",
+  "title": "A browser's user-agent text is sent as the app name"
+ },
+ "W-15": {
+  "file": "diagrams/17-instructions-replaced.svg",
+  "title": "A banned phrase replaces all the vendor's instructions"
+ },
+ "W-16": {
+  "file": "diagrams/18-silent-failures.svg",
+  "title": "A wrong key or a missing address fails silently"
+ },
+ "W-17": {
+  "file": "diagrams/19-unused-address-lists.svg",
+  "title": "Two lists of private addresses are never used"
+ },
+ "W-18": {
+  "file": "diagrams/20-consent-rests-on-the-ai.svg",
+  "title": "Consent rests on the AI, not on the SDK"
+ },
+ "W-19": {
+  "file": "diagrams/21-no-session-no-offer.svg",
+  "title": "Without sessions, an offer cannot find the customer"
+ },
+ "W-25": {
+  "file": "diagrams/22-doctor-misses-w04.svg",
+  "title": "The doctor command misses a removed context input"
+ },
+ "W-26": {
+  "file": "diagrams/23-hub-card-app-only.svg",
+  "title": "hub_card is app-only by label, not by lock"
+ },
+ "W-20": {
+  "file": "diagrams/24-comparison-false-alarm.svg",
+  "title": "A small model treats a comparison as a sales question"
  }
 }

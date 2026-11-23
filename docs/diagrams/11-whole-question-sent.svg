@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="A question with a name, phone number, email and card: all four reached Within as typed">
+<title>A question with a name, phone number, email and card: all four reached Within as typed</title><defs><filter id="wob" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/></filter><style>
+.flow{stroke-dasharray:9 7;animation:dash 1.1s linear infinite}
+.slow{stroke-dasharray:9 7;animation:dash 2.4s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-32}}
+.pulse{transform-box:fill-box;transform-origin:center;animation:pulse 1.7s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.08);opacity:.6}}
+.grow{transform-box:fill-box;transform-origin:50% 100%;animation:grow 1.3s cubic-bezier(.2,.8,.2,1) both}
+@keyframes grow{from{transform:scaleY(.02)}to{transform:scaleY(1)}}
+.growx{transform-box:fill-box;transform-origin:0 50%;animation:growx 1.6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes growx{from{transform:scaleX(.02)}to{transform:scaleX(1)}}
+.bob{animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.blink{animation:blink 1.4s steps(2,start) infinite}
+@keyframes blink{50%{opacity:.15}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style></defs>
+<rect width="960" height="540" fill="#fffdf7"/>
+<g filter="url(#wob)">
+<path d="M42.0 110.0 Q484.1 108.6 921.5 108.8 Q922.9 145.8 920.4 178.3 Q481.2 176.9 38.1 180.2 Q37.8 145.8 42.0 110.0" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="56" y="136" font-family="'Bradley Hand','Segoe Print','Marker Felt','Comic Sans MS',cursive" font-size="13.5" fill="#1f2328"><tspan x="56" dy="0">&quot;Hi, I'm Priya Raman (priya.raman@acme-fund.com, +1 617 555 0142). What does Team cost for 40 seats?…&quot;</tspan></text>
+<text x="56" y="160" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="56" dy="0">fields in the request to Within: customerSessionId, topic, question</tspan></text>
+<path d="M480 182 Q476.0 203.0 480 232" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" class="flow"/>
+<path d="M472.9 222.3 L480 232 L484.3 220.8" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M39.0 236.9 Q143.9 237.2 248.9 237.1 Q247.2 280.4 246.2 326.8 Q143.7 326.5 40.6 328.5 Q39.2 281.1 39.0 236.9" fill="#fff1f0" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="262" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">name</tspan></text>
+<text x="54" y="284" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">arrived as typed</tspan></text>
+<path d="M264.3 239.6 Q367.7 239.7 470.1 239.3 Q473.1 283.6 472.2 328.7 Q369.6 327.5 265.4 327.1 Q267.1 282.3 264.3 239.6" fill="#fff1f0" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="278" y="262" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="278" dy="0">phone</tspan></text>
+<text x="278" y="284" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="278" dy="0">arrived as typed</tspan></text>
+<path d="M488.5 237.9 Q590.3 239.3 696.5 236.9 Q696.5 282.4 697.4 327.4 Q589.5 327.4 486.2 326.1 Q486.9 281.8 488.5 237.9" fill="#fff1f0" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="502" y="262" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="502" dy="0">email</tspan></text>
+<text x="502" y="284" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="502" dy="0">arrived as typed</tspan></text>
+<path d="M711.9 239.9 Q816.9 239.2 920.6 239.0 Q918.7 282.3 920.5 329.7 Q814.8 328.9 711.4 328.2 Q711.5 285.3 711.9 239.9" fill="#fff1f0" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="726" y="262" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="726" dy="0">card</tspan></text>
+<text x="726" y="284" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="726" dy="0">arrived as typed</tspan></text>
+<text x="40" y="362" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">Check C10. The question is sent so a rep can answer it; the docs do not say it is sent unredacted.</tspan></text>
+</g>
+<text x="40" y="52" font-family="'Bradley Hand','Segoe Print','Marker Felt','Comic Sans MS',cursive" font-size="27" fill="#1f2328" font-weight="700"><tspan x="40" dy="0">The customer's whole question goes to Within</tspan></text>
+<rect x="840" y="30" width="97.8" height="22" rx="11" fill="#ef4444"/>
+<text x="888.9" y="45.32" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#fff">W-11 · High</text>
+<text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">When the customer asks Within a question, the full text is sent. The filter that hides emails elsewhere does not run.</tspan></text>
+<g filter="url(#wob)">
+<path d="M38.1 447.7 Q478.9 448.1 919.8 444.7 Q921.3 487.0 918.1 533.4 Q478.0 532.0 40.1 534.8 Q36.8 492.9 38.1 447.7" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="54" dy="0">What Within should change</tspan></text>
+<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328"><tspan x="54" dy="0">Add it to the docs table.</tspan></text>
+</g>
+</svg>

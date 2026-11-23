@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="Letters: 565 ms at 20,000, 2,389 ms at 40,000, 9,506 ms at 80,000">
+<title>Letters: 565 ms at 20,000, 2,389 ms at 40,000, 9,506 ms at 80,000</title><defs><filter id="wob" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/></filter><style>
+.flow{stroke-dasharray:9 7;animation:dash 1.1s linear infinite}
+.slow{stroke-dasharray:9 7;animation:dash 2.4s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-32}}
+.pulse{transform-box:fill-box;transform-origin:center;animation:pulse 1.7s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.08);opacity:.6}}
+.grow{transform-box:fill-box;transform-origin:50% 100%;animation:grow 1.3s cubic-bezier(.2,.8,.2,1) both}
+@keyframes grow{from{transform:scaleY(.02)}to{transform:scaleY(1)}}
+.growx{transform-box:fill-box;transform-origin:0 50%;animation:growx 1.6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes growx{from{transform:scaleX(.02)}to{transform:scaleX(1)}}
+.bob{animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.blink{animation:blink 1.4s steps(2,start) infinite}
+@keyframes blink{50%{opacity:.15}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style></defs>
+<rect width="960" height="540" fill="#fffdf7"/>
+<g filter="url(#wob)">
+<path d="M110 384 Q357.6 384.1 600 384" fill="none" stroke="#1f2328" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M110 384 Q109.7 277.6 110 166" fill="none" stroke="#1f2328" stroke-width="2.2" stroke-linecap="round"/>
+<text x="116" y="128" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="116" dy="0">How long the server froze (ms, median of three runs)</tspan></text>
+<path d="M151.1 370.2 Q196.0 373.5 239.1 373.0 Q241.4 379.1 241.4 385.5 Q194.0 383.7 151.0 385.4 Q150.8 377.9 151.1 370.2" fill="#f97316" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="grow" style="animation-delay:0s"/>
+<text x="195" y="363.63728171681043" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="15" fill="#1f2328" font-weight="700" text-anchor="middle"><tspan x="195" dy="0">565</tspan></text>
+<text x="195" y="404" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e" text-anchor="middle"><tspan x="195" dy="0">20,000</tspan></text>
+<path d="M281.1 331.6 Q326.9 332.9 370.1 332.4 Q371.4 357.9 371.4 382.4 Q324.3 384.2 278.7 385.1 Q277.7 356.2 281.1 331.6" fill="#f97316" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="grow" style="animation-delay:0.2s"/>
+<text x="325" y="323.72648853355776" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="15" fill="#1f2328" font-weight="700" text-anchor="middle"><tspan x="325" dy="0">2,389</tspan></text>
+<text x="325" y="404" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e" text-anchor="middle"><tspan x="325" dy="0">40,000</tspan></text>
+<path d="M408.8 177.7 Q452.3 179.5 498.2 176.7 Q501.6 277.6 501.7 383.0 Q456.0 381.7 408.5 382.1 Q406.4 278.2 408.8 177.7" fill="#ef4444" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="grow" style="animation-delay:0.4s"/>
+<text x="455" y="168" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="15" fill="#1f2328" font-weight="700" text-anchor="middle"><tspan x="455" dy="0">9,506</tspan></text>
+<text x="455" y="404" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e" text-anchor="middle"><tspan x="455" dy="0">80,000</tspan></text>
+<text x="150" y="422" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="150" dy="0">unbroken letters in one argument</tspan></text>
+<path d="M649.2 129.7 Q784.4 130.8 918.3 129.7 Q920.4 177.9 918.0 225.6 Q786.2 224.2 649.7 225.0 Q648.6 179.4 649.2 129.7" fill="#f3faf6" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="664" y="154" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="664" dy="0">Digits and spaces, 80,000</tspan></text>
+<text x="664" y="176" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="664" dy="0">18 ms</tspan></text>
+<path d="M648.8 242.3 Q785.0 244.2 919.9 245.4 Q916.9 300.0 918.7 355.8 Q785.9 355.7 650.6 356.3 Q647.6 297.2 648.8 242.3" fill="#fff7ed" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="664" y="268" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="664" dy="0">An error, default settings</tspan></text>
+<text x="664" y="290" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="664" dy="0">193 ms at 20,000 letters</tspan></text>
+<text x="664" y="309" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="664" dy="0">783 ms at 40,000</tspan></text>
+</g>
+<text x="40" y="52" font-family="'Bradley Hand','Segoe Print','Marker Felt','Comic Sans MS',cursive" font-size="27" fill="#1f2328" font-weight="700"><tspan x="40" dy="0">Very long text without spaces freezes the server</tspan></text>
+<rect x="840" y="30" width="112.7" height="22" rx="11" fill="#f97316"/>
+<text x="896.4" y="45.32" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#fff">W-08 · Medium</text>
+<text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">The email pattern in the privacy filter slows down fast on unbroken text. While it runs, nobody is answered.</tspan></text>
+<g filter="url(#wob)">
+<path d="M39.7 446.7 Q481.8 444.5 921.1 446.9 Q919.1 491.4 918.2 534.0 Q480.0 532.1 38.3 533.8 Q37.4 492.2 39.7 446.7" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="54" dy="0">What Within should change</tspan></text>
+<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328"><tspan x="54" dy="0">Cut the text to about 1,000 characters before any pattern runs (the output is cut to 200 anyway).</tspan></text>
+</g>
+</svg>
