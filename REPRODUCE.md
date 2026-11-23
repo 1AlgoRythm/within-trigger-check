@@ -24,7 +24,7 @@ node run-all.mjs        # about 6 minutes
 
 Every check runs in its own process, because the package keeps one process-wide event queue: a check that hangs the stand-in would otherwise block every later check. To run only some: `node run-all.mjs C8 Z3` (it merges them with the saved output of the others).
 
-**Expect** (`stress/results/sdk-1.0.4.json`): `FAIL` on `C8` (the freeze) and on no other check (on 2026-11-22 `F6` also failed, because the docs' install line named a package npm answered "not found" for; on 2026-11-23 it passes); gaps on `A1c`, `A10`, `B5`, `C1` to `C6`, `C12`, `C13`, `M8` and `Z3`; passes on `M1` to `M7` (what a vendor can do today). `F6` reads Within's public docs page, so it can change if Within edits it.
+**Expect** (`stress/results/sdk-1.0.4.json`): `FAIL` on `C8` (the freeze) and on no other check; gaps on `A1c`, `A10`, `B5`, `C1` to `C6`, `C12`, `C13`, `M8` and `Z3`; passes on `M1` to `M7` (what a vendor can do today). `F6` reads Within's public docs page, so it can change if Within edits it.
 
 ## 2. The patched copy
 
@@ -38,10 +38,10 @@ WITHIN_PKG_DIR=$PWD/patched-sdk OUT_DIR=$PWD/out-patched RESULTS_FILE=$PWD/../re
 ## 3. The report and the pages
 
 ```bash
-cd .. && npm run build:findings
+cd .. && npm run build:all
 ```
 
-It rewrites `FINDINGS.md`, `docs/findings.html`, `docs/index.html` and the summary block in `README.md` from `stress/findings.json` and the two results files. It stops if a placeholder cannot be resolved, if a finding has no failing check behind it, if a vendor-side fix does not pass, or if a patch does not turn its checks green.
+It redraws the ten sketches and the call-journey picture (`docs/diagrams/`, `docs/flow.svg`), rebuilds the interactive map (`docs/map.html`, `docs/explorer/`; the three diagrams need the Archify skill, set `ARCHIFY_DIR` if it is not in `~/.claude/skills/archify`), and then rewrites `FINDINGS.md`, `docs/findings.html`, `docs/index.html` and the summary block in `README.md` from `stress/findings.json` and the two results files. It stops if a placeholder cannot be resolved, if a finding has no failing check behind it, if a vendor-side fix does not pass, or if a patch does not turn its checks green.
 
 ## 4. What you cannot reproduce from here
 

@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="One reported event with 17 fields, and two switches: tracing off sends 0 events, the other two switches off still send 3">
+<title>One reported event with 17 fields, and two switches: tracing off sends 0 events, the other two switches off still send 3</title><defs><filter id="wob" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/></filter><style>
+.flow{stroke-dasharray:9 7;animation:dash 1.1s linear infinite}
+.slow{stroke-dasharray:9 7;animation:dash 2.4s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-32}}
+.pulse{transform-box:fill-box;transform-origin:center;animation:pulse 1.7s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.08);opacity:.6}}
+.grow{transform-box:fill-box;transform-origin:50% 100%;animation:grow 1.3s cubic-bezier(.2,.8,.2,1) both}
+@keyframes grow{from{transform:scaleY(.02)}to{transform:scaleY(1)}}
+.growx{transform-box:fill-box;transform-origin:0 50%;animation:growx 1.6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes growx{from{transform:scaleX(.02)}to{transform:scaleX(1)}}
+.bob{animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.blink{animation:blink 1.4s steps(2,start) infinite}
+@keyframes blink{50%{opacity:.15}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style></defs>
+<rect width="960" height="540" fill="#fffdf7"/>
+<g filter="url(#wob)">
+<path d="M38.4 118.5 Q135.7 117.2 229.9 119.7 Q233.2 152.4 231.6 189.4 Q137.2 190.7 39.6 191.1 Q40.6 152.4 38.4 118.5" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="146" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#1f2328"><tspan x="54" dy="0">The vendor's tool</tspan><tspan x="54" dy="18.48">search_companies</tspan></text>
+<text x="54" y="180" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#59636e"><tspan x="54" dy="0">query: &quot;acme corp&quot;</tspan></text>
+<path d="M232 156 Q277.9 156.7 330 156" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" class="flow"/>
+<path d="M319.5 161.9 L330 156 L319.4 150.4" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M334.9 109.7 Q497.0 107.6 663.3 109.0 Q665.5 227.8 662.9 344.5 Q498.3 344.4 334.1 345.6 Q332.6 227.8 334.9 109.7" fill="#fff" stroke="#f97316" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="348" y="130" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#1f2328" font-weight="700"><tspan x="348" dy="0">One event: 17 fields</tspan></text>
+<rect x="346" y="142" width="28.4" height="20" rx="6" fill="#8b949e22" stroke="#8b949e" stroke-width="1.5"/>
+<text x="353" y="155" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">id</text>
+<rect x="380" y="142" width="78.8" height="20" rx="6" fill="#8b949e22" stroke="#8b949e" stroke-width="1.5"/>
+<text x="387" y="155" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">sessionId</text>
+<rect x="463" y="142" width="78.8" height="20" rx="6" fill="#8b949e22" stroke="#8b949e" stroke-width="1.5"/>
+<text x="470" y="155" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">projectId</text>
+<rect x="546" y="142" width="86.0" height="20" rx="6" fill="#8b949e22" stroke="#8b949e" stroke-width="1.5"/>
+<text x="553" y="155" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">vendorSlug</text>
+<rect x="346" y="170" width="78.8" height="20" rx="6" fill="#8b949e22" stroke="#8b949e" stroke-width="1.5"/>
+<text x="353" y="183" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">eventType</text>
+<rect x="429" y="170" width="78.8" height="20" rx="6" fill="#8b949e22" stroke="#8b949e" stroke-width="1.5"/>
+<text x="436" y="183" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">timestamp</text>
+<rect x="512" y="170" width="71.6" height="20" rx="6" fill="#8b949e22" stroke="#8b949e" stroke-width="1.5"/>
+<text x="519" y="183" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">duration</text>
+<rect x="346" y="198" width="93.2" height="20" rx="6" fill="#8b949e22" stroke="#8b949e" stroke-width="1.5"/>
+<text x="353" y="211" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">sdkLanguage</text>
+<rect x="443" y="198" width="86.0" height="20" rx="6" fill="#8b949e22" stroke="#8b949e" stroke-width="1.5"/>
+<text x="450" y="211" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">sdkVersion</text>
+<rect x="533" y="198" width="86.0" height="20" rx="6" fill="#8b949e22" stroke="#8b949e" stroke-width="1.5"/>
+<text x="540" y="211" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">serverName</text>
+<rect x="346" y="226" width="107.6" height="20" rx="6" fill="#8b949e22" stroke="#8b949e" stroke-width="1.5"/>
+<text x="353" y="239" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">serverVersion</text>
+<rect x="457" y="226" width="86.0" height="20" rx="6" fill="#8b949e22" stroke="#8b949e" stroke-width="1.5"/>
+<text x="464" y="239" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">clientName</text>
+<rect x="547" y="226" width="107.6" height="20" rx="6" fill="#8b949e22" stroke="#8b949e" stroke-width="1.5"/>
+<text x="554" y="239" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">clientVersion</text>
+<rect x="346" y="254" width="100.4" height="20" rx="6" fill="#8b949e22" stroke="#8b949e" stroke-width="1.5"/>
+<text x="353" y="267" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">resourceName</text>
+<rect x="450" y="254" width="86.0" height="20" rx="6" fill="#ef444422" stroke="#ef4444" stroke-width="1.5"/>
+<text x="457" y="267" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">parameters</text>
+<rect x="540" y="254" width="71.6" height="20" rx="6" fill="#ef444422" stroke="#ef4444" stroke-width="1.5"/>
+<text x="547" y="267" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">response</text>
+<rect x="346" y="282" width="86.0" height="20" rx="6" fill="#ef444422" stroke="#ef4444" stroke-width="1.5"/>
+<text x="353" y="295" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328">userIntent</text>
+<text x="348" y="330" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#ef4444"><tspan x="348" dy="0">red: what was asked and answered</tspan></text>
+<path d="M666 216 Q714.3 213.8 770 216" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" class="flow"/>
+<path d="M759.2 221.3 L770 216 L759.7 209.8" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M772.8 178.9 Q845.1 178.9 921.5 178.6 Q920.5 214.6 920.8 252.2 Q845.8 252.3 773.7 255.3 Q773.5 216.7 772.8 178.9" fill="#eef4fb" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="790" y="212" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="18" fill="#1f2328" font-weight="700"><tspan x="790" dy="0">Within</tspan></text>
+<text x="790" y="234" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="790" dy="0">gets all of it</tspan></text>
+<path d="M41.0 358.2 Q238.4 357.7 440.3 358.2 Q440.9 399.8 439.4 438.4 Q241.3 436.1 39.6 437.3 Q38.7 396.7 41.0 358.2" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="381" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="15" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">enableTracing: false</tspan></text>
+<text x="54" y="404" font-family="'Bradley Hand','Segoe Print','Marker Felt','Comic Sans MS',cursive" font-size="18" fill="#10b981"><tspan x="54" dy="0">events sent: 0</tspan></text>
+<text x="54" y="424" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">everything stops, the analytics too</tspan></text>
+<path d="M479.5 358.5 Q699.9 359.2 919.8 360.4 Q920.2 397.1 918.4 437.0 Q699.1 435.9 480.5 439.5 Q478.5 400.5 479.5 358.5" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="494" y="381" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="15" fill="#1f2328" font-weight="700"><tspan x="494" dy="0">the two context switches off</tspan></text>
+<text x="494" y="404" font-family="'Bradley Hand','Segoe Print','Marker Felt','Comic Sans MS',cursive" font-size="18" fill="#ef4444"><tspan x="494" dy="0">events sent: 3</tspan></text>
+<text x="494" y="424" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="494" dy="0">arguments and results still leave</tspan></text>
+</g>
+<text x="40" y="52" font-family="'Bradley Hand','Segoe Print','Marker Felt','Comic Sans MS',cursive" font-size="27" fill="#1f2328" font-weight="700"><tspan x="40" dy="0">Arguments and results go to Within by default</tspan></text>
+<rect x="840" y="30" width="112.7" height="22" rx="11" fill="#f97316"/>
+<text x="896.4" y="45.32" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#fff">W-03 · Medium</text>
+<text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">Every tool call is reported with what was asked and what the tool answered. The only off switch stops all reporting.</tspan></text>
+<g filter="url(#wob)">
+<path d="M42.0 447.3 Q254.2 444.5 469.3 444.4 Q468.7 488.8 468.0 533.1 Q254.8 531.9 41.2 533.3 Q41.8 490.3 42.0 447.3" fill="#f3faf6" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#10b981" font-weight="700"><tspan x="54" dy="0">A vendor can do this today</tspan></text>
+<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328"><tspan x="54" dy="0">Mask what leaves with `redactSensitiveInformation`, or</tspan><tspan x="54" dy="16.5">set `enableTracing` to false (stops everything).</tspan></text>
+<path d="M490.6 447.3 Q703.0 447.7 919.7 446.7 Q921.0 493.5 919.1 535.5 Q706.6 534.3 489.9 534.4 Q490.0 492.4 490.6 447.3" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="504" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="504" dy="0">What Within should change</tspan></text>
+<text x="504" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328"><tspan x="504" dy="0">Make argument and result capture opt-in, and say in the</tspan><tspan x="504" dy="16.5">README what leaves by default.</tspan></text>
+</g>
+</svg>

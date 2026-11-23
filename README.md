@@ -2,7 +2,7 @@
 
 Within sells a recorder for AI tool calls. A company installs one npm package, `within-sdk`, and it watches every tool call on the company's MCP server and sends a copy to Within. This repo tries to break that package on a laptop, without ever contacting Within, and for each problem it finds it tests two things: **what a vendor can do today** with the package's own options, and **what Within would have to change**, shown on a patched copy.
 
-**Read the findings:** [the web page](https://1algorythm.github.io/within-trigger-check/findings.html), [the one-screen summary](https://1algorythm.github.io/within-trigger-check/), or [FINDINGS.md](FINDINGS.md).
+**Read the findings:** [the web page](https://satyaasudarshan.me/within-trigger-check/findings.html), [the one-screen summary](https://satyaasudarshan.me/within-trigger-check/), [the interactive map](https://satyaasudarshan.me/within-trigger-check/map.html), or [FINDINGS.md](FINDINGS.md). Every finding has a hand-drawn sketch.
 
 <!-- summary:start -->
 
@@ -39,7 +39,7 @@ npm install --ignore-scripts          # within-sdk 1.0.4 from npm
 node run-all.mjs                      # the checks on the stock package, about 6 minutes
 node patches.mjs                      # builds patched-sdk with six small fixes (P1 to P6)
 WITHIN_PKG_DIR=$PWD/patched-sdk OUT_DIR=$PWD/out-patched RESULTS_FILE=$PWD/../results/patched-1.0.4.json node run-all.mjs
-cd .. && npm run build:findings       # rebuilds FINDINGS.md, docs/findings.html and docs/index.html
+cd .. && npm run build:all            # redraws the sketches and the map, then rebuilds FINDINGS.md and the pages
 ```
 
 Every step, with the result to expect, is in [REPRODUCE.md](REPRODUCE.md).
@@ -52,16 +52,14 @@ Every step, with the result to expect, is in [REPRODUCE.md](REPRODUCE.md).
 | `stress/v104/patches.mjs` | Builds the patched copy: six small fixes, each asserted to match exactly once |
 | `stress/findings.json` | The one source for the report. Every number in its prose is a placeholder filled from `stress/results/` |
 | `stress/build.mjs` | Builds the report and the pages, and stops if a claim no longer matches the saved results |
+| `stress/sketches.mjs` | Draws the ten hand-drawn sketches (one per finding) and the call-journey picture. Every number is read from the saved results, and it stops if a line of text does not fit |
+| `stress/map.mjs`, `stress/map.template.html` | Builds the interactive map: three diagrams (made with the Archify skill) and the clickable wrapper that opens each finding's sketch |
 | `stress/results/sdk-1.0.4.json`, `patched-1.0.4.json` | What was measured, on the stock and the patched package |
-| `docs/` | The live pages (GitHub Pages) |
-
-## Earlier versions
-
-The report and interactive map for `@getwithin/sdk` 0.3.0 and 0.4.0, a package npm does not serve, were removed on 2026-11-22. The sales agent, consent step and `get_vendor_answer` tool they covered are not in `within-sdk`. They are kept in the git tag [`archive-0.4.0`](https://github.com/1AlgoRythm/within-trigger-check/tree/archive-0.4.0).
+| `docs/` | The live pages (GitHub Pages): summary, report, map, `diagrams/` and `explorer/` |
 
 ## Limits, stated plainly
 
 - One machine, Node 26 on macOS, and the in-memory MCP transport. Not a deployed server or a real MCP client.
 - Within's hosted service was not tested. The package's README says Within applies a second redaction pass on its side; we cannot see it.
-- Timings depend on the machine. Compare verdicts, not milliseconds: the freeze at 100,000 letters took between 5.5 and 6.3 seconds in different runs.
+- Timings depend on the machine. Compare verdicts, not milliseconds: the freeze at 100,000 letters took between 4.4 and 6.3 seconds in different runs.
 - The patches are proposals written against the published files, not Within's code.

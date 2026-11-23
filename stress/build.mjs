@@ -11,6 +11,7 @@ import { fileURLToPath } from "node:url";
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "..");
 const rd = (p) => JSON.parse(fs.readFileSync(path.join(here, p), "utf8"));
+const sketchFiles = rd("sketches.json");
 const src = rd("findings.json"), stock = rd("results/sdk-1.0.4.json"), patched = rd("results/patched-1.0.4.json");
 const R = Object.fromEntries(stock.results.map((r) => [r.id, r])), P = Object.fromEntries(patched.results.map((r) => [r.id, r]));
 const fail = (m) => { throw new Error(m); };
@@ -22,6 +23,7 @@ for (const r of [...stock.results, ...patched.results]) if (r.verdict === "error
 const bad = (v) => v === "fail" || v === "gap";
 const F = src.findings;
 for (const f of F) {
+  if (!sketchFiles[f.id] || !fs.existsSync(path.join(root, "docs", sketchFiles[f.id].file))) fail(`${f.id} has no sketch: run node sketches.mjs first`);
   for (const t of f.tests) if (!R[t]) fail(`${f.id} cites unknown check ${t}`);
   if (!f.tests.some((t) => bad(R[t].verdict))) fail(`${f.id} is a finding but none of its checks is a gap or a fail`);
   if (f.mitigation) { const m = R[f.mitigation.check] ?? fail(`${f.id}: unknown mitigation check`); if (m.verdict !== "pass") fail(`${f.id}: the vendor-side fix ${f.mitigation.check} does not pass (${m.verdict})`); }
@@ -74,17 +76,17 @@ for (const s of src.severity) L(`- **${s.name}.** ${s.meaning}`);
 L(); L("### What the verdicts mean"); L();
 L("- **pass.** The package did what the README, or a reasonable vendor, would expect."); L("- **FAIL.** The package breaks something a vendor would reasonably expect."); L("- **gap.** Behaviour that is deliberate or documented in passing but leaves a risk. A decision for Within's team."); L("- **info.** A measurement."); L();
 L("![A tool call's journey through within-sdk, with the findings marked](docs/flow.svg)"); L();
+L("**Explore it:** [the interactive map](https://satyaasudarshan.me/within-trigger-check/map.html) opens a hand-drawn sketch of every finding below."); L();
 L("## Findings"); L();
 for (const f of sorted) {
   L(`### ${f.id}`); L(); L(`**${f.severity}: ${f.title}**`); L();
-  L(`**For a founder.** ${f.founder}`); L(); L(`**In plain words.** ${f.plain}`); L(); L(`**Why it matters.** ${f.why}`); L();
+  L(`![Sketch of ${f.id}: ${f.title}](docs/${sketchFiles[f.id].file})`); L(); L(`**For a founder.** ${f.founder}`); L(); L(`**In plain words.** ${f.plain}`); L(); L(`**Why it matters.** ${f.why}`); L();
   L("**What we measured.**"); L();
   for (const id of f.tests) { const t = testLine(id); L(`- \`${t.id}\` (${verdictLabel[t.verdict]}): ${t.title} ${t.observed}`); }
   L(); L("**Where in the code.**"); L(); for (const w of f.where) L(`- ${w}`); L();
   L("**What Within should change.**"); L(); for (const w of f.fix) L(`- ${w}`); L();
   if (f.mitigation) L(`**What a vendor can do today** (\`${f.mitigation.check}\`, pass). ${f.mitigation.text}`), L();
   if (f.patch) L(`**Within's fix, tested** (\`${f.patch.id}\`). ${f.patch.text}`), L();
-  if (f.earlier) L(`*Earlier numbering: ${f.earlier}.*`), L();
   L(`**Reproduce.** \`${f.repro}\``); L();
 }
 L("## What held up"); L(); for (const h of src.heldUp) L(`- ${h.text} (\`${h.test}\`)`); L();
@@ -104,7 +106,7 @@ const css = fs.readFileSync(path.join(here, "report.css"), "utf8");
 const PORTFOLIO = "https://satyaasudarshan.me";
 const foot = `<h2>Back to the portfolio</h2><p>This stress test is one of Satyaa Sudarshan Guruswamy Sethuraman's projects. <a href="${PORTFOLIO}">satyaasudarshan.me</a> has the rest.</p>`;
 const page = (title, body) => `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${esc(title)}</title><style>\n${css}</style></head><body><div class="wrap">\n${body}\n${foot}\n</div></body></html>`;
-const top = (other) => `<div class="top">${other} · <a href="https://github.com/1AlgoRythm/within-trigger-check">Source and tests on GitHub</a> · <a href="https://satyaasudarshan.me">Portfolio</a></div>`;
+const top = (other) => `<div class="top">${other} · <a href="map.html">Interactive map</a> · <a href="https://github.com/1AlgoRythm/within-trigger-check">Source and tests on GitHub</a> · <a href="https://satyaasudarshan.me">Portfolio</a></div>`;
 const h = [], H = (s) => h.push(s);
 H(top('<a href="index.html">Summary</a>')); H(`<h1>${esc(src.title)}</h1>`);
 for (const p of intro) H(`<p>${inline(p)}</p>`);
@@ -115,15 +117,16 @@ H(`<img src="flow.svg" alt="A tool call's journey through within-sdk, with the f
 H(`<table class="sum"><tr><th>ID</th><th>Severity</th><th>What</th><th>A vendor can fix it today</th><th>Within's fix, tested</th></tr>`);
 for (const f of sorted) H(`<tr><td><a href="#${f.id.toLowerCase()}">${f.id}</a></td><td><span class="badge ${f.severity}">${f.severity}</span></td><td>${inline(f.title)}</td><td>${f.mitigation ? `<span class="st yes">yes</span> <code>${f.mitigation.check}</code>` : `<span class="st no">no</span>`}</td><td>${f.patch ? `<span class="st yes">yes</span> <code>${f.patch.id}</code>` : `<span class="st no">not patched</span>`}</td></tr>`);
 H(`</table><h3 style="margin-top:20px">What the words mean</h3><ul>${src.severity.map((s) => `<li><strong>${s.name}.</strong> ${inline(s.meaning)}</li>`).join("")}<li><span class="v pass">pass</span> did what the README, or a reasonable vendor, would expect.</li><li><span class="v fail">FAIL</span> breaks something a vendor would reasonably expect.</li><li><span class="v gap">gap</span> deliberate or only mentioned in passing, and it leaves a risk. A decision for Within's team.</li><li><span class="v info">info</span> a measurement.</li></ul>`);
+H(`<p><a href="map.html"><strong>Open the interactive map →</strong></a> Click into the package box by box; every finding opens its sketch.</p>`);
 H(`<h2>Findings</h2>`);
 for (const f of sorted) {
   H(`<div class="card ${f.severity}" id="${f.id.toLowerCase()}"><h3><span class="badge ${f.severity}">${f.severity}</span>${f.id} · ${inline(f.title)}</h3>`);
+  H(`<img src="${sketchFiles[f.id].file}" alt="Sketch of ${f.id}: ${esc(f.title)}" style="width:100%;border:1px solid var(--line);border-radius:10px;background:#fffdf7;margin:6px 0">`);
   H(`<div class="k">For a founder</div><p>${esc(f.founder)}</p><div class="k">In plain words</div><p>${inline(f.plain)}</p><div class="k">Why it matters</div><p>${inline(f.why)}</p>`);
   H(`<div class="k">What we measured</div><ul>${f.tests.map((id) => { const t = testLine(id); return `<li><code>${t.id}</code> <span class="v ${t.verdict}">${verdictLabel[t.verdict]}</span> ${inline(t.title)} ${inline(t.observed)}</li>`; }).join("")}</ul>`);
   H(`<div class="k">Where in the code</div><ul>${f.where.map((w) => `<li>${inline(w)}</li>`).join("")}</ul><div class="k">What Within should change</div><ul>${f.fix.map((w) => `<li>${inline(w)}</li>`).join("")}</ul>`);
   if (f.mitigation) H(`<div class="mit"><strong>What a vendor can do today</strong> (<code>${f.mitigation.check}</code>, pass). ${inline(f.mitigation.text)}</div>`);
   if (f.patch) H(`<div class="pat"><strong>Within's fix, tested</strong> (<code>${f.patch.id}</code>). ${inline(f.patch.text)}</div>`);
-  if (f.earlier) H(`<p class="mute">Earlier numbering: ${esc(f.earlier)}.</p>`);
   H(`<p class="mute"><strong>Reproduce:</strong> <code>${esc(f.repro)}</code></p></div>`);
 }
 H(`<h2>What held up</h2><ul>${src.heldUp.map((x) => `<li>${inline(x.text)} (<code>${x.test}</code>)</li>`).join("")}</ul>`);
@@ -143,6 +146,7 @@ I(top('<a href="findings.html">The full report</a>')); I(`<h1>Within's public pa
 I(`<p>${inline(intro[0])}</p>`);
 I(`<div class="big"><div><b>${V.count}</b>problems found<br><span class="mute">${V.high} High, ${V.medium} Medium, ${V.low} Low</span></div><div><b>${V.mitigatedCount}</b>a vendor can fix today<br><span class="mute">with the package's own options</span></div><div><b>${V.patchedCount}</b>fixed by a small change<br><span class="mute">tested on a patched copy</span></div><div><b>${V.n}</b>checks run<br><span class="mute">${V.tally}</span></div></div>`);
 I(`<img src="flow.svg" alt="A tool call's journey through within-sdk, with the findings marked" style="width:100%;border:1px solid var(--line);border-radius:10px;background:#fff">`);
+I(`<p><a href="map.html"><strong>Open the interactive map →</strong></a> Click into the package box by box; every finding opens a hand-drawn sketch.</p>`);
 I(`<h2>The short version</h2><ul>${summary.map((b) => `<li>${inline(b)}</li>`).join("")}</ul>`);
 I(`<table class="sum"><tr><th>ID</th><th>Severity</th><th>What</th><th>Vendor fix today</th><th>Within's fix</th></tr>${sorted.map((f) => `<tr><td><a href="findings.html#${f.id.toLowerCase()}">${f.id}</a></td><td><span class="badge ${f.severity}">${f.severity}</span></td><td>${inline(f.title)}</td><td>${f.mitigation ? `<span class="st yes">yes</span>` : `<span class="st no">no</span>`}</td><td>${f.patch ? `<span class="st yes">tested</span>` : `<span class="st no">not patched</span>`}</td></tr>`).join("")}</table>`);
 I(`<p><a href="findings.html"><strong>Read the full report →</strong></a> Every finding has the evidence, the place in the code, what a vendor can do today, and Within's fix tested on a patched copy.</p>`);

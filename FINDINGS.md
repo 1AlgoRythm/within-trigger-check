@@ -6,8 +6,6 @@ This report lists what we found when we tried to break that package. Every findi
 
 Everything ran on our own machine against the published package, version 1.0.4, and a small stand-in for Within's server. We did not send load or attack traffic to Within's service, and we did not look at anything behind its login.
 
-**Update 2026-11-23.** The docs' install line no longer fails. On 2026-11-22 npm answered "not found" for `@getwithin/sdk`, the package the docs name, and the report listed that as finding W-11. On 2026-11-23 17:42 UTC npm answers 200 for it, so W-11 is removed. Why npm answered "not found" before and answers now is unknown. All 48 checks were run again the same day on the same package file (544faede7251), and no other verdict changed.
-
 ## The short version
 
 - **In short.** 48 checks ran on Within's public package, version 1.0.4 (23 pass, 14 gap, 10 info, 1 fail). We found 10 problems: 2 High, 6 Medium and 2 Low.
@@ -50,11 +48,15 @@ Tested 2026-11-23 17:42 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `54
 
 ![A tool call's journey through within-sdk, with the findings marked](docs/flow.svg)
 
+**Explore it:** [the interactive map](https://satyaasudarshan.me/within-trigger-check/map.html) opens a hand-drawn sketch of every finding below.
+
 ## Findings
 
 ### W-01
 
 **High: One long run of plain letters freezes the vendor's whole server for seconds**
+
+![Sketch of W-01: One long run of plain letters freezes the vendor's whole server for seconds](docs/diagrams/01-freeze.svg)
 
 **For a founder.** One customer pasting a very long, unbroken piece of text can freeze the company's whole AI server for several seconds, for every other customer too. It happens in the normal setup, and the package's own size limit does not stop it.
 
@@ -81,13 +83,13 @@ Tested 2026-11-23 17:42 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `54
 
 **Within's fix, tested** (`P1`). With the cut moved before the pattern, the stall at 100,000 letters was 76 ms.
 
-*Earlier numbering: W-08.*
-
 **Reproduce.** `cd stress/v104 && node checks.mjs C8 C8b`
 
 ### W-02
 
 **High: Private details written inside a sentence are not hidden in the goal text, in arguments, in results or in error messages**
+
+![Sketch of W-02: Private details written inside a sentence are not hidden in the goal text, in arguments, in results or in error messages](docs/diagrams/02-details-inside-a-sentence.svg)
 
 **For a founder.** A customer who types a card number or a phone number into a question can have it sent to Within unhidden. The add-on hides only a short list of patterns, and only some of them inside a sentence.
 
@@ -115,13 +117,13 @@ Tested 2026-11-23 17:42 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `54
 
 **What a vendor can do today** (`M2`, pass). A vendor-written redaction function that masks digit runs, keys, web addresses and IP addresses left only name, address unredacted in the arguments (names and street addresses cannot be matched by a pattern).
 
-*Earlier numbering: W-10, W-11, W-12, W-13.*
-
 **Reproduce.** `cd stress/v104 && node checks.mjs C2 C3 C4 C5 C11 C13`
 
 ### W-03
 
 **Medium: Tool arguments and tool results go to Within by default, and the only off switch turns all reporting off**
+
+![Sketch of W-03: Tool arguments and tool results go to Within by default, and the only off switch turns all reporting off](docs/diagrams/03-sent-by-default.svg)
 
 **For a founder.** In a normal setup the add-on sends what customers ask for, and what the company's tools answer, to Within on every tool call. The setup page mentions this only in passing and lists no setting to stop it, short of turning off all reporting.
 
@@ -145,13 +147,13 @@ Tested 2026-11-23 17:42 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `54
 
 **What a vendor can do today** (`M2`, pass). A vendor can strip or mask what leaves with the `redactSensitiveInformation` option (see W-02). Turning off `enableTracing` stops everything.
 
-*Earlier numbering: W-11, W-13.*
-
 **Reproduce.** `cd stress/v104 && node checks.mjs C1 Z2 Z2b`
 
 ### W-04
 
 **Medium: Argument names such as name, address, date of birth and IP address are not treated as private**
+
+![Sketch of W-04: Argument names such as name, address, date of birth and IP address are not treated as private](docs/diagrams/04-argument-names.svg)
 
 **For a founder.** The add-on hides a private detail only when the field is named with certain words, such as email or phone. A field called name, address or date of birth is sent as written.
 
@@ -175,13 +177,13 @@ Tested 2026-11-23 17:42 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `54
 
 **Within's fix, tested** (`P4`). With the patch, the names still sent as written were session_id.
 
-*Earlier numbering: W-30 (new).*
-
 **Reproduce.** `cd stress/v104 && node checks.mjs C6`
 
 ### W-05
 
 **Medium: When Within stops answering, later reports stay stuck behind the stuck ones, even after Within recovers**
+
+![Sketch of W-05: When Within stops answering, later reports stay stuck behind the stuck ones, even after Within recovers](docs/diagrams/05-stuck-queue.svg)
 
 **For a founder.** If Within's service stops answering for a while, the add-on can stop reporting anything to Within, and nobody is told. The company's own customers do not notice. We watched for 15 seconds after Within came back and saw no report sent.
 
@@ -207,13 +209,13 @@ Tested 2026-11-23 17:42 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `54
 
 **Within's fix, tested** (`P2`). With a 5-second limit on every request inside the package, 8 requests reached Within in the 15 seconds after it recovered.
 
-*Earlier numbering: W-27 (new).*
-
 **Reproduce.** `cd stress/v104 && node checks.mjs A1 A1c`
 
 ### W-06
 
 **Medium: A server that loads the package ignores the first request to shut down**
+
+![Sketch of W-06: A server that loads the package ignores the first request to shut down](docs/diagrams/06-first-shutdown-ignored.svg)
 
 **For a founder.** A company server that uses the add-on does not stop the first time the hosting system asks it to. It needs a second request, which slows every update of the company's server.
 
@@ -237,13 +239,13 @@ Tested 2026-11-23 17:42 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `54
 
 **Within's fix, tested** (`P3`). With the patch, the first SIGTERM ended the process in 3 ms.
 
-*Earlier numbering: W-28 (new).*
-
 **Reproduce.** `cd stress/v104 && node checks.mjs Z3`
 
 ### W-07
 
 **Medium: A vendor's redaction function is handed the API key and the address events go to, and changing them stops delivery silently**
+
+![Sketch of W-07: A vendor's redaction function is handed the API key and the address events go to, and changing them stops delivery silently](docs/diagrams/07-redaction-function-gets-the-key.svg)
 
 **For a founder.** The recommended way to hide private details can silently stop all reporting, and it hands the company's secret key to the company's own hiding code. Nothing tells the company.
 
@@ -271,6 +273,8 @@ Tested 2026-11-23 17:42 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `54
 
 **Medium: Every tool call on the server is reported, and none can be left out**
 
+![Sketch of W-08: Every tool call on the server is reported, and none can be left out](docs/diagrams/08-every-tool-reported.svg)
+
 **For a founder.** The add-on reports every tool the company's server has. The company cannot pick which ones.
 
 **In plain words.** `track()` instruments the whole server. A tool registered after `track()` was reported too (reports for it: 1). The package's type definitions declare 14 options. None leaves one tool out, and we found no such option in the code.
@@ -290,13 +294,13 @@ Tested 2026-11-23 17:42 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `54
 
 - Offer an option to leave named tools out, and say in the README that every tool is reported.
 
-*Earlier numbering: W-09.*
-
 **Reproduce.** `cd stress/v104 && node checks.mjs B7 C1`
 
 ### W-09
 
 **Low: A missing or rejected key shows only in a log file in the home folder, and the file only grows**
+
+![Sketch of W-09: A missing or rejected key shows only in a log file in the home folder, and the file only grows](docs/diagrams/09-silent-key-and-growing-log.svg)
 
 **For a founder.** A mistyped key means Within gets nothing and nobody is told. The only trace is a growing file in a folder nobody reads.
 
@@ -320,13 +324,13 @@ Tested 2026-11-23 17:42 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `54
 
 **What a vendor can do today** (`M4`, pass). The `log` option takes a callback. With it, 5 lines went to the vendor's own code and 0 bytes were added to the file.
 
-*Earlier numbering: W-16.*
-
 **Reproduce.** `cd stress/v104 && node checks.mjs A4 A10 C12`
 
 ### W-10
 
 **Low: Every vendor tool gets a required "context" input, and the model sees one extra tool**
+
+![Sketch of W-10: Every vendor tool gets a required "context" input, and the model sees one extra tool](docs/diagrams/10-required-context-input.svg)
 
 **For a founder.** The add-on changes the list of tools that customers' AI assistants see: it adds an explanation box to every tool and one extra tool.
 
@@ -353,8 +357,6 @@ Tested 2026-11-23 17:42 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `54
 
 **Within's fix, tested** (`P5`). With the patch, the required inputs were query.
 
-*Earlier numbering: W-31 (new).*
-
 **Reproduce.** `cd stress/v104 && node checks.mjs B5 B5b Z1 Z2`
 
 ## What held up
@@ -370,7 +372,6 @@ Tested 2026-11-23 17:42 UTC on `within-sdk` 1.0.4 from npm (file fingerprint `54
 - The vendor's server instructions are left unchanged. (`D4`)
 - A tool written with Zod 4 is tracked and called without a crash. (`F1`)
 - The README's install line and quickstart run on a fresh project. (`F2`)
-- The docs' install line names a package that npm serves, as of 2026-11-23. (On 2026-11-22 it did not.) (`F6`)
 
 ## What we did not test
 

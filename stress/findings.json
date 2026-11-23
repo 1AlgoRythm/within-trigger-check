@@ -3,8 +3,7 @@
  "intro": [
   "Within sells analytics for AI tool calls. A company installs one npm package, `within-sdk`. It sits inside the company's MCP server, records every tool call, and sends a copy to Within. The package describes itself as \"MCP analytics, workflow intelligence, and qualified opportunities\".",
   "This report lists what we found when we tried to break that package. Every finding has a plain-words explanation, then the technical detail, then **what a vendor can do today** with the package's own options, and **what Within must change**, shown by a patched copy that we tested.",
-  "Everything ran on our own machine against the published package, version 1.0.4, and a small stand-in for Within's server. We did not send load or attack traffic to Within's service, and we did not look at anything behind its login.",
-  "**Update 2026-11-23.** The docs' install line no longer fails. On 2026-11-22 npm answered \"not found\" for `@getwithin/sdk`, the package the docs name, and the report listed that as finding W-11. On {{R:F6.evidence.fetchedAt}} npm answers {{R:F6.evidence.npmStatus}} for it, so W-11 is removed. Why npm answered \"not found\" before and answers now is unknown. All {{V:n}} checks were run again the same day on the same package file ({{V:fingerprint}}), and no other verdict changed."
+  "Everything ran on our own machine against the published package, version 1.0.4, and a small stand-in for Within's server. We did not send load or attack traffic to Within's service, and we did not look at anything behind its login."
  ],
  "severity": [
   {
@@ -71,10 +70,6 @@
   {
    "test": "F2",
    "text": "The README's install line and quickstart run on a fresh project."
-  },
-  {
-   "test": "F6",
-   "text": "The docs' install line names a package that npm serves, as of 2026-11-23. (On 2026-11-22 it did not.)"
   }
  ],
  "notTested": [
@@ -122,7 +117,6 @@
     ],
     "text": "With the cut moved before the pattern, the stall at 100,000 letters was {{P:C8.evidence.out[3].maxEventLoopStallMs}} ms."
    },
-   "earlier": "W-08",
    "repro": "cd stress/v104 && node checks.mjs C8 C8b"
   },
   {
@@ -151,7 +145,6 @@
     "check": "M2",
     "text": "A vendor-written redaction function that masks digit runs, keys, web addresses and IP addresses left only {{R:M2.evidence.survivors}} unredacted in the arguments (names and street addresses cannot be matched by a pattern)."
    },
-   "earlier": "W-10, W-11, W-12, W-13",
    "repro": "cd stress/v104 && node checks.mjs C2 C3 C4 C5 C11 C13"
   },
   {
@@ -176,7 +169,6 @@
     "check": "M2",
     "text": "A vendor can strip or mask what leaves with the `redactSensitiveInformation` option (see W-02). Turning off `enableTracing` stops everything."
    },
-   "earlier": "W-11, W-13",
    "repro": "cd stress/v104 && node checks.mjs C1 Z2 Z2b"
   },
   {
@@ -206,7 +198,6 @@
     ],
     "text": "With the patch, the names still sent as written were {{P:C6.evidence.kept}}."
    },
-   "earlier": "W-30 (new)",
    "repro": "cd stress/v104 && node checks.mjs C6"
   },
   {
@@ -238,7 +229,6 @@
     ],
     "text": "With a 5-second limit on every request inside the package, {{P:A1c.evidence.okPosts}} requests reached Within in the 15 seconds after it recovered."
    },
-   "earlier": "W-27 (new)",
    "repro": "cd stress/v104 && node checks.mjs A1 A1c"
   },
   {
@@ -268,7 +258,6 @@
     ],
     "text": "With the patch, the first SIGTERM ended the process in {{P:Z3.evidence.one.ms}} ms."
    },
-   "earlier": "W-28 (new)",
    "repro": "cd stress/v104 && node checks.mjs Z3"
   },
   {
@@ -313,7 +302,6 @@
     "Offer an option to leave named tools out, and say in the README that every tool is reported."
    ],
    "founder": "The add-on reports every tool the company's server has. The company cannot pick which ones.",
-   "earlier": "W-09",
    "repro": "cd stress/v104 && node checks.mjs B7 C1"
   },
   {
@@ -338,7 +326,6 @@
     "check": "M4",
     "text": "The `log` option takes a callback. With it, {{R:M4.evidence.lines}} lines went to the vendor's own code and {{R:M4.evidence.grew}} bytes were added to the file."
    },
-   "earlier": "W-16",
    "repro": "cd stress/v104 && node checks.mjs A4 A10 C12"
   },
   {
@@ -371,7 +358,6 @@
     ],
     "text": "With the patch, the required inputs were {{P:B5.evidence.required}}."
    },
-   "earlier": "W-31 (new)",
    "repro": "cd stress/v104 && node checks.mjs B5 B5b Z1 Z2"
   }
  ]

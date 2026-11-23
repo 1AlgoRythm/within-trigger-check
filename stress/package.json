@@ -6,6 +6,9 @@
   "description": "Builds the report on within-sdk 1.0.4 from findings.json and the saved results. The checks are in v104/.",
   "scripts": {
     "build:findings": "node build.mjs",
-    "test": "cd v104 && node run-all.mjs"
+    "test": "cd v104 && node run-all.mjs",
+    "build:sketches": "node sketches.mjs",
+    "build:map": "node map.mjs",
+    "build:all": "node sketches.mjs && node map.mjs && node build.mjs"
   }
 }

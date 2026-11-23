@@ -1,53 +1,84 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 470" font-family="system-ui,-apple-system,Segoe UI,sans-serif" font-size="13">
-<title>A tool call's journey through within-sdk, with the findings marked</title>
-<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#59636e"/></marker></defs>
-<rect width="980" height="470" fill="#fbfaf6"/>
-<rect x="14" y="88" width="140" height="70" rx="9" fill="#fff" stroke="#8b949e" stroke-width="1.5"/>
-<text x="24" y="120.0" fill="#1f2328" font-weight="600">Customer's AI</text><text x="24" y="138.0" fill="#59636e">assistant</text>
-<rect x="196" y="88" width="150" height="70" rx="9" fill="#fff" stroke="#8b949e" stroke-width="1.5"/>
-<text x="206" y="120.0" fill="#1f2328" font-weight="600">Vendor's MCP server</text><text x="206" y="138.0" fill="#59636e">the vendor's own tool</text>
-<line x1="154" y1="123" x2="196" y2="123" stroke="#59636e" stroke-width="1.8" marker-end="url(#a)"/>
-<rect x="384" y="16" width="440" height="440" rx="14" fill="#eef4fb" stroke="#2563eb" stroke-width="2" stroke-dasharray="7 5"/>
-<text x="400" y="38" fill="#2563eb" font-weight="700" font-size="14">within-sdk, loaded inside the vendor's server</text>
-<rect x="400" y="50" width="408" height="54" rx="9" fill="#fff" stroke="#8b949e" stroke-width="1.5"/>
-<text x="410" y="74.0" fill="#1f2328" font-weight="600">1  Tool list</text><text x="410" y="92.0" fill="#59636e">adds a required context input and a get_more_tools tool</text>
-<rect x="752" y="56" width="46" height="19" rx="9.5" fill="#2563eb"/><text x="775" y="69.5" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">W-10</text>
-<rect x="400" y="116" width="408" height="54" rx="9" fill="#fff" stroke="#8b949e" stroke-width="1.5"/>
-<text x="410" y="140.0" fill="#1f2328" font-weight="600">2  Reporter</text><text x="410" y="158.0" fill="#59636e">copies every tool call, arguments and result, into an event</text>
-<rect x="702" y="122" width="46" height="19" rx="9.5" fill="#d97706"/><text x="725" y="135.5" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">W-03</text>
-<rect x="752" y="122" width="46" height="19" rx="9.5" fill="#d97706"/><text x="775" y="135.5" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">W-08</text>
-<line x1="604" y1="108" x2="604" y2="116" stroke="#59636e" stroke-width="1.8" marker-end="url(#a)"/>
-<rect x="400" y="182" width="408" height="54" rx="9" fill="#fff" stroke="#8b949e" stroke-width="1.5"/>
-<text x="410" y="206.0" fill="#1f2328" font-weight="600">3  Vendor's redaction function</text><text x="410" y="224.0" fill="#59636e">is handed every string, even the API key and the address</text>
-<rect x="752" y="188" width="46" height="19" rx="9.5" fill="#d97706"/><text x="775" y="201.5" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">W-07</text>
-<line x1="604" y1="174" x2="604" y2="182" stroke="#59636e" stroke-width="1.8" marker-end="url(#a)"/>
-<rect x="400" y="248" width="408" height="54" rx="9" fill="#fff" stroke="#8b949e" stroke-width="1.5"/>
-<text x="410" y="272.0" fill="#1f2328" font-weight="600">4  Privacy filter</text><text x="410" y="290.0" fill="#59636e">name list, whole-value patterns, email pattern on the whole text</text>
-<rect x="652" y="254" width="46" height="19" rx="9.5" fill="#d1242f"/><text x="675" y="267.5" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">W-02</text>
-<rect x="702" y="254" width="46" height="19" rx="9.5" fill="#d97706"/><text x="725" y="267.5" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">W-04</text>
-<rect x="752" y="254" width="46" height="19" rx="9.5" fill="#d1242f"/><text x="775" y="267.5" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">W-01</text>
-<line x1="604" y1="240" x2="604" y2="248" stroke="#59636e" stroke-width="1.8" marker-end="url(#a)"/>
-<rect x="400" y="314" width="408" height="54" rx="9" fill="#fff" stroke="#8b949e" stroke-width="1.5"/>
-<text x="410" y="338.0" fill="#1f2328" font-weight="600">5  Queue</text><text x="410" y="356.0" fill="#59636e">5 requests at a time, no time limit on a request</text>
-<rect x="752" y="320" width="46" height="19" rx="9.5" fill="#d97706"/><text x="775" y="333.5" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">W-05</text>
-<line x1="604" y1="306" x2="604" y2="314" stroke="#59636e" stroke-width="1.8" marker-end="url(#a)"/>
-<rect x="400" y="382" width="196" height="48" rx="9" fill="#fff" stroke="#8b949e" stroke-width="1.5"/>
-<text x="410" y="403.0" fill="#1f2328" font-weight="600">Log file</text><text x="410" y="421.0" fill="#59636e">~/within-sdk.log, only grows</text>
-<rect x="404" y="434" width="46" height="19" rx="9.5" fill="#2563eb"/><text x="427" y="447.5" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">W-09</text>
-<rect x="612" y="382" width="196" height="48" rx="9" fill="#fff" stroke="#8b949e" stroke-width="1.5"/>
-<text x="622" y="403.0" fill="#1f2328" font-weight="600">Shutdown handler</text><text x="622" y="421.0" fill="#59636e">swallows the first SIGTERM</text>
-<rect x="616" y="434" width="46" height="19" rx="9.5" fill="#d97706"/><text x="639" y="447.5" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">W-06</text>
-<line x1="346" y1="123" x2="384" y2="123" stroke="#59636e" stroke-width="1.8" marker-end="url(#a)"/>
-<rect x="846" y="88" width="120" height="70" rx="9" fill="#fff" stroke="#8b949e" stroke-width="1.5"/>
-<text x="856" y="120.0" fill="#1f2328" font-weight="600">Within's</text><text x="856" y="138.0" fill="#59636e">service</text>
-<path d="M808 311 L828 311 L828 123 L846 123" fill="none" stroke="#59636e" stroke-width="1.8" marker-end="url(#a)"/>
-<text x="834" y="215" fill="#59636e" font-size="11" transform="rotate(-90 834 215)">reports</text>
-<rect x="846" y="200" width="120" height="92" rx="9" fill="#fff8ee" stroke="#d97706" stroke-width="1.5"/>
-<text x="856" y="224" fill="#1f2328" font-weight="600">Docs install line</text><text x="856" y="242" fill="#59636e">names a package</text><text x="856" y="258" fill="#59636e">that npm does</text><text x="856" y="274" fill="#59636e">not have</text>
-<rect x="856" y="296" width="46" height="19" rx="9.5" fill="#d97706"/><text x="879" y="309.5" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">W-11</text>
-<text x="14" y="215" fill="#59636e" font-size="12">Colour = severity:</text>
-<rect x="14" y="224" width="46" height="19" rx="9.5" fill="#d1242f"/><text x="37" y="237.5" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">High</text>
-<rect x="66" y="224" width="58" height="19" rx="9.5" fill="#d97706"/><text x="95" y="237.5" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">Medium</text>
-<rect x="130" y="224" width="40" height="19" rx="9.5" fill="#2563eb"/><text x="150" y="237.5" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">Low</text>
-<text x="14" y="270" fill="#59636e" font-size="12">The vendor's tool still</text><text x="14" y="286" fill="#59636e" font-size="12">answers at once while 1</text><text x="14" y="302" fill="#59636e" font-size="12">freezes the process: the</text><text x="14" y="318" fill="#59636e" font-size="12">freeze comes after, when</text><text x="14" y="334" fill="#59636e" font-size="12">the event is cleaned.</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 540" role="img" aria-label="A tool call's journey through within-sdk, with the ten findings marked">
+<title>A tool call's journey through within-sdk, with the ten findings marked</title><defs><filter id="wob" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/></filter><style>
+.flow{stroke-dasharray:9 7;animation:dash 1.1s linear infinite}
+.slow{stroke-dasharray:9 7;animation:dash 2.4s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-32}}
+.pulse{transform-box:fill-box;transform-origin:center;animation:pulse 1.7s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.08);opacity:.6}}
+.grow{transform-box:fill-box;transform-origin:50% 100%;animation:grow 1.3s cubic-bezier(.2,.8,.2,1) both}
+@keyframes grow{from{transform:scaleY(.02)}to{transform:scaleY(1)}}
+.growx{transform-box:fill-box;transform-origin:0 50%;animation:growx 1.6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes growx{from{transform:scaleX(.02)}to{transform:scaleX(1)}}
+.bob{animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.blink{animation:blink 1.4s steps(2,start) infinite}
+@keyframes blink{50%{opacity:.15}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style></defs>
+<rect width="980" height="540" fill="#fffdf7"/>
+<g filter="url(#wob)">
+<path d="M24.0 149.8 Q99.7 152.7 174.9 150.8 Q174.0 185.8 173.4 220.3 Q100.6 220.1 25.0 220.9 Q22.2 183.3 24.0 149.8" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="36" y="180" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#1f2328" font-weight="600"><tspan x="36" dy="0">Customer's AI</tspan><tspan x="36" dy="18.48">assistant</tspan></text>
+<path d="M212.8 148.7 Q289.3 147.9 363.9 148.0 Q362.5 185.5 363.3 220.1 Q287.1 218.7 213.7 218.7 Q214.7 184.5 212.8 148.7" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="226" y="180" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#1f2328" font-weight="600"><tspan x="226" dy="0">Vendor's MCP</tspan><tspan x="226" dy="18.48">server and tool</tspan></text>
+<path d="M176 185 Q191.7 185.5 212 185" fill="none" stroke="#59636e" stroke-width="2" stroke-linecap="round"/>
+<path d="M201.6 191.0 L212 185 L201.3 179.5" fill="none" stroke="#59636e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M391.7 39.2 Q615.0 40.4 834.1 39.9 Q834.7 280.3 835.2 518.3 Q612.9 519.2 391.9 516.9 Q392.9 278.5 391.7 39.2" fill="#eef4fb" stroke="#3b82f6" stroke-width="2" stroke-dasharray="8 6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="408" y="64" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#3b82f6" font-weight="700"><tspan x="408" dy="0">within-sdk, loaded inside the vendor's server</tspan></text>
+<path d="M405.8 78.5 Q612.4 80.0 823.1 78.8 Q824.9 111.5 824.5 140.8 Q614.8 143.3 403.9 140.9 Q405.1 111.2 405.8 78.5" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="416" y="102" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#1f2328" font-weight="700"><tspan x="416" dy="0">1  Tool list</tspan></text>
+<text x="416" y="124" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#59636e"><tspan x="416" dy="0">adds a required context input and a get_more_tools tool</tspan></text>
+<rect x="744" y="86" width="43.3" height="21" rx="10.5" fill="#3b82f6"/>
+<text x="765.6" y="100.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-10</text>
+<path d="M404.0 153.0 Q615.1 153.1 823.8 151.3 Q822.3 184.5 823.2 212.7 Q614.8 214.4 405.3 213.4 Q403.0 182.3 404.0 153.0" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="416" y="176" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#1f2328" font-weight="700"><tspan x="416" dy="0">2  Reporter</tspan></text>
+<text x="416" y="198" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#59636e"><tspan x="416" dy="0">copies each tool call, arguments and result, into an event</tspan></text>
+<rect x="744" y="160" width="43.3" height="21" rx="10.5" fill="#f97316"/>
+<text x="765.6" y="174.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-08</text>
+<rect x="680" y="160" width="43.3" height="21" rx="10.5" fill="#f97316"/>
+<text x="701.6" y="174.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-03</text>
+<path d="M405.3 227.9 Q616.2 225.1 824.0 226.6 Q824.6 256.0 824.5 287.0 Q617.4 289.2 405.6 288.6 Q405.4 256.7 405.3 227.9" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="416" y="250" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#1f2328" font-weight="700"><tspan x="416" dy="0">3  Vendor's redaction function</tspan></text>
+<text x="416" y="272" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#59636e"><tspan x="416" dy="0">is handed every string, even the API key and the address</tspan></text>
+<rect x="744" y="234" width="43.3" height="21" rx="10.5" fill="#f97316"/>
+<text x="765.6" y="248.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-07</text>
+<path d="M402.4 299.8 Q612.7 298.9 822.8 301.9 Q824.1 334.3 822.6 361.9 Q613.4 361.6 404.2 360.7 Q404.9 329.5 402.4 299.8" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="416" y="324" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#1f2328" font-weight="700"><tspan x="416" dy="0">4  Privacy filter</tspan></text>
+<text x="416" y="346" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#59636e"><tspan x="416" dy="0">name list, whole-value patterns, email pattern on all text</tspan></text>
+<rect x="744" y="308" width="43.3" height="21" rx="10.5" fill="#f97316"/>
+<text x="765.6" y="322.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-04</text>
+<rect x="680" y="308" width="43.3" height="21" rx="10.5" fill="#ef4444"/>
+<text x="701.6" y="322.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-02</text>
+<rect x="616" y="308" width="43.3" height="21" rx="10.5" fill="#ef4444"/>
+<text x="637.6" y="322.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-01</text>
+<path d="M404.6 374.4 Q613.5 376.4 824.1 375.6 Q823.2 404.1 825.6 436.8 Q616.3 435.5 404.3 434.5 Q404.8 404.8 404.6 374.4" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="416" y="398" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#1f2328" font-weight="700"><tspan x="416" dy="0">5  Queue</tspan></text>
+<text x="416" y="420" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#59636e"><tspan x="416" dy="0">5 requests at a time, no time limit on a request</tspan></text>
+<rect x="744" y="382" width="43.3" height="21" rx="10.5" fill="#f97316"/>
+<text x="765.6" y="396.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-05</text>
+<path d="M405.6 450.0 Q504.5 449.5 602.7 450.9 Q602.7 477.6 603.2 504.4 Q504.8 505.9 403.7 503.6 Q403.4 476.8 405.6 450.0" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="414" y="472" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#1f2328" font-weight="700"><tspan x="414" dy="0">Log file</tspan></text>
+<text x="414" y="490" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#59636e"><tspan x="414" dy="0">~/within-sdk.log, only grows</tspan></text>
+<rect x="540" y="456" width="43.3" height="21" rx="10.5" fill="#3b82f6"/>
+<text x="561.6" y="470.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-09</text>
+<path d="M620.9 451.4 Q720.7 450.8 824.5 449.9 Q825.6 475.8 825.2 504.1 Q721.8 502.0 620.3 503.8 Q619.7 477.9 620.9 451.4" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="630" y="472" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#1f2328" font-weight="700"><tspan x="630" dy="0">Shutdown handler</tspan></text>
+<text x="630" y="490" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#59636e"><tspan x="630" dy="0">swallows the first SIGTERM</tspan></text>
+<rect x="760" y="456" width="43.3" height="21" rx="10.5" fill="#f97316"/>
+<text x="781.6" y="470.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-06</text>
+<path d="M871.3 181.8 Q914.0 180.6 952.0 178.6 Q949.7 233.6 949.6 292.0 Q909.4 289.8 871.6 288.1 Q871.8 235.1 871.3 181.8" fill="#fff" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="910" y="228" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#1f2328" font-weight="700" text-anchor="middle"><tspan x="910" dy="0">Within's</tspan></text>
+<text x="910" y="246" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#1f2328" font-weight="700" text-anchor="middle"><tspan x="910" dy="0">service</tspan></text>
+<path d="M826 411 Q869.7 409.0 910 411" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" class="flow"/>
+<path d="M899.2 416.2 L910 411 L899.8 404.7" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M910 408 Q911.7 354.1 910 294" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" class="flow"/>
+<path d="M916.0 304.4 L910 294 L904.5 304.7" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="24" y="300" font-family="'Bradley Hand','Segoe Print','Marker Felt','Comic Sans MS',cursive" font-size="13" fill="#ef4444"><tspan x="24" dy="0">The vendor's tool still</tspan><tspan x="24" dy="17.16">answers at once while step 4</tspan><tspan x="24" dy="17.16">freezes the process: the</tspan><tspan x="24" dy="17.16">freeze comes after, when</tspan><tspan x="24" dy="17.16">the event is cleaned.</tspan></text>
+<text x="24" y="470" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#59636e"><tspan x="24" dy="0">Colour of a W-number = severity:</tspan></text>
+<rect x="24" y="482" width="43.3" height="21" rx="10.5" fill="#ef4444"/>
+<text x="45.6" y="496.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">High</text>
+<rect x="102" y="482" width="56.9" height="21" rx="10.5" fill="#f97316"/>
+<text x="130.5" y="496.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">Medium</text>
+<rect x="180" y="482" width="36.5" height="21" rx="10.5" fill="#3b82f6"/>
+<text x="198.2" y="496.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">Low</text>
+</g>
 </svg>

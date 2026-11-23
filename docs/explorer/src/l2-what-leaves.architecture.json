@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "What leaves the vendor's server",
+    "output": "l2-what-leaves.html",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "event",
+        "label": "One event",
+        "focus": [
+          "tool",
+          "model",
+          "user",
+          "event",
+          "api"
+        ],
+        "note": "One event has 17 fields. Arguments and result are among them, by default."
+      },
+      {
+        "id": "hiding",
+        "label": "What is hidden",
+        "focus": [
+          "vfn",
+          "privacy",
+          "event"
+        ],
+        "note": "The package hides values by name and by pattern. Names and addresses inside a sentence go through."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "model",
+      "type": "external",
+      "label": "The model's context text",
+      "sublabel": "15 to 25 words it writes · W-10",
+      "pos": [
+        300,
+        40
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "tool",
+      "type": "backend",
+      "label": "The vendor's tool call",
+      "sublabel": "arguments, result, error text · W-03",
+      "pos": [
+        30,
+        175
+      ],
+      "size": [
+        190,
+        64
+      ]
+    },
+    {
+      "id": "user",
+      "type": "external",
+      "label": "User id and name",
+      "sublabel": "turned into a hashed subject",
+      "pos": [
+        300,
+        310
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "vfn",
+      "type": "backend",
+      "label": "Vendor's function",
+      "sublabel": "optional, runs first · W-07",
+      "pos": [
+        300,
+        175
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "privacy",
+      "type": "backend",
+      "label": "Privacy filter",
+      "sublabel": "W-02 · W-04",
+      "pos": [
+        550,
+        175
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "event",
+      "type": "backend",
+      "label": "One event",
+      "sublabel": "17 fields · W-03",
+      "pos": [
+        780,
+        175
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "api",
+      "type": "cloud",
+      "label": "Within's service",
+      "sublabel": "stores the event",
+      "pos": [
+        780,
+        40
+      ],
+      "size": [
+        170,
+        64
+      ]
+    }
+  ],
+  "boundaries": [],
+  "connections": [
+    {
+      "id": "l1",
+      "from": "model",
+      "to": "vfn",
+      "label": "goal text",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        392,
+        138
+      ]
+    },
+    {
+      "id": "l2",
+      "from": "tool",
+      "to": "vfn",
+      "label": "arguments, result",
+      "variant": "emphasis",
+      "labelAt": [
+        260,
+        171
+      ]
+    },
+    {
+      "id": "l3",
+      "from": "user",
+      "to": "vfn",
+      "label": "id",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "labelAt": [
+        392,
+        275
+      ]
+    },
+    {
+      "id": "l4",
+      "from": "vfn",
+      "to": "privacy",
+      "label": "every string",
+      "variant": "emphasis"
+    },
+    {
+      "id": "l5",
+      "from": "privacy",
+      "to": "event",
+      "label": "filtered",
+      "variant": "emphasis"
+    },
+    {
+      "id": "l6",
+      "from": "event",
+      "to": "api",
+      "label": "sent"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "amber",
+      "title": "What the filter misses",
+      "items": [
+        "Phone, social security and card numbers inside a sentence",
+        "Keys, web and IP addresses inside a sentence",
+        "Names and street addresses, which no pattern finds"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "What it does well",
+      "items": [
+        "The raw user id and name are replaced by a hashed subject",
+        "Email addresses and bearer tokens inside text are hidden"
+      ]
+    }
+  ]
+}
