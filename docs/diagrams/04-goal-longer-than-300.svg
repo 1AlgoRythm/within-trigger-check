@@ -34,8 +34,11 @@
 <text x="896.4" y="45.32" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#fff">W-05 · Medium</text>
 <text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">The SDK adds a context input limited to 300 characters. A longer text from the model fails the whole call.</tspan></text>
 <g filter="url(#wob)">
-<path d="M41.6 447.2 Q483.0 447.5 921.4 445.4 Q921.6 489.4 920.2 532.9 Q482.0 532.5 40.6 532.5 Q40.4 488.6 41.6 447.2" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="54" dy="0">What Within should change</tspan></text>
-<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328"><tspan x="54" dy="0">Remove `.max(300)` from the validator and keep the trim.</tspan></text>
+<path d="M41.6 447.2 Q258.0 447.5 471.4 445.4 Q471.6 489.4 470.2 532.9 Q257.0 532.5 40.6 532.5 Q40.4 488.6 41.6 447.2" fill="#f6f6f4" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">Where in the code</tspan></text>
+<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="54" dy="0">dist/index.js line 650: z6.string().max(300).</tspan></text>
+<path d="M488.2 446.9 Q702.2 445.3 919.2 446.7 Q920.7 489.5 921.1 535.6 Q705.9 534.3 490.3 532.2 Q488.0 491.8 488.2 446.9" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="504" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="504" dy="0">What Within should change</tspan></text>
+<text x="504" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="504" dy="0">Remove .max(300) from the validator and keep the trim.</tspan></text>
 </g>
 </svg>

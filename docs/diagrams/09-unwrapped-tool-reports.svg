@@ -17,8 +17,9 @@
 <rect width="960" height="540" fill="#fffdf7"/>
 <g filter="url(#wob)">
 <path d="M38.0 118.2 Q231.5 121.9 421.3 121.1 Q423.3 168.6 421.8 218.7 Q229.3 216.7 39.2 218.6 Q37.7 168.4 38.0 118.2" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="54" y="144" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">An unwrapped tool</tspan></text>
+<text x="54" y="144" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">An unwrapped tool: internal_admin_lookup</tspan></text>
 <text x="54" y="166" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">the vendor did not wrap it, as the docs allow</tspan></text>
+<text x="54" y="185" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">the model's goal: HR wants Priya Raman's salary</tspan></text>
 <path d="M150 222 Q153.1 251.4 150 280" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" class="flow"/>
 <path d="M145.4 268.9 L150 280 L156.9 270.2" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M310 222 Q358.0 253.1 400 280" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" class="flow"/>
@@ -40,8 +41,11 @@
 <text x="888.9" y="45.32" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#fff">W-09 · High</text>
 <text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">The docs say to wrap the tools Within should see. The SDK hooks every tool and reports one when a goal is filled in.</tspan></text>
 <g filter="url(#wob)">
-<path d="M41.4 445.6 Q478.9 448.2 918.5 447.3 Q919.5 492.1 918.1 534.1 Q478.8 536.0 39.9 533.4 Q41.5 489.6 41.4 445.6" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="54" dy="0">What Within should change</tspan></text>
-<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328"><tspan x="54" dy="0">Report only wrapped tools, or make reporting of other tools an explicit opt-in option, and document it.</tspan></text>
+<path d="M41.4 445.6 Q253.9 448.2 468.5 447.3 Q469.5 492.1 468.1 534.1 Q253.8 536.0 39.9 533.4 Q41.5 489.6 41.4 445.6" fill="#f6f6f4" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">Where in the code</tspan></text>
+<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="54" dy="0">patchRegisterTool, dist/index.js lines 1415 to 1480: it</tspan><tspan x="54" dy="15.84">reports any tool that is not flagged as already reporting,</tspan><tspan x="54" dy="15.84">as soon as the goal text is present.</tspan></text>
+<path d="M491.0 446.9 Q704.1 446.0 919.5 447.0 Q919.7 487.9 918.3 532.8 Q705.7 536.7 490.9 535.8 Q489.5 491.7 491.0 446.9" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="504" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="504" dy="0">What Within should change</tspan></text>
+<text x="504" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="504" dy="0">Report only wrapped tools, or make reporting of other tools</tspan><tspan x="504" dy="15.84">an explicit opt-in option, and document it.</tspan></text>
 </g>
 </svg>

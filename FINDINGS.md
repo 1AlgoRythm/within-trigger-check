@@ -177,8 +177,8 @@ Everything ran on our own machine against the published package and a small stan
 
 **Where in the code.**
 
-- `dist/index.js` line 650: `z.string().max(300)`.
-- Line 417 (`redactMcpIntent`) already trims to 300 characters, so the validator is redundant.
+- `dist/index.js` line 650: `z6.string().max(300)`.
+- Line 419 (`redactMcpIntent`) already trims to 300 characters, so the validator is redundant.
 
 **What Within should change.**
 
@@ -264,7 +264,7 @@ Everything ran on our own machine against the published package and a small stan
 
 **Where in the code.**
 
-- The `EMAIL` pattern, `dist/index.js` line 398, used by `redact` (line 427), which feeds `sanitizeError` (555), `argumentPreview` (524) and `resultText` (544).
+- The `EMAIL` pattern, `dist/index.js` line 398, used by `redact` (line 427), which feeds `sanitizeError` (line 557), `argumentPreview` (line 526) and `resultText` (line 546).
 - Time grows with the square of the length: each doubling made it about three to four times slower.
 
 **What Within should change.**
@@ -444,7 +444,7 @@ Everything ran on our own machine against the published package and a small stan
 
 **Where in the code.**
 
-- `makeCapturedFields`, `dist/index.js` lines 668 to 651 (`resultText`).
+- `makeCapturedFields`, `dist/index.js` lines 668 to 681.
 - `SECRET_SEGMENTS`, lines 362 to 381: a deny-list of names.
 
 **What Within should change.**
@@ -475,7 +475,7 @@ Everything ran on our own machine against the published package and a small stan
 
 - `signedLoginToken`, `dist/index.js` line 6353: returns `{ authToken: token }` when the token looks like a JWT.
 - `install`, line 6404: `loginToken: (extra) => options.identity ? signedLoginToken(extra) : {}`.
-- Added to the report in `instrumentTool` (line 1508), `patchRegisterTool` (line 1462) and the `report_void` handler (line 4392).
+- Added to the report in `instrumentTool` (line 1508), `patchRegisterTool` (line 1462) and the report_void handler inside `registerWithinTools` (line 4392).
 
 **What Within should change.**
 
@@ -503,7 +503,7 @@ Everything ran on our own machine against the published package and a small stan
 
 **Where in the code.**
 
-- `registerWithinTools`, `dist/index.js` line 4279, registers `report_void`; the handler builds the report at lines 4392 to 4400.
+- `registerWithinTools`, `dist/index.js` line 4279, registers `report_void`; its handler, also in `registerWithinTools`, builds the report at lines 4392 to 4400.
 - `VOID_CALL_SENTENCE`, line 592, appended to `SERVER_INSTRUCTIONS`. It accounts for the 306 extra characters seen in check D5.
 - `voidAsked` and `voidTool` are fields of the report; the text arrived unchanged in the test.
 
@@ -677,7 +677,7 @@ Everything ran on our own machine against the published package and a small stan
 
 **For a founder.** For companies whose servers do not remember visitors between requests, a sales rep's offer may never reach the right customer. Whether Within covers this on its own side cannot be seen from outside.
 
-**In plain words.** The docs say a rep's offer is delivered on the customer's next tool call in that session, and that a new connection gets a new session id. In check C9, three connections got three ids. By the code at lines 3585 to 3599, a server that builds a new transport for every request gets a new id on every call (inferred from the code, not run over real HTTP).
+**In plain words.** The docs say a rep's offer is delivered on the customer's next tool call in that session, and that a new connection gets a new session id. In check C9, three connections got three ids. By `connectionSessionMinter` (lines 6304 to 6318), a server that builds a new transport for every request gets a new id on every call (inferred from the code, not run over real HTTP).
 
 **Why it matters.** The offer is addressed to a session. If the id changes with every call, the offer may have nowhere to arrive, unless the vendor supplies a stable user id. Whether Within's server falls back to the user id is not visible.
 

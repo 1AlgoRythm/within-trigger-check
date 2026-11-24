@@ -34,8 +34,11 @@
 <text x="896.4" y="45.32" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#fff">W-24 · Medium</text>
 <text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">With the hubs option on, a sentence written on Within's side is added to the vendor's own result, and the AI repeats it.</tspan></text>
 <g filter="url(#wob)">
-<path d="M40.3 444.3 Q482.2 447.1 920.9 446.7 Q921.8 490.8 920.3 534.7 Q479.0 532.3 39.7 532.0 Q40.6 490.0 40.3 444.3" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="54" dy="0">What Within should change</tspan></text>
-<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328"><tspan x="54" dy="0">Keep Within's text out of the vendor's result: carry the invitation in `_meta`, or show it only on the card, never in</tspan><tspan x="54" dy="16.5">`content`.</tspan></text>
+<path d="M40.3 444.3 Q257.2 447.1 470.9 446.7 Q471.8 490.8 470.3 534.7 Q254.0 532.3 39.7 532.0 Q40.6 490.0 40.3 444.3" fill="#f6f6f4" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">Where in the code</tspan></text>
+<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="54" dy="0">attachHubLine, dist/index.js line 1308: appends the line to</tspan><tspan x="54" dy="15.84">content, adds hubInvitation and an open_hub step to</tspan><tspan x="54" dy="15.84">structuredContent.</tspan></text>
+<path d="M488.2 444.1 Q704.5 443.9 919.3 446.5 Q918.3 488.3 921.2 534.0 Q705.7 535.2 488.8 533.4 Q489.1 487.4 488.2 444.1" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="504" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="504" dy="0">What Within should change</tspan></text>
+<text x="504" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="504" dy="0">Keep Within's text out of the vendor's result: carry the</tspan><tspan x="504" dy="15.84">invitation in _meta, or show it only on the card, never in</tspan><tspan x="504" dy="15.84">content.</tspan></text>
 </g>
 </svg>

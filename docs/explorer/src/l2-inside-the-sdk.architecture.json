@@ -162,7 +162,7 @@
       "id": "http",
       "type": "cloud",
       "label": "HTTP client",
-      "sublabel": "5 s cap · W-02",
+      "sublabel": "5 s cap · W-02, W-03",
       "pos": [
         570,
         310
@@ -263,7 +263,7 @@
         "Replaces ALL vendor text if a banned phrase is in it",
         "Registers 4 tools and 2 card pages (open_hub and hub_card too, if hubs is on)",
         "Patches registerTool",
-        "Pings /v1/install, now with the hubs flag"
+        "Pings /v1/install with source, SDK version and the hubs flag"
       ]
     },
     {

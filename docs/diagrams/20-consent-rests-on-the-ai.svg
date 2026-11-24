@@ -17,9 +17,11 @@
 <rect width="960" height="540" fill="#fffdf7"/>
 <g filter="url(#wob)">
 <path d="M41.9 121.0 Q182.2 119.8 321.2 120.3 Q320.5 179.3 321.4 240.1 Q181.8 238.7 39.3 241.5 Q38.3 181.8 41.9 121.0" fill="#fff1f0" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="54" y="144" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">An accept call</tspan></text>
-<text x="54" y="166" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">body: customerSessionId</tspan></text>
-<text x="54" y="185" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">status: accepted</tspan></text>
+<text x="54" y="144" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">confirm_assistance, no click</tspan></text>
+<text x="54" y="166" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">body sent: customerSessionId</tspan></text>
+<text x="54" y="185" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">no one-time code from the card</tspan></text>
+<text x="54" y="204" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">the AI was told: You are connected</tspan></text>
+<text x="54" y="223" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">with Sarah.</tspan></text>
 <path d="M338.4 120.6 Q480.4 117.8 620.6 119.8 Q619.3 181.1 621.7 238.4 Q482.4 238.6 341.2 238.5 Q340.1 177.7 338.4 120.6" fill="#fff7ed" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="354" y="144" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="354" dy="0">confirm_assistance</tspan></text>
 <text x="354" y="166" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="354" dy="0">listed to the AI: true</tspan></text>
@@ -37,8 +39,11 @@
 <text x="896.4" y="45.32" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#fff">W-18 · Medium</text>
 <text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">The SDK forwards an accept without checking that the customer chose it, so everything depends on what the model decides.</tspan></text>
 <g filter="url(#wob)">
-<path d="M40.5 445.2 Q478.7 446.0 920.9 446.3 Q919.0 487.9 918.4 533.3 Q479.4 535.1 38.6 533.9 Q37.8 489.7 40.5 445.2" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="54" dy="0">What Within should change</tspan></text>
-<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328"><tspan x="54" dy="0">Register the confirm tool as card-only (`visibility: [&quot;app&quot;]`), so the AI never sees it.</tspan></text>
+<path d="M40.5 445.2 Q253.7 446.0 470.9 446.3 Q469.0 487.9 468.4 533.3 Q254.4 535.1 38.6 533.9 Q37.8 489.7 40.5 445.2" fill="#f6f6f4" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">Where in the code</tspan></text>
+<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="54" dy="0">confirmAssistance, dist/index.js line 4526, and acceptOffer</tspan><tspan x="54" dy="15.84">(line 4469), which sends the nonce only if there is one.</tspan></text>
+<path d="M491.1 444.9 Q702.9 443.9 918.5 445.2 Q921.9 490.8 921.5 534.2 Q702.8 535.4 488.5 532.0 Q488.8 488.7 491.1 444.9" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="504" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="504" dy="0">What Within should change</tspan></text>
+<text x="504" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="504" dy="0">Register the confirm tool as card-only (visibility:</tspan><tspan x="504" dy="15.84">[&quot;app&quot;]), so the AI never sees it.</tspan></text>
 </g>
 </svg>

@@ -18,10 +18,10 @@
 <g filter="url(#wob)">
 <text x="40" y="128" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="40" dy="0">How often Haiku sent &quot;Compare Ledgerly and Paywise&quot; to Within</tspan></text>
 <path d="M41.3 150.7 Q221.3 152.5 403.1 149.8 Q404.5 168.4 402.9 186.4 Q223.1 186.9 41.1 187.3 Q43.7 170.9 41.3 150.7" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M41.6 152.5 Q106.6 151.8 174.3 150.2 Q174.3 167.3 174.0 185.1 Q107.2 183.3 41.2 186.1 Q43.8 167.9 41.6 152.5" fill="#ef4444" stroke="none" stroke-width="0" stroke-linecap="round" stroke-linejoin="round" class="growx"/>
+<path d="M41.6 152.5 Q106.6 151.8 174.3 150.2 Q174.3 167.3 174.0 185.1 Q107.2 183.3 41.2 186.1 Q43.8 167.9 41.6 152.5" fill="#ef4444" stroke="none" stroke-width="0" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="414" y="175" font-family="'Bradley Hand','Segoe Print','Marker Felt','Comic Sans MS',cursive" font-size="15" fill="#ef4444" font-weight="700"><tspan x="414" dy="0">unpatched wording: 11 of 30</tspan></text>
 <path d="M40.6 198.5 Q219.4 201.5 402.6 201.9 Q402.4 219.1 401.6 235.7 Q220.9 236.8 41.1 235.5 Q38.6 216.8 40.6 198.5" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M42.3 200.6 Q41.2 199.0 43.7 202.3 Q43.5 216.4 44.2 234.2 Q42.2 234.5 39.9 233.6 Q41.7 217.4 42.3 200.6" fill="#10b981" stroke="none" stroke-width="0" stroke-linecap="round" stroke-linejoin="round" class="growx"/>
+<path d="M42.3 200.6 Q41.2 199.0 43.7 202.3 Q43.5 216.4 44.2 234.2 Q42.2 234.5 39.9 233.6 Q41.7 217.4 42.3 200.6" fill="#10b981" stroke="none" stroke-width="0" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="414" y="225" font-family="'Bradley Hand','Segoe Print','Marker Felt','Comic Sans MS',cursive" font-size="15" fill="#10b981" font-weight="700"><tspan x="414" dy="0">with the clarifying phrase (P11): 0 of 30</tspan></text>
 <text x="40" y="266" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13.5" fill="#1f2328"><tspan x="40" dy="0">Real competitor questions with the phrase added: 30 of 30 still went to Within. Sonnet, unpatched: 0 of 10.</tspan></text>
 <path d="M39.2 295.2 Q481.2 294.7 918.4 295.6 Q922.2 329.7 921.8 366.4 Q479.0 363.5 38.6 365.2 Q37.8 329.9 39.2 295.2" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -33,8 +33,11 @@
 <text x="896.4" y="45.32" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#fff">W-20 · Medium</text>
 <text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">The trigger list says &quot;a competitive comparison&quot;. Asked to compare two of its records, Haiku sometimes called Within.</tspan></text>
 <g filter="url(#wob)">
-<path d="M38.1 444.4 Q480.1 445.5 921.5 445.9 Q921.5 488.7 918.9 535.7 Q479.4 535.5 41.4 533.7 Q39.6 490.4 38.1 444.4" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="54" dy="0">What Within should change</tspan></text>
-<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328"><tspan x="54" dy="0">Name what is meant: &quot;a competitive comparison (this product against a competitor, not a comparison of records in this</tspan><tspan x="54" dy="16.5">product's own data)&quot;.</tspan></text>
+<path d="M38.1 444.4 Q255.1 445.5 471.5 445.9 Q471.5 488.7 468.9 535.7 Q254.4 535.5 41.4 533.7 Q39.6 490.4 38.1 444.4" fill="#f6f6f4" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">Where in the code</tspan></text>
+<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="54" dy="0">SERVER_INSTRUCTIONS, dist/index.js line 593, the phrase &quot;a</tspan><tspan x="54" dy="15.84">competitive comparison,&quot;.</tspan></text>
+<path d="M491.4 444.8 Q707.5 446.1 920.4 444.2 Q922.1 489.4 919.0 534.3 Q707.3 533.9 490.7 535.5 Q491.9 492.4 491.4 444.8" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="504" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="504" dy="0">What Within should change</tspan></text>
+<text x="504" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="504" dy="0">Name what is meant: &quot;a competitive comparison (this product</tspan><tspan x="504" dy="15.84">against a competitor, not a comparison of records in this</tspan><tspan x="504" dy="15.84">product's own data)&quot;.</tspan></text>
 </g>
 </svg>

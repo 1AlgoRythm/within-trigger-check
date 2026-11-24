@@ -19,18 +19,20 @@
 <path d="M100 384 Q368.7 385.9 640 384" fill="none" stroke="#1f2328" stroke-width="2.2" stroke-linecap="round"/>
 <path d="M100 384 Q101.2 278.1 100 166" fill="none" stroke="#1f2328" stroke-width="2.2" stroke-linecap="round"/>
 <text x="106" y="128" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="106" dy="0">How long the vendor's tool call took (ms), Within not answering</tspan></text>
-<path d="M149.2 174.8 Q203.0 174.2 260.0 177.9 Q260.1 278.7 260.4 383.9 Q203.0 385.2 148.8 383.8 Q150.4 279.4 149.2 174.8" fill="#ef4444" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="grow" style="animation-delay:0s"/>
+<path d="M149.2 174.8 Q203.0 174.2 260.0 177.9 Q260.1 278.7 260.4 383.9 Q203.0 385.2 148.8 383.8 Q150.4 279.4 149.2 174.8" fill="#ef4444" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="205" y="168" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="15" fill="#1f2328" font-weight="700" text-anchor="middle"><tspan x="205" dy="0">5,002</tspan></text>
 <text x="205" y="404" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e" text-anchor="middle"><tspan x="205" dy="0">call 1</tspan></text>
-<path d="M311.1 175.4 Q364.2 173.3 419.3 175.3 Q420.5 282.6 419.4 385.1 Q364.8 381.2 308.8 382.0 Q308.3 279.0 311.1 175.4" fill="#ef4444" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="grow" style="animation-delay:0.2s"/>
+<path d="M311.1 175.4 Q364.2 173.3 419.3 175.3 Q420.5 282.6 419.4 385.1 Q364.8 381.2 308.8 382.0 Q308.3 279.0 311.1 175.4" fill="#ef4444" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="365" y="168" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="15" fill="#1f2328" font-weight="700" text-anchor="middle"><tspan x="365" dy="0">5,002</tspan></text>
 <text x="365" y="404" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e" text-anchor="middle"><tspan x="365" dy="0">call 2</tspan></text>
-<path d="M468.6 176.4 Q526.2 174.4 580.3 177.2 Q579.6 279.7 578.2 384.8 Q524.2 385.6 469.2 384.1 Q467.6 278.4 468.6 176.4" fill="#ef4444" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="grow" style="animation-delay:0.4s"/>
+<path d="M468.6 176.4 Q526.2 174.4 580.3 177.2 Q579.6 279.7 578.2 384.8 Q524.2 385.6 469.2 384.1 Q467.6 278.4 468.6 176.4" fill="#ef4444" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="525" y="168" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="15" fill="#1f2328" font-weight="700" text-anchor="middle"><tspan x="525" dy="0">5,002</tspan></text>
 <text x="525" y="404" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e" text-anchor="middle"><tspan x="525" dy="0">call 3</tspan></text>
-<path d="M691.7 141.7 Q804.7 139.6 919.4 139.8 Q918.7 195.1 919.8 250.2 Q807.0 249.8 690.6 252.4 Q691.5 198.1 691.7 141.7" fill="#f3faf6" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="704" y="164" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="704" dy="0">With Within up</tspan></text>
-<text x="704" y="186" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="704" dy="0">0 ms of extra wait</tspan></text>
+<path d="M691.7 141.7 Q804.7 139.6 919.4 139.8 Q918.7 195.1 919.8 250.2 Q807.0 249.8 690.6 252.4 Q691.5 198.1 691.7 141.7" fill="#fff7ed" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="704" y="164" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="704" dy="0">No offer waiting, still</tspan></text>
+<text x="704" y="186" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="704" dy="0">10 tool calls sent:</tspan></text>
+<text x="704" y="205" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="704" dy="0">10 to /v1/activity</tspan></text>
+<text x="704" y="224" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="704" dy="0">10 to /v1/offers/deliver</tspan></text>
 <path d="M690.7 271.9 Q803.2 271.6 920.3 273.8 Q920.0 328.2 922.0 382.5 Q806.7 383.4 689.8 382.8 Q689.7 326.1 690.7 271.9" fill="#eef4fb" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="704" y="296" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="704" dy="0">Within slow by 300 ms</tspan></text>
 <text x="704" y="318" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="704" dy="0">wrapped: 303 ms</tspan></text>
@@ -41,8 +43,11 @@
 <text x="896.4" y="45.32" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#fff">W-03 · Medium</text>
 <text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">After a wrapped tool call, the SDK waits up to five seconds for Within's reply. Every call pays that.</tspan></text>
 <g filter="url(#wob)">
-<path d="M40.4 446.9 Q480.7 446.9 921.7 446.7 Q919.7 488.6 919.1 534.3 Q482.9 533.0 41.9 535.9 Q38.9 490.5 40.4 446.9" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="54" dy="0">What Within should change</tspan></text>
-<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328"><tspan x="54" dy="0">Add a circuit breaker: after a few failures, skip Within for 30 seconds.</tspan></text>
+<path d="M40.4 446.9 Q255.7 446.9 471.7 446.7 Q469.7 488.6 469.1 534.3 Q257.9 533.0 41.9 535.9 Q38.9 490.5 40.4 446.9" fill="#f6f6f4" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">Where in the code</tspan></text>
+<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="54" dy="0">serviceFetch, dist/index.js lines 621 to 635: a fixed 5</tspan><tspan x="54" dy="15.84">second timeout.</tspan></text>
+<path d="M488.2 445.9 Q702.7 444.2 921.5 445.0 Q922.3 491.0 920.8 535.9 Q707.4 534.8 490.3 534.1 Q490.7 492.5 488.2 445.9" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="504" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="504" dy="0">What Within should change</tspan></text>
+<text x="504" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="504" dy="0">Add a circuit breaker: after a few failures, skip Within for</tspan><tspan x="504" dy="15.84">30 seconds.</tspan></text>
 </g>
 </svg>

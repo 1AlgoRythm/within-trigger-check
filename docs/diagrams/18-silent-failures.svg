@@ -18,28 +18,33 @@
 <g filter="url(#wob)">
 <path d="M41.9 118.5 Q182.3 117.9 320.9 120.5 Q320.7 176.9 318.4 231.1 Q179.2 232.2 40.6 228.3 Q43.7 172.8 41.9 118.5" fill="#fff1f0" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="54" y="144" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">A wrong key</tspan></text>
-<text x="54" y="166" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">requests made: 3</tspan></text>
-<text x="54" y="185" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">log lines written: 0</tspan></text>
+<text x="54" y="166" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">Within answered 3 requests with 401</tspan></text>
+<text x="54" y="185" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">SDK log lines: 0</tspan></text>
 <path d="M338.9 120.1 Q479.0 120.7 620.3 118.4 Q621.8 174.6 618.4 229.1 Q477.3 230.5 339.2 228.8 Q338.9 176.9 338.9 120.1" fill="#f3faf6" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="354" y="144" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="354" dy="0">No key, or an empty key</tspan></text>
 <text x="354" y="166" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="354" dy="0">missing: threw api_key_required</tspan></text>
 <text x="354" y="185" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="354" dy="0">empty: threw api_key_required</tspan></text>
+<text x="354" y="204" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="354" dy="0">(start-up stops: good)</tspan></text>
 <path d="M638.1 121.2 Q777.0 121.6 919.7 121.0 Q918.9 176.1 921.4 230.4 Q781.5 228.3 641.3 230.1 Q640.9 176.0 638.1 121.2" fill="#fff1f0" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pulse"/>
 <text x="654" y="144" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="654" dy="0">A key of only spaces</tspan></text>
 <text x="654" y="166" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="654" dy="0">accepted</tspan></text>
-<path d="M40.8 263.9 Q481.2 264.3 921.5 262.1 Q921.7 305.5 919.4 351.4 Q478.3 352.2 41.0 353.7 Q41.1 308.3 40.8 263.9" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="54" y="286" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">Which addresses the SDK contacted</tspan></text>
-<text x="54" y="308" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">http://127.0.0.1:8787/v1/install   http://127.0.0.1:8787/v1/activity   http://127.0.0.1:8787/v1/offers/deliver</tspan></text>
-<text x="54" y="327" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">log lines: 0</tspan></text>
-<text x="40" y="384" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">Checks A4, A9 and A10. A missing key stops start-up with an error; the other cases do not.</tspan></text>
+<path d="M40.8 263.9 Q481.2 264.3 921.5 262.1 Q921.7 310.5 919.4 361.4 Q478.3 362.2 41.0 363.7 Q41.1 313.3 40.8 263.9" fill="#fff1f0" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="286" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">No address set (the homepage snippet allows it)</tspan></text>
+<text x="54" y="308" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">every call went to the local default, http://127.0.0.1:8787</tspan></text>
+<text x="54" y="327" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">every customer answer ended with &quot;The service is unreachable.&quot;</tspan></text>
+<text x="54" y="346" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">install did not complain; SDK log lines: 0</tspan></text>
+<text x="40" y="384" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">Checks A4, A9 and A10.</tspan></text>
 </g>
 <text x="40" y="52" font-family="'Bradley Hand','Segoe Print','Marker Felt','Comic Sans MS',cursive" font-size="27" fill="#1f2328" font-weight="700"><tspan x="40" dy="0">A wrong key or a missing address fails silently</tspan></text>
 <rect x="840" y="30" width="90.4" height="22" rx="11" fill="#3b82f6"/>
 <text x="885.2" y="45.32" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#fff">W-16 · Low</text>
 <text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">With a rejected key or a blank setting, the server runs and nothing tells the vendor that Within gets nothing.</tspan></text>
 <g filter="url(#wob)">
-<path d="M40.3 447.0 Q479.3 448.9 919.7 446.3 Q918.8 493.4 919.5 535.6 Q480.4 533.7 41.0 532.2 Q40.1 488.4 40.3 447.0" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="54" dy="0">What Within should change</tspan></text>
-<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328"><tspan x="54" dy="0">Log once at start-up and on the first 401 or refused connection.</tspan></text>
+<path d="M40.3 447.0 Q254.3 448.9 469.7 446.3 Q468.8 493.4 469.5 535.6 Q255.4 533.7 41.0 532.2 Q40.1 488.4 40.3 447.0" fill="#f6f6f4" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">Where in the code</tspan></text>
+<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="54" dy="0">serviceFetch (line 621) swallows every failure. install</tspan><tspan x="54" dy="15.84">(line 6372) checks only that a key exists.</tspan></text>
+<path d="M491.3 445.9 Q705.2 447.9 921.4 445.6 Q922.8 491.7 920.3 535.8 Q706.3 533.3 489.9 534.3 Q489.7 491.1 491.3 445.9" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="504" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="504" dy="0">What Within should change</tspan></text>
+<text x="504" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="504" dy="0">Log once at start-up and on the first 401 or refused</tspan><tspan x="504" dy="15.84">connection.</tspan></text>
 </g>
 </svg>

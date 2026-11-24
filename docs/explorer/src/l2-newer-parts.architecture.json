@@ -16,7 +16,7 @@
           "http",
           "api"
         ],
-        "note": "The report now carries the customer's login token (only with the identity option), the AI app's name and a check id. W-21, W-23."
+        "note": "The report carries the customer's login token (only with the identity option), the AI app's name and a check id. W-21, W-23."
       },
       {
         "id": "void",
@@ -69,7 +69,7 @@
       "id": "fields",
       "type": "backend",
       "label": "Report fields",
-      "sublabel": "token · host · check id",
+      "sublabel": "token · host · doctor check id",
       "pos": [
         300,
         40
@@ -204,7 +204,7 @@
       "id": "n2",
       "from": "ident",
       "to": "fields",
-      "label": "name, email"
+      "label": "user id, issuer, name"
     },
     {
       "id": "n3",

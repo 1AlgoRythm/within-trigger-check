@@ -21,8 +21,8 @@
 <text x="54" y="176" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">2 lists of private-network addresses</tspan></text>
 <text x="56" y="232" font-family="'Bradley Hand','Segoe Print','Marker Felt','Comic Sans MS',cursive" font-size="21" fill="#3b82f6" font-weight="700"><tspan x="56" dy="0">2 defined</tspan></text>
 <path d="M520.2 128.2 Q718.0 128.2 918.2 130.0 Q917.9 188.6 919.8 249.4 Q722.3 252.1 521.3 251.5 Q522.4 192.1 520.2 128.2" fill="#fff1f0" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="534" y="154" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="534" dy="0">Checked against</tspan></text>
-<text x="534" y="176" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="534" dy="0">the address of any request</tspan></text>
+<text x="534" y="154" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14.5" fill="#1f2328" font-weight="700"><tspan x="534" dy="0">Places that check an address</tspan></text>
+<text x="534" y="176" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="534" dy="0">against either list</tspan></text>
 <text x="536" y="232" font-family="'Bradley Hand','Segoe Print','Marker Felt','Comic Sans MS',cursive" font-size="21" fill="#ef4444" font-weight="700"><tspan x="536" dy="0">0 used</tspan></text>
 <text x="40" y="300" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13.5" fill="#59636e"><tspan x="40" dy="0">Check F5. A list that is built and never read gives a reader the wrong idea about what is blocked.</tspan></text>
 </g>
@@ -31,8 +31,11 @@
 <text x="885.2" y="45.32" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#fff">W-17 · Low</text>
 <text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">The SDK builds lists of private-network addresses, as if to refuse them, and then never checks an address against them.</tspan></text>
 <g filter="url(#wob)">
-<path d="M40.6 447.5 Q478.5 447.5 919.9 445.6 Q920.7 490.5 919.6 532.8 Q477.9 534.2 38.6 533.6 Q42.0 491.4 40.6 447.5" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="54" dy="0">What Within should change</tspan></text>
-<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328"><tspan x="54" dy="0">Use the lists where an outside address is contacted, or delete them.</tspan></text>
+<path d="M40.6 447.5 Q253.5 447.5 469.9 445.6 Q470.7 490.5 469.6 532.8 Q252.9 534.2 38.6 533.6 Q42.0 491.4 40.6 447.5" fill="#f6f6f4" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">Where in the code</tspan></text>
+<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="54" dy="0">dist/index.js lines 333 to 359 define blocked and globalV6.</tspan><tspan x="54" dy="15.84">Nothing calls .check on either.</tspan></text>
+<path d="M488.3 446.9 Q706.2 448.8 920.2 447.2 Q919.4 490.9 920.5 532.9 Q707.4 532.4 490.6 533.6 Q491.1 489.5 488.3 446.9" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="504" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="504" dy="0">What Within should change</tspan></text>
+<text x="504" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="504" dy="0">Use the lists where an outside address is contacted, or</tspan><tspan x="504" dy="15.84">delete them.</tspan></text>
 </g>
 </svg>

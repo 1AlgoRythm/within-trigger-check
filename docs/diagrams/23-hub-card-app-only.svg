@@ -25,16 +25,19 @@
 <text x="494" y="166" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="494" dy="0">visibility: model, app</tspan></text>
 <path d="M41.8 268.4 Q481.0 270.0 921.9 269.3 Q920.6 316.4 919.0 361.5 Q477.6 358.6 39.6 360.6 Q41.0 313.7 41.8 268.4" fill="#fff1f0" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="54" y="294" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">A direct call to hub_card</tspan></text>
-<text x="54" y="316" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">reached the send route: true; body fields: customerSessionId, text, clientMessageId, view</tspan></text>
-<text x="54" y="335" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">Real Claude called hub_card 0 times in 40 runs.</tspan></text>
+<text x="54" y="316" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">a plain client called it with action send: it reached Within as POST /v1/hubs/send, text unchanged</tspan></text>
+<text x="54" y="335" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="54" dy="0">the caller was told &quot;That didn't send. Try again.&quot; Real Claude called hub_card 0 times in 40 runs.</tspan></text>
 </g>
 <text x="40" y="52" font-family="'Bradley Hand','Segoe Print','Marker Felt','Comic Sans MS',cursive" font-size="27" fill="#1f2328" font-weight="700"><tspan x="40" dy="0">hub_card is app-only by label, not by lock</tspan></text>
 <rect x="840" y="30" width="90.4" height="22" rx="11" fill="#3b82f6"/>
 <text x="885.2" y="45.32" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#fff">W-26 · Low</text>
 <text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">The hub_card tool is hidden from the AI only by a label. Any client that sends a call to it directly gets through.</tspan></text>
 <g filter="url(#wob)">
-<path d="M38.4 445.4 Q478.4 447.6 920.3 445.6 Q918.9 492.0 921.2 534.0 Q479.5 532.7 40.2 533.4 Q38.4 490.2 38.4 445.4" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="54" dy="0">What Within should change</tspan></text>
-<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328"><tspan x="54" dy="0">Refuse `hub_card` calls that do not come from the card, for example with a one-time value that only the card holds (the</tspan><tspan x="54" dy="16.5">same fix as W-18).</tspan></text>
+<path d="M38.4 445.4 Q253.4 447.6 470.3 445.6 Q468.9 492.0 471.2 534.0 Q254.5 532.7 40.2 533.4 Q38.4 490.2 38.4 445.4" fill="#f6f6f4" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">Where in the code</tspan></text>
+<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="54" dy="0">dist/index.js lines 4227 to 4246: hub_card is registered</tspan><tspan x="54" dy="15.84">with visibility: [&quot;app&quot;].</tspan></text>
+<path d="M491.3 445.7 Q706.7 445.3 919.7 446.7 Q921.2 490.5 920.6 533.8 Q705.8 536.7 491.0 535.5 Q490.2 492.8 491.3 445.7" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="504" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="504" dy="0">What Within should change</tspan></text>
+<text x="504" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="504" dy="0">Refuse hub_card calls that do not come from the card, for</tspan><tspan x="504" dy="15.84">example with a one-time value that only the card holds (the</tspan><tspan x="504" dy="15.84">same fix as W-18).</tspan></text>
 </g>
 </svg>

@@ -159,3 +159,25 @@ const block = `${a}\n\n**${V.count} findings on \`@getwithin/sdk\` ${V.version}:
 readme = readme.slice(0, readme.indexOf(a)) + block + readme.slice(readme.indexOf(b) + b.length);
 fs.writeFileSync(readmePath, readme);
 console.log(`built FINDINGS.md and docs/findings.html: ${V.count} findings (${V.high}/${V.medium}/${V.low}), ${V.n}+${V.nNew} checks`);
+
+// ---- guard: every "`symbol`, ... line N" a finding cites must point at a line of the 0.4.0 file that contains that symbol
+{
+  const files = { "index.js": fs.readFileSync(path.join(here, "sdk-0.4.0/dist/index.js"), "utf8").split("\n"), "doctor.js": fs.readFileSync(path.join(here, "sdk-0.4.0/dist/doctor.js"), "utf8").split("\n") };
+  const bad = []; let total = 0;
+  for (const f of F) for (const w of [...f.where, f.plain]) {
+    const file = /doctor\.js/.test(w) ? "doctor.js" : "index.js";
+    let checked = 0;
+    for (const m of w.matchAll(/`([A-Za-z_][A-Za-z0-9_]*)`(?:[^`]|`dist\/(?:index|doctor)\.js`){0,60}?\blines? (\d{3,5})/g)) { checked++; total++;
+      const [, sym, n] = m; const line = files[file][Number(n) - 1] ?? "";
+      const L = files[file], k = Number(n);
+      // accepted when the line names the symbol, or lies inside the top-level function (or tool registration) that the symbol names
+      const defRe = new RegExp(`^(async )?function \\w*${sym}\\(`, "i");
+      let def = -1; L.forEach((x, i) => { if (i < k - 1 && (defRe.test(x) || x.includes(`"${sym}"`))) def = i; });
+      let end = def; if (def >= 0) { end = L.findIndex((x, i) => i > def && /^(async )?function |^var /.test(x)); if (end < 0) end = L.length; }
+      const inside = def >= 0 && k - 1 > def && k - 1 < end;
+      if (!line.includes(sym) && !inside) bad.push(`${f.id}: ${file} line ${n} does not contain ${sym} and is not inside it`);
+    }
+  }
+  if (bad.length) fail(`code locations do not match the 0.4.0 file:\n${bad.join("\n")}`);
+  console.log(`code locations checked against the 0.4.0 file: ${total}`);
+}

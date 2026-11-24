@@ -103,6 +103,16 @@ function wrap(text, px, size, name) {
   return lines;
 }
 
+// like wrap, but a fourth line is cut with an ellipsis and recorded, so a long code location never overflows the box
+const cutNotes = [];
+function wrapCut(text, px, size, name) {
+  const words = String(text).replace(/`/g, "").split(" "), lines = []; let cur = "";
+  for (const w of words) { const t = cur ? `${cur} ${w}` : w; if (t.length * size * 0.56 > px && cur) { lines.push(cur); cur = w; } else cur = t; }
+  if (cur) lines.push(cur);
+  if (lines.length > 3) { cutNotes.push(name); lines.length = 3; lines[2] = lines[2].replace(/\s*\S*$/, "") + " …"; }
+  return lines;
+}
+
 function frame(pen, o) {
   const head = [];
   head.push(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="${esc(o.alt)}">`);
@@ -118,11 +128,16 @@ function frame(pen, o) {
     fo.text(54, 465, "A vendor can do this today", { size: 12.5, weight: 700, color: GRN });
     fo.text(54, 482, wrap(o.vendor, 404, 12.5, pen.name), { size: 12.5 });
   }
+  if (o.code) {
+    fo.rect(40, 446, 430, 88, { fill: "#f6f6f4", stroke: INK, sw: 1.6 });
+    fo.text(54, 465, "Where in the code", { size: 12.5, weight: 700, color: INK });
+    fo.text(54, 482, wrapCut(o.code, 404, 12, pen.name), { size: 12, color: INK });
+  }
   if (o.within) {
-    const x0 = o.vendor ? 490 : 40, bw = o.vendor ? 430 : 880;
+    const x0 = o.vendor || o.code ? 490 : 40, bw = o.vendor || o.code ? 430 : 880;
     fo.rect(x0, 446, bw, 88, { fill: "#f3f7fd", stroke: BLU, sw: 1.8 });
     fo.text(x0 + 14, 465, "What Within should change", { size: 12.5, weight: 700, color: BLU });
-    fo.text(x0 + 14, 482, wrap(o.within, bw - 26, 12.5, pen.name), { size: 12.5 });
+    fo.text(x0 + 14, 482, wrapCut(o.within, bw - 26, 12, pen.name), { size: 12 });
   }
   return [...head, `<g filter="url(#wob)">`, pen.html(), `</g>`, t.html(), `<g filter="url(#wob)">`, fo.html(), `</g>`, `</svg>`].join("\n");
 }
@@ -135,7 +150,7 @@ const sketches = [];
 const S = (n, slug, id, title, sub, alt, draw) => {
   const f = FIND[id] ?? fail(`no finding ${id}`);
   const pen = new Pen(slug); draw(pen);
-  sketches.push({ file: `${String(n).padStart(2, "0")}-${slug}.svg`, id, title, svg: frame(pen, { id, sev: f.severity, title, sub, alt, vendor: null, within: f.fix[0] }) });
+  sketches.push({ file: `${String(n).padStart(2, "0")}-${slug}.svg`, id, title, svg: frame(pen, { id, sev: f.severity, title, sub, alt, vendor: null, code: f.where[0], within: f.fix[0] }) });
 };
 const bx = (p, x, y, w, h, title, lines = [], o = {}) => {
   p.rect(x, y, w, h, { fill: o.fill ?? "#fff", stroke: o.stroke ?? INK, sw: o.sw ?? 2, cls: o.cls });
@@ -167,8 +182,8 @@ S(2, "every-call-waits", "W-03", "A hung Within adds five seconds to every call"
     const t = E("A1b", "timesMs"), max = Math.max(...t), base = 384, top = 176, bw = 110;
     p.line(100, base, 640, base, { color: INK, sw: 2.2 }); p.line(100, base, 100, top - 10, { color: INK, sw: 2.2 });
     p.text(106, 128, "How long the vendor's tool call took (ms), Within not answering", { size: 13, color: MUTE, maxW: 520 });
-    t.forEach((v, i) => { const h = ((base - top) * v) / max, x = 150 + i * 160; p.rect(x, base - h, bw, h, { fill: RED, stroke: INK, sw: 1.6, cls: "grow", style: `animation-delay:${i * 0.2}s` }); p.text(x + bw / 2, base - h - 8, fmt(v), { size: 15, anchor: "middle", weight: 700 }); p.text(x + bw / 2, base + 20, `call ${i + 1}`, { size: 12.5, anchor: "middle", color: MUTE }); });
-    bx(p, 690, 140, 230, 112, "With Within up", [`${E("A8b", "wrapped_0ms")} ms of extra wait`], { stroke: GRN, fill: "#f3faf6" });
+    t.forEach((v, i) => { const h = ((base - top) * v) / max, x = 150 + i * 160; p.rect(x, base - h, bw, h, { fill: RED, stroke: INK, sw: 1.6 }); p.text(x + bw / 2, base - h - 8, fmt(v), { size: 15, anchor: "middle", weight: 700 }); p.text(x + bw / 2, base + 20, `call ${i + 1}`, { size: 12.5, anchor: "middle", color: MUTE }); });
+    bx(p, 690, 140, 230, 112, "No offer waiting, still", ["10 tool calls sent:", `${E("A8", "counts./v1/activity")} to /v1/activity`, `${E("A8", "counts./v1/offers/deliver")} to /v1/offers/deliver`], { stroke: ORG, fill: "#fff7ed" });
     bx(p, 690, 272, 230, 112, "Within slow by 300 ms", [`wrapped: ${E("A8b", "wrapped_300ms")} ms`, `unwrapped: ${E("A8b", "unwrapped_300ms")} ms`], { stroke: BLU, fill: "#eef4fb" });
   });
 S(3, "context-input-lost", "W-04", "A vendor tool's own context input is swallowed",
@@ -197,36 +212,36 @@ S(4, "goal-longer-than-300", "W-05", "A goal longer than 300 characters rejects 
     note(p, 56, 366, "The SDK already cuts the goal to 300 characters itself, so the limit on the input is not needed.", MUTE, 12.5);
   });
 S(5, "meta-removed", "W-06", "The vendor's own _meta data is removed",
-  "When a rep's offer is attached to a tool result, the vendor's own _meta field is replaced by null.",
-  `With an offer attached, the vendor's _meta came back as ${String(R.B2.evidence._meta)}`,
+  "When a rep's offer is attached to a tool result, the SDK deletes the vendor's own _meta field.",
+  "With an offer attached, the vendor's _meta field was gone (undefined)",
   (p) => {
     bx(p, 40, 130, 380, 110, "The vendor's result", ["content: the answer", "_meta: the vendor's own data"], { stroke: GRN, fill: "#f3faf6" });
     arr(p, 422, 185, 520, 185, ORG);
-    bx(p, 524, 130, 396, 110, "With a rep's offer attached", ["content: the answer + the offer", `_meta: ${String(R.B2.evidence._meta)}`], { stroke: RED, fill: "#fff1f0", cls: "pulse" });
-    p.rect(40, 290, 880, 70, { fill: "#fff" }); p.text(56, 318, `Check B2: assistance attached = ${E("B2", "assistanceAttached")}, _meta = ${String(R.B2.evidence._meta)}.`, { size: 14, maxW: 840 });
+    bx(p, 524, 130, 396, 110, "With a rep's offer attached", ["content: the answer + one line for the offer", "_meta: gone (undefined)"], { stroke: RED, fill: "#fff1f0", cls: "pulse" });
+    p.rect(40, 290, 880, 70, { fill: "#fff" }); p.text(56, 318, `Check B2 (${R.B2.verdict}): "${R.B2.observed}"`, { size: 14, maxW: 840 });
     note(p, 56, 346, "We do not know why Within removes _meta. It may be to stop a second card from appearing.", MUTE, 12.5);
   });
 S(6, "identify-throws", "W-07", "A throwing identity function fails the customer's call",
-  "The SDK asks the vendor's own function who the customer is. If it throws, the customer's call suffers.",
-  `The identity function threw "${E("A7", "message")}" and the vendor's handler ran: ${E("A7", "vendorHandlerRan")}`,
+  "The SDK asks the vendor's function who the customer is. If it throws, the whole tool call fails.",
+  `The identity function threw "${E("A7", "message")}": the call failed after the vendor's handler had already run`,
   (p) => {
     bx(p, 40, 130, 270, 100, "The vendor's function", ["who is this customer?"], { size: 14 });
     arr(p, 312, 180, 420, 180, RED);
     bx(p, 424, 130, 250, 100, "It throws", [`\"${E("A7", "message")}\"`], { stroke: RED, fill: "#fff1f0", cls: "pulse" });
     arr(p, 676, 180, 770, 180, RED);
-    bx(p, 774, 130, 146, 100, "The call", ["is affected"], { stroke: RED, fill: "#fff1f0" });
+    bx(p, 774, 130, 146, 100, "The tool call", ["fails"], { stroke: RED, fill: "#fff1f0" });
     p.rect(40, 270, 880, 80, { fill: "#fff" });
-    p.text(56, 298, `Check A7 (${R.A7.verdict}): vendor handler ran = ${E("A7", "vendorHandlerRan")}.`, { size: 14, maxW: 840 });
-    note(p, 56, 324, "A failure in the vendor's own helper should not become the customer's failure.", MUTE, 13);
+    p.text(56, 298, `Check A7 (${R.A7.verdict}): "${R.A7.observed}"`, { size: 13.5, maxW: 840 });
+    note(p, 56, 324, "The tool did its work, but the customer gets an error. A helper's failure should not become the customer's.", MUTE, 13);
   });
 S(7, "long-text-freeze", "W-08", "Very long text without spaces freezes the server",
-  "The email pattern in the privacy filter slows down fast on unbroken text. While it runs, nobody is answered.",
+  "With argument capture on, the email pattern slows down fast on unbroken text. While it runs, nobody is answered.",
   `Letters: ${fmt(E("C8", "rows[0].medianMs"))} ms at 20,000, ${fmt(E("C8", "rows[1].medianMs"))} ms at 40,000, ${fmt(E("C8", "rows[2].medianMs"))} ms at 80,000`,
   (p) => {
     const rows = [0, 1, 2].map((i) => E("C8", `rows[${i}]`)), max = rows[2].medianMs, base = 384, top = 176, bw = 90, xs = [150, 280, 410];
     p.line(110, base, 600, base, { color: INK, sw: 2.2 }); p.line(110, base, 110, top - 10, { color: INK, sw: 2.2 });
-    p.text(116, 128, "How long the server froze (ms, median of three runs)", { size: 13, color: MUTE, maxW: 480 });
-    rows.forEach((r, i) => { const h = ((base - top) * r.medianMs) / max; p.rect(xs[i], base - h, bw, h, { fill: i === 2 ? RED : ORG, stroke: INK, sw: 1.6, cls: "grow", style: `animation-delay:${i * 0.2}s` }); p.text(xs[i] + bw / 2, base - h - 8, fmt(r.medianMs), { size: 15, weight: 700, anchor: "middle" }); p.text(xs[i] + bw / 2, base + 20, fmt(r.size), { size: 12.5, anchor: "middle", color: MUTE }); });
+    p.text(116, 128, "Server frozen (ms, median of 3 runs), argument capture on", { size: 13, color: MUTE, maxW: 480 });
+    rows.forEach((r, i) => { const h = ((base - top) * r.medianMs) / max; p.rect(xs[i], base - h, bw, h, { fill: i === 2 ? RED : ORG, stroke: INK, sw: 1.6 }); p.text(xs[i] + bw / 2, base - h - 8, fmt(r.medianMs), { size: 15, weight: 700, anchor: "middle" }); p.text(xs[i] + bw / 2, base + 20, fmt(r.size), { size: 12.5, anchor: "middle", color: MUTE }); });
     p.text(150, base + 38, "unbroken letters in one argument", { size: 12.5, color: MUTE });
     bx(p, 650, 130, 270, 96, "Digits and spaces, 80,000", [`${E("C8", "rows[4].medianMs")} ms`], { stroke: GRN, fill: "#f3faf6" });
     bx(p, 650, 244, 270, 112, "An error, default settings", [`${fmt(E("C8", "rows[5].medianMs"))} ms at 20,000 letters`, `${fmt(E("C8", "rows[6].medianMs"))} ms at 40,000`], { stroke: ORG, fill: "#fff7ed" });
@@ -250,7 +265,7 @@ S(9, "unwrapped-tool-reports", "W-09", "A tool the vendor did not wrap still rep
   "The docs say to wrap the tools Within should see. The SDK hooks every tool and reports one when a goal is filled in.",
   `Without a goal text ${E("C7", "reportsWithoutGoal")} reports left; with a goal text ${E("C7", "reportsWithGoal")} did`,
   (p) => {
-    bx(p, 40, 120, 380, 100, "An unwrapped tool", ["the vendor did not wrap it, as the docs allow"], { size: 14.5 });
+    bx(p, 40, 120, 380, 100, "An unwrapped tool: internal_admin_lookup", ["the vendor did not wrap it, as the docs allow", "the model's goal: HR wants Priya Raman's salary"], { size: 14 });
     arr(p, 150, 222, 150, 280, GRN); arr(p, 310, 222, 400, 280, RED);
     bx(p, 40, 284, 250, 90, "No goal text", [`${E("C7", "reportsWithoutGoal")} reports to Within`], { stroke: GRN, fill: "#f3faf6" });
     bx(p, 330, 284, 280, 90, "A model-written goal text", [`${E("C7", "reportsWithGoal")} report to Within`], { stroke: RED, fill: "#fff1f0", cls: "pulse" });
@@ -323,12 +338,12 @@ S(15, "report-void-default", "W-22", "report_void is on and sends the customer's
     p.text(56, 366, `The tool was used in ${U.voidRuns} of ${U.totalRuns} ordinary Haiku runs and ${U.sVoidRuns} of ${U.sTotalRuns} Sonnet runs.`, { size: 13, color: MUTE, maxW: 840 });
   });
 S(16, "app-name-fallback", "W-23", "A browser's user-agent text is sent as the app name",
-  "If the AI app does not report its name, the SDK sends the first 80 characters of the user-agent text as its name.",
+  "If the AI app does not report its name, the SDK falls back to the user-agent text and sends 80 characters of it.",
   `The app named itself "${E("N4", "viaInit.hostName")}" in one run; in the other, ${E("N4", "viaUa.hostName").length} characters of user-agent text were sent`,
   (p) => {
     bx(p, 40, 120, 420, 120, "The app reports itself", [`hostName: "${E("N4", "viaInit.hostName")}"`, `detected by: ${E("N4", "viaInit.hostDetectedBy")}`], { stroke: GRN, fill: "#f3faf6" });
-    bx(p, 500, 120, 420, 150, "Only a browser's user-agent text", [`hostName: "${trunc(E("N4", "viaUa.hostName"), 38)}"`, `${E("N4", "viaUa.hostName").length} characters, copied from the header`], { stroke: RED, fill: "#fff1f0", cls: "pulse" });
-    note(p, 40, 320, "Check N4. The user-agent text can carry the visitor's operating system and browser version.", MUTE, 13);
+    bx(p, 500, 120, 420, 150, "Only a browser's user-agent text", [`hostName: "${trunc(E("N4", "viaUa.hostName"), 38)}"`, `${E("N4", "viaUa.hostName").length} of the header's ${E("N4", "userAgentLength")} characters, sent as the app name`], { stroke: RED, fill: "#fff1f0", cls: "pulse" });
+    note(p, 40, 320, "Check N4. The code sends the header only if it names claude, chatgpt, openai or cursor. The text also carries the operating system.", MUTE, 13);
   });
 
 // ============ Docs say one thing, the package does another
@@ -339,26 +354,26 @@ S(17, "instructions-replaced", "W-15", "A banned phrase replaces all the vendor'
     bx(p, 40, 120, 250, 100, "The vendor's instructions", ["paragraph 1", "paragraph 2 (banned phrase)"], { size: 14 });
     arr(p, 292, 170, 400, 170, RED);
     bx(p, 404, 110, 516, 120, "What the model sees", [`paragraph 1 kept: ${E("D1", "paragraph1Kept")}`, `paragraph 2 kept: ${E("D1", "paragraph2Kept")}`, `equals Within's text (${fmt(E("D1", "length"))} characters): ${E("D1", "equalsWithinText")}`], { stroke: RED, fill: "#fff1f0", cls: "pulse" });
-    p.text(40, 270, "Phrases that trigger the replacement, all confirmed:", { size: 13.5, weight: 700 });
-    let x = 40; E("D2", "rows").forEach((r) => { const w = r.phrase.length * 6.6 + 16; p.chip(x, 282, r.phrase, r.replaced ? RED : GRN, { size: 11.5 }); x += w + 6; });
-    note(p, 40, 340, "Checks D1 to D3. Normal vendor instructions stay first when no banned phrase is present.", MUTE, 13);
+    p.text(40, 270, "Phrases tested: red ones replace all the vendor's text, green ones do not:", { size: 13.5, weight: 700 });
+    let x = 40, y = 282; E("D2", "rows").forEach((r) => { const w = r.phrase.length * 6.8 + 18; if (x + w > 920) { x = 40; y += 26; } p.chip(x, y, r.phrase, r.replaced ? RED : GRN, { size: 11.5 }); x += w + 6; });
+    note(p, 40, 360, "Checks D1 to D3. Normal vendor instructions stay first when no banned phrase is present.", MUTE, 13);
   });
 S(18, "silent-failures", "W-16", "A wrong key or a missing address fails silently",
   "With a rejected key or a blank setting, the server runs and nothing tells the vendor that Within gets nothing.",
   `A wrong key left ${E("A4", "logLines").length} log lines; a key of only spaces was accepted`,
   (p) => {
-    bx(p, 40, 120, 280, 110, "A wrong key", [`requests made: ${E("A4", "requests")}`, `log lines written: ${E("A4", "logLines").length}`], { stroke: RED, fill: "#fff1f0" });
-    bx(p, 340, 120, 280, 110, "No key, or an empty key", [`missing: ${E("A10", "missing").replace("threw ", "threw ")}`, `empty: ${E("A10", "empty")}`], { stroke: GRN, fill: "#f3faf6" });
+    bx(p, 40, 120, 280, 110, "A wrong key", [`Within answered ${E("A4", "requests")} requests with 401`, `SDK log lines: ${E("A4", "logLines").length}`], { stroke: RED, fill: "#fff1f0" });
+    bx(p, 340, 120, 280, 110, "No key, or an empty key", [`missing: ${E("A10", "missing")}`, `empty: ${E("A10", "empty")}`, "(start-up stops: good)"], { stroke: GRN, fill: "#f3faf6" });
     bx(p, 640, 120, 280, 110, "A key of only spaces", [E("A10", "spaces")], { stroke: RED, fill: "#fff1f0", cls: "pulse" });
-    bx(p, 40, 262, 880, 90, "Which addresses the SDK contacted", [E("A9", "urlsContacted").join("   "), `log lines: ${E("A9", "logLines")}`], { size: 14, stroke: INK });
-    note(p, 40, 384, "Checks A4, A9 and A10. A missing key stops start-up with an error; the other cases do not.", MUTE, 13);
+    bx(p, 40, 262, 880, 100, "No address set (the homepage snippet allows it)", ["every call went to the local default, http://127.0.0.1:8787", "every customer answer ended with \"The service is unreachable.\"", `install did not complain; SDK log lines: ${E("A9", "logLines")}`], { size: 14, stroke: RED, fill: "#fff1f0" });
+    note(p, 40, 384, "Checks A4, A9 and A10.", MUTE, 13);
   });
 S(19, "unused-address-lists", "W-17", "Two lists of private addresses are never used",
   "The SDK builds lists of private-network addresses, as if to refuse them, and then never checks an address against them.",
   `Lists defined: ${E("F5", "defined")}; lists used: ${E("F5", "used")}`,
   (p) => {
     bx(p, 40, 130, 400, 120, "Defined in the code", [`${E("F5", "defined")} lists of private-network addresses`], { stroke: BLU, fill: "#eef4fb" }); stat(p, 56, 232, `${E("F5", "defined")} defined`, BLU);
-    bx(p, 520, 130, 400, 120, "Checked against", ["the address of any request"], { stroke: RED, fill: "#fff1f0" }); stat(p, 536, 232, `${E("F5", "used")} used`, RED);
+    bx(p, 520, 130, 400, 120, "Places that check an address", ["against either list"], { stroke: RED, fill: "#fff1f0" }); stat(p, 536, 232, `${E("F5", "used")} used`, RED);
     note(p, 40, 300, "Check F5. A list that is built and never read gives a reader the wrong idea about what is blocked.", MUTE, 13.5);
   });
 
@@ -367,7 +382,7 @@ S(20, "consent-rests-on-the-ai", "W-18", "Consent rests on the AI, not on the SD
   "The SDK forwards an accept without checking that the customer chose it, so everything depends on what the model decides.",
   `An accept with only a session id was ${E("E1", "status")}; an offer never shown was still forwarded`,
   (p) => {
-    bx(p, 40, 120, 280, 120, "An accept call", [`body: ${Object.keys(E("E1", "acceptBody")).join(", ")}`, `status: ${E("E1", "status")}`], { stroke: RED, fill: "#fff1f0" });
+    bx(p, 40, 120, 280, 120, "confirm_assistance, no click", [`body sent: ${Object.keys(E("E1", "acceptBody")).join(", ")}`, "no one-time code from the card", "the AI was told: You are connected", "with Sarah."], { stroke: RED, fill: "#fff1f0" });
     bx(p, 340, 120, 280, 120, "confirm_assistance", [`listed to the AI: ${E("E2", "confirm_assistance.listedToModel")}`], { stroke: ORG, fill: "#fff7ed" });
     bx(p, 640, 120, 280, 120, "An offer never shown", [`forwarded: ${E("E3", "forwarded")}`, trunc(E("E3", "path"), 36)], { stroke: RED, fill: "#fff1f0" });
     p.rect(40, 270, 880, 100, { fill: "#fff" });
@@ -382,7 +397,7 @@ S(21, "no-session-no-offer", "W-19", "Without sessions, an offer cannot find the
     bx(p, 40, 120, 400, 120, "Inside one connection", [`same id every call: ${E("C9", "sameInsideConnection")}`], { stroke: GRN, fill: "#f3faf6" });
     bx(p, 480, 120, 440, 120, "Three separate connections", [`${E("C9", "distinctAcrossConnections")} different ids`], { stroke: RED, fill: "#fff1f0", cls: "pulse" });
     for (let i = 0; i < 3; i++) p.chip(500 + i * 130, 198, `id ${i + 1}`, RED, { size: 13 });
-    note(p, 40, 290, "Check C9. A stateless server, which opens a connection for each request, gets a new id each time.", MUTE, 13.5);
+    note(p, 40, 290, "Check C9 ran 3 connections. A server that builds a new transport per request would get a new id each call (read from the code, not run).", MUTE, 13.5);
   });
 S(22, "doctor-misses-w04", "W-25", "The doctor command misses a removed context input",
   "The doctor command says the tools carry the context field, even when the SDK removed the vendor's own context input.",
@@ -397,7 +412,7 @@ S(23, "hub-card-app-only", "W-26", "hub_card is app-only by label, not by lock",
   (p) => {
     bx(p, 40, 120, 400, 120, "hub_card", [`visibility: ${E("N9", "hubCardVisibility").join(", ")}`, "meant for the app, not the AI"], { stroke: BLU, fill: "#eef4fb" });
     bx(p, 480, 120, 440, 120, "open_hub", [`visibility: ${E("N9", "openHubVisibility").join(", ")}`], { stroke: GRN, fill: "#f3faf6" });
-    bx(p, 40, 270, 880, 90, "A direct call to hub_card", [`reached the send route: ${E("N9", "sendReached")}; body fields: ${E("N9", "sendBodyFields").join(", ")}`, `Real Claude called hub_card ${U.hubCardCalls} times in ${U.hubRuns} runs.`], { stroke: RED, fill: "#fff1f0", size: 14 });
+    bx(p, 40, 270, 880, 90, "A direct call to hub_card", [`a plain client called it with action send: it reached Within as POST /v1/hubs/send, text unchanged`, `the caller was told "That didn't send. Try again." Real Claude called hub_card ${U.hubCardCalls} times in ${U.hubRuns} runs.`], { stroke: RED, fill: "#fff1f0", size: 14 });
   });
 
 // ============ How the AI behaves
@@ -407,8 +422,8 @@ S(24, "comparison-false-alarm", "W-20", "A small model treats a comparison as a 
   (p) => {
     const w = 360, n = U.x1NewC / U.x1NewN, q = U.x1PatchedC / U.x1PatchedN;
     p.text(40, 128, "How often Haiku sent \"Compare Ledgerly and Paywise\" to Within", { size: 14.5, weight: 700 });
-    p.rect(40, 150, w + 2, 36, { fill: "#fff" }); p.rect(41, 151, Math.max(3, w * n), 34, { fill: RED, stroke: "none", sw: 0, cls: "growx" }); p.text(40 + w + 14, 175, `unpatched wording: ${U.x1New}`, { size: 15, hand: true, weight: 700, color: RED });
-    p.rect(40, 200, w + 2, 36, { fill: "#fff" }); p.rect(41, 201, Math.max(3, w * q), 34, { fill: GRN, stroke: "none", sw: 0, cls: "growx" }); p.text(40 + w + 14, 225, `with the clarifying phrase (P11): ${U.x1Patched}`, { size: 15, hand: true, weight: 700, color: GRN });
+    p.rect(40, 150, w + 2, 36, { fill: "#fff" }); p.rect(41, 151, Math.max(3, w * n), 34, { fill: RED, stroke: "none", sw: 0 }); p.text(40 + w + 14, 175, `unpatched wording: ${U.x1New}`, { size: 15, hand: true, weight: 700, color: RED });
+    p.rect(40, 200, w + 2, 36, { fill: "#fff" }); p.rect(41, 201, Math.max(3, w * q), 34, { fill: GRN, stroke: "none", sw: 0 }); p.text(40 + w + 14, 225, `with the clarifying phrase (P11): ${U.x1Patched}`, { size: 15, hand: true, weight: 700, color: GRN });
     p.text(40, 266, `Real competitor questions with the phrase added: ${U.x2Patched} still went to Within. Sonnet, unpatched: ${U.x1SonnetNew}.`, { size: 13.5, maxW: 880 });
     p.rect(40, 296, 880, 70, { fill: "#fff" }); p.text(56, 322, `Fisher exact p = ${U.x1PatchedP} for patched against unpatched. Three same-day batches of 10 runs.`, { size: 13.5, maxW: 840 });
     p.text(56, 346, "Haiku and Sonnet runs from 2026-11-20 and 2026-11-21, on the file npm serves today.", { size: 12.5, color: MUTE, maxW: 840 });
@@ -424,20 +439,26 @@ S(24, "comparison-false-alarm", "W-20", "A small model treats a comparison as a 
   pen.rect(214, 150, 150, 70, { fill: "#fff" }); pen.text(226, 180, ["Vendor's MCP", "server and tool"], { size: 14, weight: 600 });
   pen.line(176, 185, 212, 185, { arrow: true, color: MUTE });
   pen.rect(392, 40, 444, 478, { fill: "#eef4fb", stroke: BLU, sw: 2, dash: "8 6" }); pen.text(408, 64, "@getwithin/sdk 0.4.0, loaded inside the vendor's server", { size: 14, weight: 700, color: BLU });
-  step(78, "1", "Start-up", "instructions, tools, report_void, hubs, patched tools", ["W-15", "W-22", "W-04"]);
-  step(152, "2", "The call", "the vendor's tool runs; unwrapped tools still report", ["W-05", "W-09"]);
-  step(226, "3", "The report", "goal text, arguments, results, identity, host name", ["W-10", "W-21", "W-23"]);
-  step(300, "4", "The filter", "name list, whole-value patterns, email pattern", ["W-13", "W-12", "W-08"]);
-  step(374, "5", "Within's reply", "waits up to 5 s; adds offer, text, status to the result", ["W-24", "W-03", "W-02"]);
-  pen.rect(404, 450, 200, 54, { fill: "#fff" }); pen.text(414, 472, "Offers and consent", { size: 13, weight: 700 }); pen.text(414, 490, "accept, confirm, hub_card", { size: 11, color: MUTE, maxW: 184 }); mark(530, 456, "W-18");
-  pen.rect(620, 450, 204, 54, { fill: "#fff" }); pen.text(630, 472, "Start-up checks", { size: 13, weight: 700 }); pen.text(630, 490, "keys, address, doctor", { size: 11, color: MUTE, maxW: 186 }); mark(760, 456, "W-16");
-  pen.rect(870, 180, 80, 110, { fill: "#fff", stroke: BLU, sw: 2 }); pen.text(910, 228, "Within's", { size: 13, anchor: "middle", weight: 700 }); pen.text(910, 246, "service", { size: 13, anchor: "middle", weight: 700 });
-  pen.line(826, 411, 910, 411, { arrow: true, color: ORG, cls: "flow" }); pen.line(910, 408, 910, 294, { arrow: true, color: ORG, cls: "flow" });
-  pen.text(24, 300, ["Ten more findings sit", "elsewhere: see the map", "and the report."], { size: 13, hand: true, color: RED });
+  const marked = [];
+  const pills = (x, y, ids) => ids.forEach((id, i) => { mark(x + i * 50, y, id); marked.push(id); });
+  const step2 = (y, n, title, line, ids) => { pen.rect(404, y, 420, 62, { fill: "#fff" }); pen.text(416, y + 24, `${n}  ${title}`, { size: 14, weight: 700, maxW: 180 }); pen.text(416, y + 46, line, { size: 12, color: MUTE, maxW: 396 }); pills(824 - 12 - ids.length * 50, y + 8, ids); };
+  step2(78, "1", "Start-up", "instructions, 4 tools (with report_void), patched tools", ["W-15", "W-22", "W-04"]);
+  step2(152, "2", "The call", "goal input checked, then the tool runs, wrapped or not", ["W-05", "W-09"]);
+  step2(226, "3", "The report", "goal, arguments, results, identity, token, app name", ["W-10", "W-07", "W-21", "W-23"]);
+  step2(300, "4", "The filter", "name list, whole-value patterns, email pattern", ["W-13", "W-12", "W-08"]);
+  step2(374, "5", "Within's reply", "waits up to 5 s; adds offer, text, status", ["W-24", "W-06", "W-03", "W-02"]);
+  pen.rect(404, 446, 200, 66, { fill: "#fff" }); pen.text(414, 466, "Offers and consent", { size: 13, weight: 700 }); pills(414, 478, ["W-18", "W-19", "W-26"]);
+  pen.rect(620, 446, 204, 66, { fill: "#fff" }); pen.text(630, 466, "Start-up checks, doctor", { size: 13, weight: 700, maxW: 186 }); pills(630, 478, ["W-16", "W-17", "W-25"]);
+  pen.rect(24, 252, 340, 96, { fill: "#fff" }); pen.text(36, 276, "get_vendor_answer: asking Within", { size: 13.5, weight: 700, maxW: 316 }); pen.text(36, 296, "the whole question goes out; the model decides", { size: 12, color: MUTE, maxW: 316 }); pen.text(36, 312, "when to call, from written instructions", { size: 12, color: MUTE, maxW: 316 }); pills(36, 320, ["W-11", "W-20"]);
+  pen.rect(862, 180, 96, 110, { fill: "#fff", stroke: BLU, sw: 2 }); pen.text(910, 228, "Within's", { size: 13, anchor: "middle", weight: 700 }); pen.text(910, 246, "service", { size: 13, anchor: "middle", weight: 700 });
+  pen.line(826, 405, 910, 405, { arrow: false, color: ORG, cls: "flow" }); pen.line(910, 405, 910, 294, { arrow: true, color: ORG, cls: "flow" });
+  pen.text(842, 424, "reports, 5 s cap", { size: 11, color: MUTE });
+  const all = src.findings.map((f) => f.id).sort(), got2 = [...new Set(marked)].sort();
+  if (JSON.stringify(all) !== JSON.stringify(got2)) fail(`flow.svg marks ${got2.length} findings, not all ${all.length}: missing ${all.filter((x) => !got2.includes(x)).join(", ")}`);
   pen.text(24, 470, "Colour of a W-number = severity:", { size: 12, color: MUTE });
   [["High", RED], ["Medium", ORG], ["Low", BLU]].forEach(([n, c], i) => pen.pill(24 + i * 78, 482, n, c, { size: 11 }));
-  const svg = [`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 540" role="img" aria-label="One tool call through the Within SDK, with some findings marked">`,
-    `<title>One tool call through the Within SDK, with some findings marked</title><defs>${FILTER}<style>${CSS}</style></defs>`,
+  const svg = [`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 540" role="img" aria-label="One tool call through the Within SDK, with all 24 findings marked">`,
+    `<title>One tool call through the Within SDK, with all 24 findings marked</title><defs>${FILTER}<style>${CSS}</style></defs>`,
     `<rect width="980" height="540" fill="${PAPER}"/>`, `<g filter="url(#wob)">`, pen.html(), `</g>`, `</svg>`].join("\n");
   fs.writeFileSync(path.join(root, "docs", "flow.svg"), svg);
 }
@@ -450,4 +471,4 @@ fs.mkdirSync(dir, { recursive: true });
 for (const f of fs.readdirSync(dir)) if (f.endsWith(".svg")) fs.unlinkSync(path.join(dir, f));
 for (const s of sketches) fs.writeFileSync(path.join(dir, s.file), s.svg);
 fs.writeFileSync(path.join(here, "sketches.json"), JSON.stringify(Object.fromEntries(sketches.map((s) => [s.id, { file: `diagrams/${s.file}`, title: s.title }])), null, 1) + "\n");
-console.log(`drew ${sketches.length} sketches and flow.svg`);
+console.log(`drew ${sketches.length} sketches and flow.svg${cutNotes.length ? `; footer text cut short in: ${cutNotes.join(", ")}` : ""}`);

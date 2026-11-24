@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 540" role="img" aria-label="One tool call through the Within SDK, with some findings marked">
-<title>One tool call through the Within SDK, with some findings marked</title><defs><filter id="wob" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/></filter><style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 540" role="img" aria-label="One tool call through the Within SDK, with all 24 findings marked">
+<title>One tool call through the Within SDK, with all 24 findings marked</title><defs><filter id="wob" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/></filter><style>
 .flow{stroke-dasharray:9 7;animation:dash 1.1s linear infinite}
 .slow{stroke-dasharray:9 7;animation:dash 2.4s linear infinite}
 @keyframes dash{to{stroke-dashoffset:-32}}
@@ -26,65 +26,82 @@
 <text x="408" y="64" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#3b82f6" font-weight="700"><tspan x="408" dy="0">@getwithin/sdk 0.4.0, loaded inside the vendor's server</tspan></text>
 <path d="M405.8 78.5 Q612.4 80.0 823.1 78.8 Q824.9 111.5 824.5 140.8 Q614.8 143.3 403.9 140.9 Q405.1 111.2 405.8 78.5" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="416" y="102" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#1f2328" font-weight="700"><tspan x="416" dy="0">1  Start-up</tspan></text>
-<text x="416" y="124" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#59636e"><tspan x="416" dy="0">instructions, tools, report_void, hubs, patched tools</tspan></text>
-<rect x="744" y="86" width="43.3" height="21" rx="10.5" fill="#f97316"/>
-<text x="765.6" y="100.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-15</text>
-<rect x="680" y="86" width="43.3" height="21" rx="10.5" fill="#f97316"/>
-<text x="701.6" y="100.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-22</text>
-<rect x="616" y="86" width="43.3" height="21" rx="10.5" fill="#ef4444"/>
-<text x="637.6" y="100.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-04</text>
+<text x="416" y="124" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#59636e"><tspan x="416" dy="0">instructions, 4 tools (with report_void), patched tools</tspan></text>
+<rect x="662" y="86" width="43.3" height="21" rx="10.5" fill="#f97316"/>
+<text x="683.6" y="100.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-15</text>
+<rect x="712" y="86" width="43.3" height="21" rx="10.5" fill="#f97316"/>
+<text x="733.6" y="100.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-22</text>
+<rect x="762" y="86" width="43.3" height="21" rx="10.5" fill="#ef4444"/>
+<text x="783.6" y="100.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-04</text>
 <path d="M404.0 153.0 Q615.1 153.1 823.8 151.3 Q822.3 184.5 823.2 212.7 Q614.8 214.4 405.3 213.4 Q403.0 182.3 404.0 153.0" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="416" y="176" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#1f2328" font-weight="700"><tspan x="416" dy="0">2  The call</tspan></text>
-<text x="416" y="198" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#59636e"><tspan x="416" dy="0">the vendor's tool runs; unwrapped tools still report</tspan></text>
-<rect x="744" y="160" width="43.3" height="21" rx="10.5" fill="#f97316"/>
-<text x="765.6" y="174.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-05</text>
-<rect x="680" y="160" width="43.3" height="21" rx="10.5" fill="#ef4444"/>
-<text x="701.6" y="174.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-09</text>
+<text x="416" y="198" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#59636e"><tspan x="416" dy="0">goal input checked, then the tool runs, wrapped or not</tspan></text>
+<rect x="712" y="160" width="43.3" height="21" rx="10.5" fill="#f97316"/>
+<text x="733.6" y="174.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-05</text>
+<rect x="762" y="160" width="43.3" height="21" rx="10.5" fill="#ef4444"/>
+<text x="783.6" y="174.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-09</text>
 <path d="M405.3 227.9 Q616.2 225.1 824.0 226.6 Q824.6 256.0 824.5 287.0 Q617.4 289.2 405.6 288.6 Q405.4 256.7 405.3 227.9" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="416" y="250" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#1f2328" font-weight="700"><tspan x="416" dy="0">3  The report</tspan></text>
-<text x="416" y="272" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#59636e"><tspan x="416" dy="0">goal text, arguments, results, identity, host name</tspan></text>
-<rect x="744" y="234" width="43.3" height="21" rx="10.5" fill="#ef4444"/>
-<text x="765.6" y="248.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-10</text>
-<rect x="680" y="234" width="43.3" height="21" rx="10.5" fill="#ef4444"/>
-<text x="701.6" y="248.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-21</text>
-<rect x="616" y="234" width="43.3" height="21" rx="10.5" fill="#3b82f6"/>
-<text x="637.6" y="248.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-23</text>
+<text x="416" y="272" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#59636e"><tspan x="416" dy="0">goal, arguments, results, identity, token, app name</tspan></text>
+<rect x="612" y="234" width="43.3" height="21" rx="10.5" fill="#ef4444"/>
+<text x="633.6" y="248.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-10</text>
+<rect x="662" y="234" width="43.3" height="21" rx="10.5" fill="#3b82f6"/>
+<text x="683.6" y="248.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-07</text>
+<rect x="712" y="234" width="43.3" height="21" rx="10.5" fill="#ef4444"/>
+<text x="733.6" y="248.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-21</text>
+<rect x="762" y="234" width="43.3" height="21" rx="10.5" fill="#3b82f6"/>
+<text x="783.6" y="248.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-23</text>
 <path d="M402.4 299.8 Q612.7 298.9 822.8 301.9 Q824.1 334.3 822.6 361.9 Q613.4 361.6 404.2 360.7 Q404.9 329.5 402.4 299.8" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="416" y="324" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#1f2328" font-weight="700"><tspan x="416" dy="0">4  The filter</tspan></text>
 <text x="416" y="346" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#59636e"><tspan x="416" dy="0">name list, whole-value patterns, email pattern</tspan></text>
-<rect x="744" y="308" width="43.3" height="21" rx="10.5" fill="#f97316"/>
-<text x="765.6" y="322.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-13</text>
-<rect x="680" y="308" width="43.3" height="21" rx="10.5" fill="#f97316"/>
-<text x="701.6" y="322.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-12</text>
-<rect x="616" y="308" width="43.3" height="21" rx="10.5" fill="#f97316"/>
-<text x="637.6" y="322.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-08</text>
+<rect x="662" y="308" width="43.3" height="21" rx="10.5" fill="#f97316"/>
+<text x="683.6" y="322.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-13</text>
+<rect x="712" y="308" width="43.3" height="21" rx="10.5" fill="#f97316"/>
+<text x="733.6" y="322.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-12</text>
+<rect x="762" y="308" width="43.3" height="21" rx="10.5" fill="#f97316"/>
+<text x="783.6" y="322.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-08</text>
 <path d="M404.6 374.4 Q613.5 376.4 824.1 375.6 Q823.2 404.1 825.6 436.8 Q616.3 435.5 404.3 434.5 Q404.8 404.8 404.6 374.4" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="416" y="398" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#1f2328" font-weight="700"><tspan x="416" dy="0">5  Within's reply</tspan></text>
-<text x="416" y="420" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#59636e"><tspan x="416" dy="0">waits up to 5 s; adds offer, text, status to the result</tspan></text>
-<rect x="744" y="382" width="43.3" height="21" rx="10.5" fill="#f97316"/>
-<text x="765.6" y="396.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-24</text>
-<rect x="680" y="382" width="43.3" height="21" rx="10.5" fill="#f97316"/>
-<text x="701.6" y="396.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-03</text>
-<rect x="616" y="382" width="43.3" height="21" rx="10.5" fill="#ef4444"/>
-<text x="637.6" y="396.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-02</text>
-<path d="M405.6 450.0 Q504.5 449.5 602.7 450.9 Q602.7 477.6 603.2 504.4 Q504.8 505.9 403.7 503.6 Q403.4 476.8 405.6 450.0" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="414" y="472" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#1f2328" font-weight="700"><tspan x="414" dy="0">Offers and consent</tspan></text>
-<text x="414" y="490" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#59636e"><tspan x="414" dy="0">accept, confirm, hub_card</tspan></text>
-<rect x="530" y="456" width="43.3" height="21" rx="10.5" fill="#f97316"/>
-<text x="551.6" y="470.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-18</text>
-<path d="M620.9 451.4 Q720.7 450.8 824.5 449.9 Q825.6 475.8 825.2 504.1 Q721.8 502.0 620.3 503.8 Q619.7 477.9 620.9 451.4" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="630" y="472" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#1f2328" font-weight="700"><tspan x="630" dy="0">Start-up checks</tspan></text>
-<text x="630" y="490" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#59636e"><tspan x="630" dy="0">keys, address, doctor</tspan></text>
-<rect x="760" y="456" width="43.3" height="21" rx="10.5" fill="#3b82f6"/>
-<text x="781.6" y="470.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-16</text>
-<path d="M871.3 181.8 Q914.0 180.6 952.0 178.6 Q949.7 233.6 949.6 292.0 Q909.4 289.8 871.6 288.1 Q871.8 235.1 871.3 181.8" fill="#fff" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="416" y="420" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#59636e"><tspan x="416" dy="0">waits up to 5 s; adds offer, text, status</tspan></text>
+<rect x="612" y="382" width="43.3" height="21" rx="10.5" fill="#f97316"/>
+<text x="633.6" y="396.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-24</text>
+<rect x="662" y="382" width="43.3" height="21" rx="10.5" fill="#3b82f6"/>
+<text x="683.6" y="396.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-06</text>
+<rect x="712" y="382" width="43.3" height="21" rx="10.5" fill="#f97316"/>
+<text x="733.6" y="396.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-03</text>
+<rect x="762" y="382" width="43.3" height="21" rx="10.5" fill="#ef4444"/>
+<text x="783.6" y="396.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-02</text>
+<path d="M405.6 446.0 Q504.5 445.5 602.7 446.9 Q602.7 479.6 603.2 512.4 Q504.8 513.9 403.7 511.6 Q403.4 478.8 405.6 446.0" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="414" y="466" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#1f2328" font-weight="700"><tspan x="414" dy="0">Offers and consent</tspan></text>
+<rect x="414" y="478" width="43.3" height="21" rx="10.5" fill="#f97316"/>
+<text x="435.6" y="492.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-18</text>
+<rect x="464" y="478" width="43.3" height="21" rx="10.5" fill="#f97316"/>
+<text x="485.6" y="492.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-19</text>
+<rect x="514" y="478" width="43.3" height="21" rx="10.5" fill="#3b82f6"/>
+<text x="535.6" y="492.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-26</text>
+<path d="M620.9 447.4 Q720.7 446.8 824.5 445.9 Q825.6 477.8 825.2 512.1 Q721.8 510.0 620.3 511.8 Q619.7 479.9 620.9 447.4" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="630" y="466" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#1f2328" font-weight="700"><tspan x="630" dy="0">Start-up checks, doctor</tspan></text>
+<rect x="630" y="478" width="43.3" height="21" rx="10.5" fill="#3b82f6"/>
+<text x="651.6" y="492.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-16</text>
+<rect x="680" y="478" width="43.3" height="21" rx="10.5" fill="#3b82f6"/>
+<text x="701.6" y="492.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-17</text>
+<rect x="730" y="478" width="43.3" height="21" rx="10.5" fill="#3b82f6"/>
+<text x="751.6" y="492.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-25</text>
+<path d="M25.3 253.8 Q198.0 252.6 366.0 250.6 Q363.7 298.6 363.6 350.0 Q193.4 347.8 25.6 346.1 Q25.8 300.1 25.3 253.8" fill="#fff" stroke="#1f2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="36" y="276" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13.5" fill="#1f2328" font-weight="700"><tspan x="36" dy="0">get_vendor_answer: asking Within</tspan></text>
+<text x="36" y="296" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#59636e"><tspan x="36" dy="0">the whole question goes out; the model decides</tspan></text>
+<text x="36" y="312" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#59636e"><tspan x="36" dy="0">when to call, from written instructions</tspan></text>
+<rect x="36" y="320" width="43.3" height="21" rx="10.5" fill="#ef4444"/>
+<text x="57.6" y="334.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-11</text>
+<rect x="86" y="320" width="43.3" height="21" rx="10.5" fill="#f97316"/>
+<text x="107.6" y="334.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">W-20</text>
+<path d="M862.8 179.0 Q908.5 181.3 958.8 181.6 Q955.9 232.9 958.0 288.9 Q910.8 289.8 863.7 290.6 Q861.1 233.8 862.8 179.0" fill="#fff" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="910" y="228" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#1f2328" font-weight="700" text-anchor="middle"><tspan x="910" dy="0">Within's</tspan></text>
 <text x="910" y="246" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#1f2328" font-weight="700" text-anchor="middle"><tspan x="910" dy="0">service</tspan></text>
-<path d="M826 411 Q869.7 409.0 910 411" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" class="flow"/>
-<path d="M899.2 416.2 L910 411 L899.8 404.7" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M910 408 Q911.7 354.1 910 294" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" class="flow"/>
-<path d="M916.0 304.4 L910 294 L904.5 304.7" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="24" y="300" font-family="'Bradley Hand','Segoe Print','Marker Felt','Comic Sans MS',cursive" font-size="13" fill="#ef4444"><tspan x="24" dy="0">Ten more findings sit</tspan><tspan x="24" dy="17.16">elsewhere: see the map</tspan><tspan x="24" dy="17.16">and the report.</tspan></text>
+<path d="M826 405 Q872.0 404.1 910 405" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" class="flow"/>
+<path d="M910 405 Q910.1 350.2 910 294" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" class="flow"/>
+<path d="M915.8 304.5 L910 294 L904.3 304.5" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="842" y="424" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#59636e"><tspan x="842" dy="0">reports, 5 s cap</tspan></text>
 <text x="24" y="470" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#59636e"><tspan x="24" dy="0">Colour of a W-number = severity:</tspan></text>
 <rect x="24" y="482" width="43.3" height="21" rx="10.5" fill="#ef4444"/>
 <text x="45.6" y="496.46" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" font-weight="700" fill="#fff">High</text>

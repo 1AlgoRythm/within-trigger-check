@@ -18,14 +18,14 @@
 <g filter="url(#wob)">
 <path d="M110 384 Q357.6 384.1 600 384" fill="none" stroke="#1f2328" stroke-width="2.2" stroke-linecap="round"/>
 <path d="M110 384 Q109.7 277.6 110 166" fill="none" stroke="#1f2328" stroke-width="2.2" stroke-linecap="round"/>
-<text x="116" y="128" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="116" dy="0">How long the server froze (ms, median of three runs)</tspan></text>
-<path d="M151.1 370.2 Q196.0 373.5 239.1 373.0 Q241.4 379.1 241.4 385.5 Q194.0 383.7 151.0 385.4 Q150.8 377.9 151.1 370.2" fill="#f97316" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="grow" style="animation-delay:0s"/>
+<text x="116" y="128" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="116" dy="0">Server frozen (ms, median of 3 runs), argument capture on</tspan></text>
+<path d="M151.1 370.2 Q196.0 373.5 239.1 373.0 Q241.4 379.1 241.4 385.5 Q194.0 383.7 151.0 385.4 Q150.8 377.9 151.1 370.2" fill="#f97316" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="195" y="363.63728171681043" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="15" fill="#1f2328" font-weight="700" text-anchor="middle"><tspan x="195" dy="0">565</tspan></text>
 <text x="195" y="404" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e" text-anchor="middle"><tspan x="195" dy="0">20,000</tspan></text>
-<path d="M281.1 331.6 Q326.9 332.9 370.1 332.4 Q371.4 357.9 371.4 382.4 Q324.3 384.2 278.7 385.1 Q277.7 356.2 281.1 331.6" fill="#f97316" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="grow" style="animation-delay:0.2s"/>
+<path d="M281.1 331.6 Q326.9 332.9 370.1 332.4 Q371.4 357.9 371.4 382.4 Q324.3 384.2 278.7 385.1 Q277.7 356.2 281.1 331.6" fill="#f97316" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="325" y="323.72648853355776" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="15" fill="#1f2328" font-weight="700" text-anchor="middle"><tspan x="325" dy="0">2,389</tspan></text>
 <text x="325" y="404" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e" text-anchor="middle"><tspan x="325" dy="0">40,000</tspan></text>
-<path d="M408.8 177.7 Q452.3 179.5 498.2 176.7 Q501.6 277.6 501.7 383.0 Q456.0 381.7 408.5 382.1 Q406.4 278.2 408.8 177.7" fill="#ef4444" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="grow" style="animation-delay:0.4s"/>
+<path d="M408.8 177.7 Q452.3 179.5 498.2 176.7 Q501.6 277.6 501.7 383.0 Q456.0 381.7 408.5 382.1 Q406.4 278.2 408.8 177.7" fill="#ef4444" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="455" y="168" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="15" fill="#1f2328" font-weight="700" text-anchor="middle"><tspan x="455" dy="0">9,506</tspan></text>
 <text x="455" y="404" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e" text-anchor="middle"><tspan x="455" dy="0">80,000</tspan></text>
 <text x="150" y="422" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#59636e"><tspan x="150" dy="0">unbroken letters in one argument</tspan></text>
@@ -40,10 +40,13 @@
 <text x="40" y="52" font-family="'Bradley Hand','Segoe Print','Marker Felt','Comic Sans MS',cursive" font-size="27" fill="#1f2328" font-weight="700"><tspan x="40" dy="0">Very long text without spaces freezes the server</tspan></text>
 <rect x="840" y="30" width="112.7" height="22" rx="11" fill="#f97316"/>
 <text x="896.4" y="45.32" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#fff">W-08 · Medium</text>
-<text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">The email pattern in the privacy filter slows down fast on unbroken text. While it runs, nobody is answered.</tspan></text>
+<text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">With argument capture on, the email pattern slows down fast on unbroken text. While it runs, nobody is answered.</tspan></text>
 <g filter="url(#wob)">
-<path d="M39.7 446.7 Q481.8 444.5 921.1 446.9 Q919.1 491.4 918.2 534.0 Q480.0 532.1 38.3 533.8 Q37.4 492.2 39.7 446.7" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="54" dy="0">What Within should change</tspan></text>
-<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328"><tspan x="54" dy="0">Cut the text to about 1,000 characters before any pattern runs (the output is cut to 200 anyway).</tspan></text>
+<path d="M39.7 446.7 Q256.8 444.5 471.1 446.9 Q469.1 491.4 468.2 534.0 Q255.0 532.1 38.3 533.8 Q37.4 492.2 39.7 446.7" fill="#f6f6f4" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">Where in the code</tspan></text>
+<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="54" dy="0">The EMAIL pattern, dist/index.js line 398, used by redact</tspan><tspan x="54" dy="15.84">(line 427), which feeds sanitizeError (line 557),</tspan><tspan x="54" dy="15.84">argumentPreview (line 526) and resultText (line 546).</tspan></text>
+<path d="M491.5 445.5 Q707.2 444.1 920.5 444.1 Q922.5 491.3 921.1 534.6 Q706.0 533.2 490.2 534.1 Q491.9 491.6 491.5 445.5" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="504" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="504" dy="0">What Within should change</tspan></text>
+<text x="504" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="504" dy="0">Cut the text to about 1,000 characters before any pattern</tspan><tspan x="504" dy="15.84">runs (the output is cut to 200 anyway).</tspan></text>
 </g>
 </svg>

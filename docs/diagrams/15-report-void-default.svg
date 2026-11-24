@@ -35,8 +35,11 @@
 <text x="896.4" y="45.32" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#fff">W-22 · Medium</text>
 <text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">Every install adds a tool, report_void, for the AI to use when it cannot help. What the AI writes goes out unredacted.</tspan></text>
 <g filter="url(#wob)">
-<path d="M40.9 445.1 Q481.2 442.5 919.0 444.3 Q918.9 487.5 920.5 534.4 Q478.1 534.0 38.5 534.7 Q38.9 487.8 40.9 445.1" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="54" dy="0">What Within should change</tspan></text>
-<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328"><tspan x="54" dy="0">Run `asked` through the same redaction as the goal note, widened to phone numbers, and cap its length.</tspan></text>
+<path d="M40.9 445.1 Q256.2 442.5 469.0 444.3 Q468.9 487.5 470.5 534.4 Q253.1 534.0 38.5 534.7 Q38.9 487.8 40.9 445.1" fill="#f6f6f4" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">Where in the code</tspan></text>
+<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="54" dy="0">registerWithinTools, dist/index.js line 4279, registers</tspan><tspan x="54" dy="15.84">report_void; its handler, also in registerWithinTools,</tspan><tspan x="54" dy="15.84">builds the report at lines 4392 to 4400.</tspan></text>
+<path d="M491.1 446.2 Q707.3 447.2 919.9 445.0 Q918.9 490.9 919.2 533.0 Q707.7 534.6 491.4 532.3 Q490.4 490.0 491.1 446.2" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="504" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="504" dy="0">What Within should change</tspan></text>
+<text x="504" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="504" dy="0">Run asked through the same redaction as the goal note,</tspan><tspan x="504" dy="15.84">widened to phone numbers, and cap its length.</tspan></text>
 </g>
 </svg>

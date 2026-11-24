@@ -139,7 +139,7 @@
       "id": "api",
       "type": "cloud",
       "label": "Within API",
-      "sublabel": "app.getwith.in, closed",
+      "sublabel": "default address is local · W-16",
       "pos": [
         780,
         175
@@ -276,6 +276,7 @@
       "dot": "amber",
       "title": "Not visible from outside",
       "items": [
+        "The SDK's default address is http://127.0.0.1:8787; a vendor must set baseUrl to reach Within (W-16)",
         "Within's backend repo is not public",
         "Matching, answer writing, storage and redaction run there",
         "Whether Within verifies the login token the SDK sends"

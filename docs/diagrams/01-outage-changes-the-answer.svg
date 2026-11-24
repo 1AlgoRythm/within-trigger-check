@@ -43,8 +43,11 @@
 <text x="888.9" y="45.32" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#fff">W-02 · High</text>
 <text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">If Within cannot be reached, the vendor's text still comes back, but the SDK also writes its own status into the data.</tspan></text>
 <g filter="url(#wob)">
-<path d="M41.4 447.8 Q483.6 447.2 921.0 446.9 Q920.3 490.6 919.0 534.6 Q480.3 535.8 38.2 534.7 Q38.4 491.4 41.4 447.8" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="54" dy="0">What Within should change</tspan></text>
-<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328"><tspan x="54" dy="0">Add the note as text only, or in `_meta`, and never touch `structuredContent`.</tspan></text>
+<path d="M41.4 447.8 Q258.6 447.2 471.0 446.9 Q470.3 490.6 469.0 534.6 Q255.3 535.8 38.2 534.7 Q38.4 491.4 41.4 447.8" fill="#f6f6f4" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">Where in the code</tspan></text>
+<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="54" dy="0">unreachableVendorResult, dist/index.js line 1343, called</tspan><tspan x="54" dy="15.84">from instrumentTool at line 1526.</tspan></text>
+<path d="M490.5 445.1 Q702.7 446.1 918.4 444.9 Q918.0 489.1 921.9 532.5 Q705.8 531.7 488.6 532.1 Q490.9 489.5 490.5 445.1" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="504" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="504" dy="0">What Within should change</tspan></text>
+<text x="504" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="504" dy="0">Add the note as text only, or in _meta, and never touch</tspan><tspan x="504" dy="15.84">structuredContent.</tspan></text>
 </g>
 </svg>

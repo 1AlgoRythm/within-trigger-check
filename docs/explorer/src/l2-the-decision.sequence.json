@@ -50,7 +50,7 @@
           "sdk",
           "api"
         ],
-        "note": "New: Within's invitation line (hubs on; repeated in 40 of 40 runs) and report_void (topics only)."
+        "note": "Within's invitation line (hubs on; repeated in 40 of 40 runs) and report_void (the AI wrote topics only)."
       }
     ]
   },
@@ -166,7 +166,7 @@
       "from": "sdk",
       "to": "api",
       "y": 446,
-      "label": "/v1/offers accept, a rep joins",
+      "label": "/v1/offers/ID/accept, a rep joins",
       "variant": "default"
     },
     {
@@ -193,7 +193,7 @@
       "items": [
         "Step 2 rests on about 2,900 characters of instructions",
         "Haiku 5.5: 11 of 30 runs on 0.4.0",
-        "Sonnet 5.5: 0 of 10 on both versions"
+        "Sonnet 5.5: 0 of 10 runs on 0.4.0"
       ]
     },
     {
@@ -201,7 +201,7 @@
       "title": "What held up",
       "items": [
         "Recall 30 of 30 on 0.4.0",
-        "Spanish, German, rate-limit, relayed, renewal questions all reached Within (15 of 15 now)",
+        "Spanish, German, rate-limit, relayed and renewal questions all reached Within (15 of 15 on Haiku, 15 of 15 on Sonnet)",
         "Reworded trigger: false alarm 0 of 30 on 0.4.0"
       ]
     }

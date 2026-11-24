@@ -14,9 +14,10 @@
           "ans",
           "act",
           "off",
-          "hubsr"
+          "hubsr",
+          "chat"
         ],
-        "note": "Four groups of /v1 calls, read from the published SDK source. The hubs group is only used when the hubs option is on."
+        "note": "Read from the SDK source: answers, activity, offers, hubs, conversations, escalations, agent-chat, install. Hubs only if switched on."
       },
       {
         "id": "extra-routes",
@@ -204,6 +205,20 @@
         160,
         64
       ]
+    },
+    {
+      "id": "chat",
+      "type": "backend",
+      "label": "/v1/conversations",
+      "sublabel": "chat, escalations, notes",
+      "pos": [
+        30,
+        112
+      ],
+      "size": [
+        160,
+        64
+      ]
     }
   ],
   "boundaries": [
@@ -291,6 +306,14 @@
       "to": "checks",
       "label": "GET",
       "variant": "dashed"
+    },
+    {
+      "id": "e-chat",
+      "from": "sdk",
+      "to": "chat",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "label": "chat"
     }
   ],
   "cards": [

@@ -102,8 +102,8 @@
     "B4"
    ],
    "where": [
-    "`dist/index.js` line 650: `z.string().max(300)`.",
-    "Line 417 (`redactMcpIntent`) already trims to 300 characters, so the validator is redundant."
+    "`dist/index.js` line 650: `z6.string().max(300)`.",
+    "Line 419 (`redactMcpIntent`) already trims to 300 characters, so the validator is redundant."
    ],
    "fix": [
     "Remove `.max(300)` from the validator and keep the trim."
@@ -164,7 +164,7 @@
     "C8"
    ],
    "where": [
-    "The `EMAIL` pattern, `dist/index.js` line 398, used by `redact` (line 427), which feeds `sanitizeError` (555), `argumentPreview` (524) and `resultText` (544).",
+    "The `EMAIL` pattern, `dist/index.js` line 398, used by `redact` (line 427), which feeds `sanitizeError` (line 557), `argumentPreview` (line 526) and `resultText` (line 546).",
     "Time grows with the square of the length: each doubling made it about three to four times slower."
    ],
    "fix": [
@@ -301,7 +301,7 @@
     "C6"
    ],
    "where": [
-    "`makeCapturedFields`, `dist/index.js` lines 668 to 651 (`resultText`).",
+    "`makeCapturedFields`, `dist/index.js` lines 668 to 681.",
     "`SECRET_SEGMENTS`, lines 362 to 381: a deny-list of names."
    ],
    "fix": [
@@ -327,7 +327,7 @@
    "where": [
     "`signedLoginToken`, `dist/index.js` line 6353: returns `{ authToken: token }` when the token looks like a JWT.",
     "`install`, line 6404: `loginToken: (extra) => options.identity ? signedLoginToken(extra) : {}`.",
-    "Added to the report in `instrumentTool` (line 1508), `patchRegisterTool` (line 1462) and the `report_void` handler (line 4392)."
+    "Added to the report in `instrumentTool` (line 1508), `patchRegisterTool` (line 1462) and the report_void handler inside `registerWithinTools` (line 4392)."
    ],
    "fix": [
     "Do not send the token. The report already carries the verified user id and, in 0.4.0, `authIssuer`.",
@@ -350,7 +350,7 @@
    "plain": "0.4.0 registers a new tool, `report_void`, on every install, with no option needed. It also adds a sentence (306 characters) to every vendor's server instructions telling the AI to call it when a tool cannot return what the customer asked, with `asked` set to \"a short phrase in the customer's own words\". The phrase is sent to Within as `voidAsked`. In a direct check, calling the tool ourselves with \"find Priya Raman, call her on 617 555 0142 or email priya.raman@example.com\", the text arrived exactly as written. The SDK hides emails in other fields, but not in this one.",
    "why": "Vendors now send customer wording to Within by default, without choosing to and without the docs saying so: the docs page does not mention `report_void`. The redaction used for the goal note is not applied to this field. With real Claude the tool is used a lot: Haiku called it in {{U:voidRuns}} of {{U:totalRuns}} ordinary runs and Sonnet in {{U:sVoidRuns}} of {{U:sTotalRuns}}, often right after the vendor's own answer. In runs where the question contained a name, phone number and email, the two models made {{U:allVoidCalls}} calls, and every phrase was a short topic. The name appeared in {{U:allNames}} of them, the phone number in {{U:allPhones}} and the email in {{U:allEmails}}. So the unredacted path is real (check N5), but these models did not use it for personal details. Two models and two prompts is still a small sample, and another model or prompt may copy them, which is why this is Medium and not High. Within's server may redact more after the text arrives; that part is not visible from outside.",
    "where": [
-    "`registerWithinTools`, `dist/index.js` line 4279, registers `report_void`; the handler builds the report at lines 4392 to 4400.",
+    "`registerWithinTools`, `dist/index.js` line 4279, registers `report_void`; its handler, also in `registerWithinTools`, builds the report at lines 4392 to 4400.",
     "`VOID_CALL_SENTENCE`, line 592, appended to `SERVER_INSTRUCTIONS`. It accounts for the 306 extra characters seen in check D5.",
     "`voidAsked` and `voidTool` are fields of the report; the text arrived unchanged in the test."
    ],
@@ -486,7 +486,7 @@
    "severity": "Medium",
    "group": "Design questions for Within's team",
    "title": "On servers that keep no sessions, a rep's offer cannot find the customer",
-   "plain": "The docs say a rep's offer is delivered on the customer's next tool call in that session, and that a new connection gets a new session id. In check C9, three connections got three ids. By the code at lines 3585 to 3599, a server that builds a new transport for every request gets a new id on every call (inferred from the code, not run over real HTTP).",
+   "plain": "The docs say a rep's offer is delivered on the customer's next tool call in that session, and that a new connection gets a new session id. In check C9, three connections got three ids. By `connectionSessionMinter` (lines 6304 to 6318), a server that builds a new transport for every request gets a new id on every call (inferred from the code, not run over real HTTP).",
    "why": "The offer is addressed to a session. If the id changes with every call, the offer may have nowhere to arrive, unless the vendor supplies a stable user id. Whether Within's server falls back to the user id is not visible.",
    "tests": [
     "C9"

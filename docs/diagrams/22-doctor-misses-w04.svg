@@ -32,8 +32,11 @@
 <text x="885.2" y="45.32" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#fff">W-25 · Low</text>
 <text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">The doctor command says the tools carry the context field, even when the SDK removed the vendor's own context input.</tspan></text>
 <g filter="url(#wob)">
-<path d="M40.6 445.0 Q482.7 444.6 921.9 447.2 Q922.6 492.4 920.0 535.3 Q479.8 534.2 38.9 533.2 Q40.4 486.7 40.6 445.0" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="54" dy="0">What Within should change</tspan></text>
-<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328"><tspan x="54" dy="0">Mark the field the SDK adds, for example in its description or with a name no vendor would use (see W-04), and have</tspan><tspan x="54" dy="16.5">doctor look for that mark.</tspan></text>
+<path d="M40.6 445.0 Q257.7 444.6 471.9 447.2 Q472.6 492.4 470.0 535.3 Q254.8 534.2 38.9 533.2 Q40.4 486.7 40.6 445.0" fill="#f6f6f4" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">Where in the code</tspan></text>
+<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="54" dy="0">dist/doctor.js line 320: bare keeps the tools whose</tspan><tspan x="54" dy="15.84">inputSchema.properties has no context.</tspan></text>
+<path d="M491.6 445.1 Q707.3 444.5 921.9 445.4 Q920.7 491.1 920.1 533.9 Q706.2 530.7 491.9 532.5 Q492.0 489.4 491.6 445.1" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="504" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="504" dy="0">What Within should change</tspan></text>
+<text x="504" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="504" dy="0">Mark the field the SDK adds, for example in its description</tspan><tspan x="504" dy="15.84">or with a name no vendor would use (see W-04), and have</tspan><tspan x="504" dy="15.84">doctor look for that mark.</tspan></text>
 </g>
 </svg>

@@ -58,8 +58,11 @@
 <text x="888.9" y="45.32" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#fff">W-10 · High</text>
 <text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#59636e"><tspan x="40" dy="0">The goal text the model writes goes to Within by default. The filter hides some details and lets the rest through.</tspan></text>
 <g filter="url(#wob)">
-<path d="M38.7 447.9 Q477.6 444.7 918.4 445.1 Q920.9 490.2 919.0 534.3 Q480.6 533.4 38.1 533.1 Q37.8 489.5 38.7 447.9" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="54" dy="0">What Within should change</tspan></text>
-<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328"><tspan x="54" dy="0">List the note in the docs table.</tspan></text>
+<path d="M38.7 447.9 Q252.6 444.7 468.4 445.1 Q470.9 490.2 469.0 534.3 Q255.6 533.4 38.1 533.1 Q37.8 489.5 38.7 447.9" fill="#f6f6f4" stroke="#1f2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#1f2328" font-weight="700"><tspan x="54" dy="0">Where in the code</tspan></text>
+<text x="54" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="54" dy="0">redactMcpIntent, dist/index.js lines 419 to 425, and the</tspan><tspan x="54" dy="15.84">fields assembled in instrumentTool (line 1515) and in the</tspan><tspan x="54" dy="15.84">patched registerTool (line 1454).</tspan></text>
+<path d="M490.6 446.0 Q704.3 444.7 918.9 447.3 Q919.2 489.7 921.3 532.4 Q703.8 534.8 491.2 535.1 Q491.5 489.8 490.6 446.0" fill="#f3f7fd" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="504" y="465" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12.5" fill="#3b82f6" font-weight="700"><tspan x="504" dy="0">What Within should change</tspan></text>
+<text x="504" y="482" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#1f2328"><tspan x="504" dy="0">List the note in the docs table.</tspan></text>
 </g>
 </svg>
